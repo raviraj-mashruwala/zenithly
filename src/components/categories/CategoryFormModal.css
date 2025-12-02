@@ -1,0 +1,90 @@
+.category-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.category-types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.category-type-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background-color: var(--color-bg-elevated);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+}
+
+.category-type-btn:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text-primary);
+}
+
+.category-type-btn.selected {
+    color: var(--color-text-primary);
+}
+
+.category-type-btn.expense.selected {
+    border-color: var(--color-expense);
+    background-color: var(--color-expense-bg);
+}
+
+.category-type-btn.income.selected {
+    border-color: var(--color-income);
+    background-color: var(--color-income-bg);
+}
+
+.category-type-btn.debt.selected {
+    border-color: var(--color-transfer);
+    background-color: var(--color-transfer-bg);
+}
+
+.type-indicator {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--color-border-default);
+    transition: all var(--transition-fast);
+}
+
+.category-type-btn.expense .type-indicator {
+    background-color: var(--color-expense-bg);
+}
+
+.category-type-btn.income .type-indicator {
+    background-color: var(--color-income-bg);
+}
+
+.category-type-btn.debt .type-indicator {
+    background-color: var(--color-transfer-bg);
+}
+
+.category-type-btn.expense.selected .type-indicator {
+    background-color: var(--color-expense);
+}
+
+.category-type-btn.income.selected .type-indicator {
+    background-color: var(--color-income);
+}
+
+.category-type-btn.debt.selected .type-indicator {
+    background-color: var(--color-transfer);
+}
+
+@media (max-width: 640px) {
+    .category-types-grid {
+        grid-template-columns: 1fr;
+    }
+}
