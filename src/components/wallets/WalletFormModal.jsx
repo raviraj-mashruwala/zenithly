@@ -1,0 +1,143 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { X } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useWalletStore } from '../../stores/walletStore';
+import Button from '../ui/Button';
+import Input from '../ui/Input';
+import Modal from '../ui/Modal';
+import { WALLET_TYPES } from '../../constants/currencies';
+import './WalletFormModal.css';
+
+const walletSchema = z.object({
+    name: z.string().min(1, 'Wallet name is required').max(50, 'Name too long'),
+    type: z.enum(['Bank', 'Credit Card', 'Cash', 'Wallet/UPI', 'Investment', 'Other']),
+    openingBalance: z.number().optional(),
+});
+
+export default function WalletFormModal({ wallet, currency, onClose, onSuccess }) {
+    const { createWallet, updateWallet } = useWalletStore();
+    const [isLoading, setIsLoading] = useState(false);
+    const [includedInTotal, setIncludedInTotal] = useState(wallet?.included_in_total ?? true);
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(walletSchema),
+        defaultValues: {
+            name: wallet?.name || '',
+            type: wallet?.type || 'Bank',
+            openingBalance: wallet?.opening_balance || 0,
+        },
+    });
+
+    const selectedType = watch('type');
+
+    const onSubmit = async (data) => {
+        setIsLoading(true);
+        try {
+            if (wallet) {
+                // Update existing wallet
+                await updateWallet(wallet.id, {
+                    name: data.name,
+                    type: data.type,
+                    included_in_total: includedInTotal,
+                });
+            } else {
+                // Create new wallet
+                await createWallet({
+                    name: data.name,
+                    type: data.type,
+                    currency: currency,
+                    openingBalance: data.openingBalance || 0,
+                    includedInTotal,
+                });
+            }
+            onSuccess();
+        } catch (error) {
+            toast.error(error.message || 'Failed to save wallet');
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <Modal onClose={onClose}>
+            <div className="modal-header">
+                <h2 className="font-display">{wallet ? 'Edit Wallet' : 'Add Wallet'}</h2>
+                <button className="modal-close" onClick={onClose} aria-label="Close">
+                    <X size={24} />
+                </button>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="wallet-form">
+                <Input
+                    {...register('name')}
+                    label="Wallet Name"
+                    placeholder="e.g., Main Bank Account"
+                    error={errors.name?.message}
+                    fullWidth
+                    autoFocus
+                />
+
+                <div className="form-group">
+                    <label className="form-label">Wallet Type</label>
+                    <div className="wallet-types-grid">
+                        {WALLET_TYPES.map((type) => (
+                            <button
+                                key={type.value}
+                                type="button"
+                                className={`wallet-type-btn ${selectedType === type.value ? 'selected' : ''}`}
+                                onClick={() => setValue('type', type.value)}
+                            >
+                                {type.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {!wallet && (
+                    <Input
+                        {...register('openingBalance', { valueAsNumber: true })}
+                        type="number"
+                        label="Opening Balance"
+                        placeholder="0.00"
+                        helperText={`Initial balance in ${currency}`}
+                        error={errors.openingBalance?.message}
+                        fullWidth
+                        step="0.01"
+                    />
+                )}
+
+                <div className="checkbox-field">
+                    <input
+                        type="checkbox"
+                        id="includedInTotal"
+                        checked={includedInTotal}
+                        onChange={(e) => setIncludedInTotal(e.target.checked)}
+                    />
+                    <label htmlFor="includedInTotal">
+                        Include in total balance
+                        <span className="help-text">
+                            (Uncheck if you don't want this counted in your total)
+                        </span>
+                    </label>
+                </div>
+
+                <div className="modal-actions">
+                    <Button type="button" variant="secondary" onClick={onClose} disabled={isLoading}>
+                        Cancel
+                    </Button>
+                    <Button type="submit" isLoading={isLoading}>
+                        {wallet ? 'Update Wallet' : 'Create Wallet'}
+                    </Button>
+                </div>
+            </form>
+        </Modal>
+    );
+}
