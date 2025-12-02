@@ -1,0 +1,154 @@
+.onboarding-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+}
+
+.onboarding-container {
+    width: 100%;
+    max-width: 800px;
+    animation: slideUp var(--transition-slow);
+}
+
+.onboarding-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.onboarding-header h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-2);
+    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-hover) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.onboarding-header p {
+    font-size: var(--text-base);
+}
+
+/* Progress Steps */
+.onboarding-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+    position: relative;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-indicator {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--color-bg-elevated);
+    border: 2px solid var(--color-border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-semibold);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-3);
+    transition: all var(--transition-base);
+    z-index: 2;
+    position: relative;
+}
+
+.step.active .step-indicator {
+    background-color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    color: var(--color-bg-primary);
+    box-shadow: var(--shadow-glow);
+}
+
+.step.completed .step-indicator {
+    background-color: var(--color-success);
+    border-color: var(--color-success);
+    color: white;
+}
+
+.step-content {
+    text-align: center;
+}
+
+.step-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.step.active .step-title {
+    color: var(--color-accent-primary);
+}
+
+.step-description {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+}
+
+.step-connector {
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    right: -50%;
+    height: 2px;
+    background-color: var(--color-border-default);
+    z-index: 1;
+}
+
+.step.completed .step-connector {
+    background-color: var(--color-success);
+}
+
+/* Onboarding Card */
+.onboarding-card {
+    margin-bottom: var(--space-6);
+    min-height: 400px;
+}
+
+/* Actions */
+.onboarding-actions {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .onboarding-steps {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .step {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .step-indicator {
+        margin-bottom: 0;
+        margin-right: var(--space-3);
+        flex-shrink: 0;
+    }
+
+    .step-content {
+        text-align: left;
+        flex: 1;
+    }
+
+    .step-connector {
+        display: none;
+    }
+}

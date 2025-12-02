@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuthStore } from './stores/authStore';
+
+// Lazy load pages for code splitting
+import { lazy, Suspense } from 'react';
+
+// Auth pages
+const Login = lazy(() => import('./pages/auth/Login'));
+const SignUp = lazy(() => import('./pages/auth/SignUp'));
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const Onboarding = lazy(() => import('./pages/auth/Onboarding'));
+
+// Protected pages
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const WalletsList = lazy(() => import('./pages/wallets/WalletsList'));
+const CategoriesList = lazy(() => import('./pages/categories/CategoriesList'));
+const TransactionsList = lazy(() => import('./pages/transactions/TransactionsList'));
+const NetIncomeReport = lazy(() => import('./pages/reports/NetIncomeReport'));
+const ExpenseDetailsReport = lazy(() => import('./pages/reports/ExpenseDetailsReport'));
+const Settings = lazy(() => import('./pages/Settings'));
+
+// Components
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import LoadingSpinner from './components/ui/LoadingSpinner';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const { initialize, isLoading } = useAuthStore();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        initialize();
+    }, [initialize]);
+
+    if (isLoading) {
+        return (
+            <div className="loading-container">
+                <LoadingSpinner size="lg" />
+            </div>
+        );
+    }
+
+    return (
+        <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
+            <Routes>
+                {/* Public routes */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+
+                {/* Protected routes */}
+                <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/wallets" element={<ProtectedRoute><WalletsList /></ProtectedRoute>} />
+                <Route path="/categories" element={<ProtectedRoute><CategoriesList /></ProtectedRoute>} />
+                <Route path="/transactions" element={<ProtectedRoute><TransactionsList /></ProtectedRoute>} />
+                <Route path="/reports/income" element={<ProtectedRoute><NetIncomeReport /></ProtectedRoute>} />
+                <Route path="/reports/expenses" element={<ProtectedRoute><ExpenseDetailsReport /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+
+                {/* Default redirect */}
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+        </Suspense>
+    );
 }
 
-export default App
+export default App;

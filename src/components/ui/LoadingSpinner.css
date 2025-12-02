@@ -1,0 +1,37 @@
+.spinner {
+    animation: spin 1s linear infinite;
+    color: var(--color-accent-primary);
+}
+
+.spinner-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+.spinner-md {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.spinner-lg {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+}
