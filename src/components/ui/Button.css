@@ -20,14 +20,14 @@
 
 /* Variants */
 .button-primary {
-    background: var(--color-acid-lime);
+    background: var(--color-accent);
     color: var(--color-bg-void);
-    box-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
+    box-shadow: 0 0 20px rgba(212, 186, 118, 0.3);
 }
 
 .button-primary:hover:not(:disabled) {
-    background: rgba(204, 255, 0, 0.9);
-    box-shadow: 0 0 30px rgba(204, 255, 0, 0.5);
+    background: var(--color-accent-soft);
+    box-shadow: 0 0 30px rgba(212, 186, 118, 0.5);
 }
 
 .button-secondary {
@@ -48,8 +48,8 @@
 }
 
 .button-outline:hover:not(:disabled) {
-    border-color: var(--color-acid-lime);
-    color: var(--color-acid-lime);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
 }
 
 .button-ghost {

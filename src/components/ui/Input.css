@@ -18,7 +18,7 @@
 }
 
 .input-required {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
     margin-left: 0.25rem;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .input-container:focus-within .input-icon-left {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 .input-icon-right {
@@ -79,9 +79,9 @@
 
 .input:focus {
     outline: none;
-    border-color: rgba(204, 255, 0, 0.5);
+    border-color: var(--color-accent);
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(204, 255, 0, 0.1);
+    box-shadow: 0 0 15px rgba(212, 186, 118, 0.15);
 }
 
 .input-container.input-error .input {

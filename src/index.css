@@ -100,23 +100,23 @@ p {
 a {
     color: var(--color-text-primary);
     text-decoration: none;
-    border-bottom: 1px solid var(--color-acid-lime);
+    border-bottom: 1px solid var(--color-accent);
     transition: all var(--transition-fast);
 }
 
 a:hover {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
     border-bottom-color: transparent;
 }
 
 /* === Utility Classes === */
 
-.text-acid {
-    color: var(--color-acid-lime);
+.text-accent {
+    color: var(--color-accent);
 }
 
-.text-violet {
-    color: var(--color-electric-violet);
+.text-accent-soft {
+    color: var(--color-accent-soft);
 }
 
 .text-subtle {
@@ -135,8 +135,8 @@ a:hover {
     background-color: var(--color-bg-surface);
 }
 
-.border-acid {
-    border: 1px solid var(--color-border-acid);
+.border-accent {
+    border: 1px solid var(--color-accent);
 }
 
 .border-subtle {
@@ -165,11 +165,11 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-acid-lime);
+    background: var(--color-accent);
 }
 
 /* === Selection === */
 ::selection {
-    background-color: var(--color-acid-lime);
+    background-color: var(--color-accent);
     color: var(--color-bg-void);
 }

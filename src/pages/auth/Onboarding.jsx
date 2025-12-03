@@ -118,7 +118,7 @@ export default function Onboarding() {
             <div className="onboarding-container">
                 {/* Header */}
                 <div className="onboarding-header">
-                    <h1 className="font-display">Welcome to <span className="text-acid-lime">Zenithly</span></h1>
+                    <h1 className="font-display">Welcome to <span className="text-accent">Zenithly</span></h1>
                     <p className="text-secondary">Let's set up your account in 3 simple steps</p>
                 </div>
 

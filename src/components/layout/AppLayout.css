@@ -40,7 +40,7 @@
 }
 
 .sidebar-logo-accent {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 .sidebar-subtitle {
@@ -77,7 +77,7 @@
 
 .nav-item.active {
     background: rgba(255, 255, 255, 0.05);
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 .nav-item.active::before {
@@ -86,7 +86,7 @@
     left: 0;
     width: 4px;
     height: 1.5rem;
-    background: var(--color-acid-lime);
+    background: var(--color-accent);
     border-radius: 0 9999px 9999px 0;
 }
 
@@ -121,7 +121,7 @@
     width: 2rem;
     height: 2rem;
     border-radius: 9999px;
-    background: linear-gradient(to top right, var(--color-acid-lime), var(--color-electric-violet));
+    background: var(--color-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -210,7 +210,7 @@
 }
 
 .mobile-menu-button:hover {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 /* Mobile Menu Overlay */
@@ -258,7 +258,7 @@
     right: -10%;
     width: 600px;
     height: 600px;
-    background: rgba(204, 255, 0, 0.05);
+    background: rgba(212, 186, 118, 0.08);
     border-radius: 9999px;
     filter: blur(120px);
 }
@@ -269,7 +269,7 @@
     left: -10%;
     width: 500px;
     height: 500px;
-    background: rgba(112, 0, 255, 0.05);
+    background: rgba(212, 186, 118, 0.05);
     border-radius: 9999px;
     filter: blur(120px);
 }

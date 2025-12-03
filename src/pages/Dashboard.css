@@ -36,7 +36,7 @@
 .balance-card {
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(204, 255, 0, 0.2);
+    border: 1px solid rgba(212, 186, 118, 0.2);
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), transparent);
 }
 
@@ -46,7 +46,7 @@
     right: 0;
     padding: 1rem;
     opacity: 0.2;
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 .balance-content {
@@ -100,7 +100,7 @@
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 9999px;
-    background: var(--color-acid-lime);
+    background: var(--color-accent);
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -141,7 +141,7 @@
 }
 
 .stat-card.income-card:hover {
-    border-color: rgba(204, 255, 0, 0.3);
+    border-color: rgba(212, 186, 118, 0.3);
 }
 
 .stat-card.expense-card:hover {
@@ -174,8 +174,8 @@
 }
 
 .stat-icon.income {
-    background: rgba(204, 255, 0, 0.1);
-    color: var(--color-acid-lime);
+    background: rgba(212, 186, 118, 0.1);
+    color: var(--color-accent);
 }
 
 .stat-icon.expense {
@@ -185,7 +185,7 @@
 
 .stat-icon.net {
     background: rgba(112, 0, 255, 0.1);
-    color: var(--color-electric-violet);
+    color: var(--color-accent-soft);
 }
 
 .stat-icon.neutral {
@@ -205,7 +205,7 @@
 }
 
 .stat-value.positive {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 .stat-value.negative {
@@ -239,7 +239,7 @@
 }
 
 .stat-card.clickable:hover .stat-cta-label svg {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 /* Dashboard Grid */
@@ -333,7 +333,7 @@
 .wallet-balance {
     font-family: 'Courier New', monospace;
     font-weight: var(--font-medium);
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 /* Period Tabs */
@@ -463,8 +463,8 @@
 }
 
 .transaction-icon.income {
-    background: rgba(204, 255, 0, 0.1);
-    color: var(--color-acid-lime);
+    background: rgba(212, 186, 118, 0.1);
+    color: var(--color-accent);
 }
 
 .transaction-icon.expense {
@@ -503,7 +503,7 @@
 }
 
 .transaction-amount.income {
-    color: var(--color-acid-lime);
+    color: var(--color-accent);
 }
 
 .transaction-amount.expense {

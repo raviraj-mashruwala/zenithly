@@ -59,7 +59,7 @@ export default function Login() {
             <div className="auth-container">
                 <div className="auth-header">
                     <h1>
-                        ZENITH<span style={{ color: 'var(--color-acid-lime)' }}>LY</span>
+                        ZENITH<span style={{ color: 'var(--color-accent)' }}>LY</span>
                     </h1>
                     <p className="auth-subtitle">Initialize Session</p>
                 </div>

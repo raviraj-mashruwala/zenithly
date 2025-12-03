@@ -1,41 +1,33 @@
 :root {
-    /* === Colors: Void & Voltage Theme === */
+    /* === Colors: Refined Palette === */
 
     /* Base Backgrounds */
-    --color-bg-void: #030303;
-    /* Deepest black */
-    --color-bg-deep: #0A0A0A;
-    /* Secondary background */
-    --color-bg-surface: #141414;
-    /* Card/Surface background */
-    --color-bg-surface-hover: #1A1A1A;
+    --color-bg-void: #111111;
+    --color-bg-deep: #181818;
+    --color-bg-surface: #202020;
+    --color-bg-surface-hover: #262626;
 
     /* Text Colors */
-    --color-text-primary: #EDEDED;
-    --color-text-secondary: #999999;
-    --color-text-tertiary: #555555;
-    --color-text-inverse: #030303;
+    --color-text-primary: #F2F2F2;
+    --color-text-secondary: #C8C8C8;
+    --color-text-tertiary: #A0A0A0;
+    --color-text-inverse: #111111;
 
-    /* Accents */
-    --color-acid-lime: #CCFF00;
-    /* Primary Accent */
-    --color-electric-violet: #7000FF;
-    /* Secondary Accent */
-    --color-neon-cyan: #00FFFF;
-    /* Tertiary/Info */
+    /* Accent Colors */
+    --color-accent: #D4BA76;
+    /* muted gold */
+    --color-accent-soft: #E6D7AA;
 
     /* Functional */
-    --color-success: #CCFF00;
-    /* Using Acid Lime for success for style */
-    --color-warning: #FFD600;
-    --color-error: #FF3333;
-    --color-info: #00FFFF;
+    --color-success: #8FD58F;
+    --color-warning: #EDC378;
+    --color-error: #F87070;
+    --color-info: #A7D5FF;
 
     /* Borders */
-    --color-border-subtle: #222222;
-    --color-border-default: #333333;
-    --color-border-strong: #444444;
-    --color-border-acid: rgba(204, 255, 0, 0.3);
+    --color-border-subtle: #2E2E2E;
+    --color-border-default: #3A3A3A;
+    --color-border-strong: #474747;
 
     /* === Typography === */
     --font-display: 'Syne', sans-serif;
@@ -105,8 +97,8 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 
-    --glow-acid: 0 0 20px rgba(204, 255, 0, 0.15);
-    --glow-violet: 0 0 20px rgba(112, 0, 255, 0.15);
+    --glow-accent: 0 0 20px rgba(212, 186, 118, 0.2);
+    --glow-accent-soft: 0 0 30px rgba(212, 186, 118, 0.15);
 
     /* === Transitions === */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
