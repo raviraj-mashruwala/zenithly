@@ -1,5 +1,90 @@
 /* Period Selector - Terminal Brutalism */
 
+/* Container with navigation */
+.period-selector-container {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: var(--color-bg-surface);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+}
+
+.period-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.period-nav-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(0, 217, 255, 0.1);
+}
+
+.period-nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.period-nav-btn:disabled:hover {
+    border-color: var(--color-border-default);
+    color: var(--color-text-tertiary);
+    background: transparent;
+}
+
+.period-display {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
+    min-width: 120px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.period-month {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.period-today-btn {
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.period-today-btn:hover {
+    background: rgba(0, 217, 255, 0.2);
+    box-shadow: var(--glow-accent-soft);
+}
+
+/* Tab-style selector */
 .period-selector {
     display: flex;
     gap: var(--space-2);

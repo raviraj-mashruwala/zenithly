@@ -92,3 +92,97 @@
         transform: translateY(0);
     }
 }
+
+/* Report Controls */
+.report-controls {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+}
+
+.report-control-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.report-control-group label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+}
+
+.report-control-group select {
+    min-width: 150px;
+}
+
+/* Category Breakdown List */
+.category-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.category-breakdown-item {
+    padding: var(--space-4);
+    background: rgba(0, 217, 255, 0.03);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.category-breakdown-item:hover {
+    background: rgba(0, 217, 255, 0.08);
+    border-color: var(--color-accent);
+}
+
+.category-breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+}
+
+.category-breakdown-name {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: 0.025em;
+}
+
+.category-breakdown-amount {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.category-breakdown-meta {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.05em;
+}
+
+/* Percentage Badges */
+.percentage-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+}

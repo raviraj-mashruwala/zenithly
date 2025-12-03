@@ -218,6 +218,194 @@ a:hover {
     background: var(--color-accent);
 }
 
+/* === Global Select Styling - Terminal Brutalism === */
+select {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background-color: rgba(0, 217, 255, 0.05);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300D9FF' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-4) center;
+    padding-right: calc(var(--space-4) * 2.5);
+}
+
+select:hover {
+    border-color: var(--color-accent);
+    background-color: rgba(0, 217, 255, 0.08);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: var(--glow-accent-soft);
+}
+
+select option {
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    padding: var(--space-2);
+}
+
+/* Back Button - Terminal Style */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.back-button:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(0, 217, 255, 0.05);
+    transform: translateX(-2px);
+}
+
+/* Filter Section - Terminal Style */
+.filter-section {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-4);
+    background: var(--color-bg-surface);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* Month/Period Picker - Terminal Style */
+.month-picker {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: var(--color-bg-surface);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+}
+
+.month-picker button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.month-picker button:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(0, 217, 255, 0.1);
+}
+
+.month-picker span {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Action Menu Button (3-dot menu) */
+.action-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.action-menu-button:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(0, 217, 255, 0.1);
+}
+
+/* Stats Summary Box */
+.stats-summary {
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-6);
+}
+
+.stats-summary-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-2);
+}
+
+.stats-summary-value {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: 0.025em;
+}
+
+.stats-summary-meta {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.05em;
+    margin-top: var(--space-1);
+}
+
+
 /* === Selection === */
 ::selection {
     background-color: var(--color-accent);

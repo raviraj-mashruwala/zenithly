@@ -81,14 +81,224 @@
     letter-spacing: 0.025em;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+/* === Report Grid Layouts (Dashboard 2.0) === */
+
+.report-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 100%;
+}
+
+/* Summary Grid (3 Columns) */
+.report-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.summary-card {
+    padding: var(--space-5);
+    background: var(--color-bg-surface);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 120px;
+    transition: all var(--transition-base);
+}
+
+.summary-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--glow-accent-soft);
+    transform: translateY(-2px);
+}
+
+.summary-label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.summary-value {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    margin-top: auto;
+}
+
+.summary-value.income {
+    color: var(--color-accent-secondary);
+}
+
+.summary-value.expense {
+    color: var(--color-error);
+}
+
+.summary-value.net {
+    color: var(--color-accent);
+}
+
+/* Comparison Chart Section */
+.comparison-section {
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-6);
+}
+
+.chart-title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-6);
+    text-transform: uppercase;
+}
+
+/* CSS Bar Chart */
+.bar-chart-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.bar-label {
+    width: 80px;
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+}
+
+.bar-track {
+    flex: 1;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    position: relative;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: var(--radius-sm);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-width: 4px;
+}
+
+.bar-fill.income {
+    background: var(--color-accent-secondary);
+}
+
+.bar-fill.expense {
+    background: var(--color-error);
+}
+
+.bar-value {
+    width: 100px;
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+/* Category Breakdown Grid (2 Columns) */
+.breakdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+}
+
+.breakdown-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.breakdown-header {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--color-border-default);
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* Category Progress Bars */
+.category-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.category-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.category-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.category-name {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.category-amount {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.progress-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width 1s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .report-summary-grid {
+        grid-template-columns: 1fr;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .breakdown-grid {
+        grid-template-columns: 1fr;
     }
 }
