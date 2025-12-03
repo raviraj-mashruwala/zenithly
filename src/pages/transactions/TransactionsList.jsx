@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Plus, Filter, Calendar } from 'lucide-react';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { Plus, Filter, BarChart3 } from 'lucide-react';
+import { format, startOfMonth, endOfMonth, isSameDay } from 'date-fns';
 import toast from 'react-hot-toast';
 import { useTransactionStore } from '../../stores/transactionStore';
 import { useWalletStore } from '../../stores/walletStore';
 import { useCategoryStore } from '../../stores/categoryStore';
 import { useAuthStore } from '../../stores/authStore';
 import { formatCurrency } from '../../utils/currency';
+import { groupTransactionsByDay, calculateOpeningBalance } from '../../utils/transactions';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import TransactionCard from '../../components/transactions/TransactionCard';
 import TransactionFormModal from '../../components/transactions/TransactionFormModal';
+import PeriodSelector from '../../components/transactions/PeriodSelector';
 import './TransactionsList.css';
 
 const TRANSACTION_TYPES = [
@@ -22,6 +24,7 @@ const TRANSACTION_TYPES = [
 ];
 
 export default function TransactionsList() {
+    const navigate = useNavigate();
     const { user } = useAuthStore();
     const {
         transactions,
@@ -31,9 +34,10 @@ export default function TransactionsList() {
         fetchStats,
     } = useTransactionStore();
 
-    const { wallets, fetchWallets } = useWalletStore();
+    const { wallets, fetchWallets, getTotalBalance } = useWalletStore();
     const { categories, fetchCategories } = useCategoryStore();
 
+    const [currentDate, setCurrentDate] = useState(new Date());
     const [filters, setFilters] = useState({
         type: 'all',
         walletId: 'all',
@@ -43,25 +47,26 @@ export default function TransactionsList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState(null);
 
-    // Current month date range
-    const currentMonth = {
-        start: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
-        end: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
-    };
+    // Calculate period dates
+    const periodStart = format(startOfMonth(currentDate), 'yyyy-MM-dd');
+    const periodEnd = format(endOfMonth(currentDate), 'yyyy-MM-dd');
 
     useEffect(() => {
         if (user) {
-            const fetchOptions = {};
+            const fetchOptions = {
+                startDate: periodStart,
+                endDate: periodEnd,
+            };
             if (filters.type !== 'all') fetchOptions.type = filters.type;
             if (filters.walletId !== 'all') fetchOptions.walletId = filters.walletId;
             if (filters.categoryId !== 'all') fetchOptions.categoryId = filters.categoryId;
 
             fetchTransactions(fetchOptions);
-            fetchStats(currentMonth.start, currentMonth.end);
+            fetchStats(periodStart, periodEnd);
             fetchWallets();
             fetchCategories();
         }
-    }, [user, filters]);
+    }, [user, currentDate, filters]);
 
     const handleAddTransaction = () => {
         setEditingTransaction(null);
@@ -80,10 +85,17 @@ export default function TransactionsList() {
 
     const handleSuccess = () => {
         fetchTransactions();
-        fetchStats(currentMonth.start, currentMonth.end);
+        fetchStats(periodStart, periodEnd);
         handleCloseModal();
         toast.success(editingTransaction ? 'Transaction updated' : 'Transaction added');
     };
+
+    // Group transactions by day
+    const groupedTransactions = groupTransactionsByDay(transactions);
+
+    // Calculate balances
+    const openingBalance = calculateOpeningBalance(wallets, transactions, periodStart);
+    const currentBalance = getTotalBalance();
 
     if (isLoading && transactions.length === 0) {
         return (
@@ -108,18 +120,37 @@ export default function TransactionsList() {
                 </Button>
             </div>
 
+            {/* Period Selector */}
+            <PeriodSelector
+                currentDate={currentDate}
+                onDateChange={setCurrentDate}
+            />
+
+            {/* Opening/Closing Balance */}
+            <div className="balance-summary">
+                <Card padding="md" className="balance-card">
+                    <div className="balance-label text-tertiary">Opening Balance</div>
+                    <div className="balance-value">{formatCurrency(openingBalance, 'INR')}</div>
+                </Card>
+
+                <Card padding="md" className="balance-card current-balance">
+                    <div className="balance-label text-tertiary">Current Balance</div>
+                    <div className="balance-value accent">{formatCurrency(currentBalance, 'INR')}</div>
+                </Card>
+            </div>
+
             {/* Stats Cards */}
             {stats && (
                 <div className="stats-grid">
                     <Card padding="md" className="stat-card income-stat">
-                        <div className="stat-label text-secondary">This Month Income</div>
+                        <div className="stat-label text-secondary">Income</div>
                         <div className="stat-value income">
                             {formatCurrency(stats.totalIncome, 'INR')}
                         </div>
                     </Card>
 
                     <Card padding="md" className="stat-card expense-stat">
-                        <div className="stat-label text-secondary">This Month Expense</div>
+                        <div className="stat-label text-secondary">Expense</div>
                         <div className="stat-value expense">
                             {formatCurrency(stats.totalExpense, 'INR')}
                         </div>
@@ -138,6 +169,17 @@ export default function TransactionsList() {
                     </Card>
                 </div>
             )}
+
+            {/* Report CTA */}
+            <Button
+                variant="outline"
+                size="md"
+                fullWidth
+                leftIcon={<BarChart3 />}
+                onClick={() => navigate('/reports/expenses')}
+            >
+                View Detailed Reports
+            </Button>
 
             {/* Filters */}
             <div className="filters-bar">
@@ -179,21 +221,37 @@ export default function TransactionsList() {
                 </div>
             </div>
 
-            {/* Transactions List */}
-            {transactions.length > 0 ? (
-                <div className="transactions-list">
-                    {transactions.map((transaction) => (
-                        <TransactionCard
-                            key={transaction.id}
-                            transaction={transaction}
-                            onEdit={() => handleEditTransaction(transaction)}
-                        />
+            {/* Transactions List - Grouped by Day */}
+            {groupedTransactions.length > 0 ? (
+                <div className="transactions-by-day">
+                    {groupedTransactions.map((group) => (
+                        <div key={group.date.toISOString()} className="day-group">
+                            <div className="day-header">
+                                <span className="day-date">
+                                    {isSameDay(group.date, new Date())
+                                        ? 'Today'
+                                        : format(group.date, 'EEEE, MMMM dd')}
+                                </span>
+                                <span className="day-count text-tertiary">
+                                    {group.transactions.length} transaction{group.transactions.length !== 1 ? 's' : ''}
+                                </span>
+                            </div>
+                            <div className="day-transactions">
+                                {group.transactions.map((transaction) => (
+                                    <TransactionCard
+                                        key={transaction.id}
+                                        transaction={transaction}
+                                        onEdit={() => handleEditTransaction(transaction)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     ))}
                 </div>
             ) : (
                 <Card padding="xl" className="empty-state">
                     <div className="empty-icon">📊</div>
-                    <h3>No Transactions Yet</h3>
+                    <h3>No Transactions for This Period</h3>
                     <p className="text-secondary">
                         Start tracking your finances by adding your first transaction
                     </p>

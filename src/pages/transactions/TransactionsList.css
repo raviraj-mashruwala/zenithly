@@ -44,6 +44,40 @@
     color: var(--color-error);
 }
 
+/* Balance Summary */
+.balance-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.balance-card {
+    text-align: center;
+}
+
+.balance-label {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+}
+
+.balance-value {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    font-family: var(--font-display);
+    color: var(--color-text-primary);
+}
+
+.balance-value.accent {
+    color: var(--color-accent-primary);
+}
+
+.current-balance {
+    border: 2px solid var(--color-accent-primary);
+}
+
 /* Filters Bar */
 .filters-bar {
     margin-bottom: var(--space-6);
@@ -86,6 +120,44 @@
     outline: none;
     border-color: var(--color-accent-primary);
     box-shadow: 0 0 0 3px rgba(198, 255, 0, 0.1);
+}
+
+/* Transactions Grouped by Day */
+.transactions-by-day {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.day-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--color-border-default);
+}
+
+.day-date {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    font-family: var(--font-display);
+    color: var(--color-text-primary);
+}
+
+.day-count {
+    font-size: var(--text-sm);
+}
+
+.day-transactions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
 }
 
 /* Transactions List */
