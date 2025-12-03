@@ -1,0 +1,203 @@
+.transaction-card {
+    position: relative;
+    padding: var(--space-4);
+    transition: all var(--transition-base);
+}
+
+.transaction-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.transaction-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex: 1;
+    min-width: 0;
+}
+
+.transaction-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.transaction-icon.income {
+    background-color: var(--color-income-bg);
+    color: var(--color-income);
+}
+
+.transaction-icon.expense {
+    background-color: var(--color-expense-bg);
+    color: var(--color-expense);
+}
+
+.transaction-icon.transfer {
+    background-color: var(--color-transfer-bg);
+    color: var(--color-transfer);
+}
+
+.transaction-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.transaction-description {
+    font-size: var(--text-base);
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.transaction-meta {
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.transaction-right {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.transaction-amount {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    font-family: var(--font-display);
+    margin-bottom: var(--space-1);
+}
+
+.transaction-amount.income {
+    color: var(--color-income);
+}
+
+.transaction-amount.expense {
+    color: var(--color-expense);
+}
+
+.transaction-amount.transfer {
+    color: var(--color-text-primary);
+}
+
+.transaction-date {
+    font-size: var(--text-sm);
+}
+
+.transaction-menu {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+}
+
+.menu-trigger {
+    background: none;
+    border: none;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    padding: var(--space-1);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    opacity: 0;
+}
+
+.transaction-card:hover .menu-trigger {
+    opacity: 1;
+}
+
+.menu-trigger:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-elevated);
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-dropdown);
+}
+
+.menu-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--space-1);
+    min-width: 140px;
+    background-color: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-2);
+    z-index: calc(var(--z-dropdown) + 1);
+    animation: slideDown var(--transition-fast);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    text-align: left;
+    font-size: var(--text-sm);
+    transition: all var(--transition-fast);
+}
+
+.menu-item:hover {
+    background-color: var(--color-surface-hover);
+}
+
+.menu-item.danger {
+    color: var(--color-error);
+}
+
+.menu-item.danger:hover {
+    background-color: var(--color-error-bg);
+}
+
+.menu-divider {
+    height: 1px;
+    background-color: var(--color-border-default);
+    margin: var(--space-2) 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .transaction-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .transaction-left {
+        width: 100%;
+    }
+
+    .transaction-right {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu-trigger {
+        opacity: 1;
+    }
+}

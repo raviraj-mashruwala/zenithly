@@ -1,0 +1,109 @@
+.icon-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.icon-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-picker-header h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    padding: var(--space-1);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.close-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-elevated);
+}
+
+.icon-picker-search {
+    width: 100%;
+}
+
+.icon-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+    gap: var(--space-2);
+    max-height: 320px;
+    overflow-y: auto;
+    padding: var(--space-2);
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+}
+
+.icon-option {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-elevated);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.icon-option:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text-primary);
+    background-color: var(--color-surface);
+    transform: scale(1.05);
+}
+
+.icon-option.selected {
+    border-color: var(--color-accent-primary);
+    background-color: rgba(198, 255, 0, 0.1);
+    color: var(--color-accent-primary);
+}
+
+.no-icons {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-8) var(--space-4);
+}
+
+.icon-picker-footer {
+    text-align: center;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border-subtle);
+}
+
+.icon-picker-footer p {
+    font-size: var(--text-sm);
+    margin: 0;
+}
+
+/* Scrollbar styling */
+.icon-picker-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.icon-picker-grid::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+}
+
+.icon-picker-grid::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
+}
+
+.icon-picker-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-primary);
+}
