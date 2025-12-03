@@ -1,28 +1,33 @@
+/* Modal Component - Terminal Brutalism (matching AuthModal) */
+
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: var(--z-modal);
+    z-index: 10000;
     padding: var(--space-4);
-    animation: fadeIn var(--transition-fast);
-    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-xl);
+    background-color: var(--color-bg-surface);
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    box-shadow:
+        var(--glow-accent),
+        0 20px 60px rgba(0, 0, 0, 0.8);
     max-height: 90vh;
     overflow-y: auto;
-    animation: scaleIn var(--transition-base);
     width: 100%;
+    position: relative;
+    animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal-sm {
@@ -43,27 +48,33 @@
     align-items: center;
     padding: var(--space-6);
     padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border-default);
 }
 
 .modal-header h2 {
-    font-size: var(--text-2xl);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    letter-spacing: 0.05em;
     margin: 0;
+    color: var(--color-text-primary);
 }
 
 .modal-close {
-    background: none;
-    border: none;
-    color: var(--color-text-tertiary);
+    background: transparent;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
     cursor: pointer;
     padding: var(--space-2);
-    border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     margin: calc(var(--space-2) * -1);
 }
 
 .modal-close:hover {
-    color: var(--color-text-primary);
-    background-color: var(--color-bg-elevated);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg-void);
+    transform: rotate(90deg);
 }
 
 .modal-content>form,
@@ -82,19 +93,42 @@
 
 /* Scrollbar styling */
 .modal-content::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .modal-content::-webkit-scrollbar-track {
-    background: var(--color-bg-secondary);
-    border-radius: 0 var(--radius-2xl) var(--radius-2xl) 0;
+    background: var(--color-bg-deep);
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-    background: var(--color-border-strong);
+    background: var(--color-accent);
     border-radius: var(--radius-full);
 }
 
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Mobile Responsive */
 @media (max-width: 640px) {
     .modal-overlay {
         padding: 0;
@@ -103,12 +137,28 @@
 
     .modal-content {
         max-height: 95vh;
-        border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-        animation: slideUp var(--transition-base);
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-header,
+    .modal-content>form,
+    .modal-content>div:not(.modal-header) {
+        padding: var(--space-5);
     }
 
     .modal-md,
     .modal-lg {
         max-width: 100%;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
     }
 }

@@ -1,268 +1,69 @@
-/* Onboarding Step Components Shared Styles */
+/* Onboarding - Terminal Brutalism */
 
-.step-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-}
-
-.step-heading {
-    font-size: var(--text-2xl);
-    margin: 0;
-}
-
-.step-subheading {
-    font-size: var(--text-base);
-    margin-top: calc(var(--space-2) * -1);
-}
-
-/* Currency Step */
-.currency-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--space-3);
-    margin-top: var(--space-4);
-}
-
-.currency-option {
+.onboarding-container {
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    background-color: var(--color-bg-elevated);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    text-align: left;
-}
-
-.currency-option:hover {
-    border-color: var(--color-border-strong);
-    background-color: var(--color-surface-hover);
-}
-
-.currency-option.selected {
-    border-color: var(--color-accent-primary);
-    background-color: var(--color-accent-primary)10;
-    box-shadow: 0 0 0 3px rgba(198, 255, 0, 0.1);
-}
-
-.currency-symbol {
-    font-size: var(--text-3xl);
-    font-weight: var(--font-bold);
-    color: var(--color-accent-primary);
-}
-
-.currency-details {
-    flex: 1;
-}
-
-.currency-code {
-    font-size: var(--text-base);
-    font-weight: var(--font-semibold);
-    color: var(--color-text-primary);
-}
-
-.currency-name {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-}
-
-/* Wallet Step */
-.wallet-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.form-label {
-    font-size: var(--text-sm);
-    font-weight: var(--font-medium);
-    color: var(--color-text-primary);
-}
-
-.wallet-types {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: var(--space-3);
-}
-
-.wallet-type-option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-4);
-    background-color: var(--color-bg-elevated);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    color: var(--color-text-secondary);
-}
-
-.wallet-type-option:hover {
-    border-color: var(--color-border-strong);
-    color: var(--color-text-primary);
-}
-
-.wallet-type-option.selected {
-    border-color: var(--color-accent-primary);
-    color: var(--color-accent-primary);
-    background-color: rgba(198, 255, 0, 0.05);
-}
-
-.wallet-type-option svg {
-    stroke-width: 2;
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-top: 0.125rem;
-    cursor: pointer;
-    accent-color: var(--color-accent-primary);
-}
-
-.checkbox-group label {
-    flex: 1;
-    font-size: var(--text-base);
-    color: var(--color-text-primary);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-}
-
-.checkbox-help {
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-}
-
-/* Categories Step */
-.categories-preview {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-}
-
-.category-section {
-    background-color: var(--color-bg-elevated);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
-}
-
-.category-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-3);
-}
-
-.category-badge {
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-md);
-    font-size: var(--text-sm);
-    font-weight: var(--font-semibold);
-}
-
-.category-badge.expense {
-    background-color: var(--color-expense-bg);
-    color: var(--color-expense);
-}
-
-.category-badge.income {
-    background-color: var(--color-income-bg);
-    color: var(--color-income);
-}
-
-.category-badge.debt {
-    background-color: var(--color-transfer-bg);
-    color: var(--color-transfer);
-}
-
-.category-count {
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-}
-
-.category-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--space-2);
-}
-
-.category-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-}
-
-.category-item svg {
-    color: var(--color-success);
-    flex-shrink: 0;
-}
-
-.category-item.more {
-    color: var(--color-text-tertiary);
-    font-style: italic;
-}
-
-.categories-summary {
-    background-color: var(--color-bg-elevated);
-    border-radius: var(--radius-lg);
+    justify-content: center;
     padding: var(--space-6);
+    background: var(--color-bg-void);
+}
+
+.onboarding-card {
+    width: 100%;
+    max-width: 700px;
+    background: var(--color-bg-surface);
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    box-shadow: var(--glow-accent-soft);
+}
+
+.onboarding-header {
     text-align: center;
+    margin-bottom: var(--space-8);
 }
 
-.summary-card {
-    margin-bottom: var(--space-3);
-}
-
-.summary-number {
-    font-size: var(--text-5xl);
-    font-weight: var(--font-extrabold);
+.onboarding-title {
     font-family: var(--font-display);
-    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-hover) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
 }
 
-.summary-label {
-    font-size: var(--text-base);
-    color: var(--color-text-secondary);
-    margin-top: var(--space-1);
-}
-
-.summary-note {
+.onboarding-subtitle {
+    font-family: var(--font-display);
     font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: var(--space-2);
 }
 
-/* Responsive */
-@media (max-width: 640px) {
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+}
 
-    .currency-grid,
-    .wallet-types {
-        grid-template-columns: 1fr;
-    }
+.step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-border-default);
+    transition: all var(--transition-fast);
+}
 
-    .category-list {
-        grid-template-columns: 1fr;
-    }
+.step-dot.active {
+    background: var(--color-accent);
+    box-shadow: var(--glow-accent);
+}
+
+.onboarding-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-8);
+    gap: var(--space-3);
 }

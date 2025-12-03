@@ -1,131 +1,217 @@
-/* Button Component Styles */
+/* Button Component - Terminal Brutalism */
 
 .button {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-body);
-    font-weight: var(--font-medium);
-    border: none;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 2px solid;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-base);
+    position: relative;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
-/* Variants */
+/* === Variants === */
+
+/* Primary - Electric Cyan */
 .button-primary {
-    background: var(--color-accent);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
     color: var(--color-bg-void);
-    box-shadow: 0 0 20px rgba(212, 186, 118, 0.3);
 }
 
 .button-primary:hover:not(:disabled) {
-    background: var(--color-accent-soft);
-    box-shadow: 0 0 30px rgba(212, 186, 118, 0.5);
+    background-color: transparent;
+    color: var(--color-accent);
+    box-shadow: var(--glow-accent);
+    transform: translateY(-2px);
 }
 
+.button-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s, opacity 0.6s;
+}
+
+.button-primary:hover::before {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+}
+
+/* Secondary - Terminal Green */
 .button-secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: transparent;
+    border-color: var(--color-border-strong);
     color: var(--color-text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(4px);
 }
 
 .button-secondary:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--color-accent-secondary);
+    color: var(--color-accent-secondary);
+    box-shadow: var(--glow-green);
+    transform: translateY(-2px);
 }
 
+/* Outline */
 .button-outline {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--color-text-primary);
-}
-
-.button-outline:hover:not(:disabled) {
+    background-color: transparent;
     border-color: var(--color-accent);
     color: var(--color-accent);
 }
 
+.button-outline:hover:not(:disabled) {
+    background-color: var(--color-accent);
+    color: var(--color-bg-void);
+    box-shadow: var(--glow-accent);
+}
+
+/* Ghost */
 .button-ghost {
-    background: transparent;
-    color: var(--color-text-tertiary);
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-text-secondary);
 }
 
 .button-ghost:hover:not(:disabled) {
-    color: var(--color-text-primary);
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-accent);
+    background-color: rgba(0, 217, 255, 0.1);
+    border-color: var(--color-accent);
+    text-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
 }
 
+/* Danger */
 .button-danger {
-    background: rgba(255, 51, 51, 0.1);
-    color: var(--color-error);
-    border: 1px solid rgba(255, 51, 51, 0.2);
+    background-color: var(--color-error);
+    border-color: var(--color-error);
+    color: var(--color-text-primary);
 }
 
 .button-danger:hover:not(:disabled) {
-    background: rgba(255, 51, 51, 0.2);
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.2);
+    background-color: transparent;
+    border-color: var(--color-error);
+    box-shadow: 0 0 20px rgba(255, 0, 64, 0.3);
 }
 
-/* Sizes */
+/* === Sizes === */
+
 .button-sm {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.5rem;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    gap: var(--space-1);
 }
 
 .button-md {
-    font-size: 0.875rem;
-    padding: 0.625rem 1.25rem;
-    border-radius: 0.75rem;
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-sm);
 }
 
 .button-lg {
-    font-size: 1rem;
-    padding: 0.875rem 2rem;
-    border-radius: 1rem;
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--text-base);
 }
 
-/* Full width */
-.button-full {
+/* === Modifiers === */
+
+.button-full-width {
     width: 100%;
 }
 
-/* Button content */
-.button-content {
+.button-icon-only {
+    padding: var(--space-3);
+    aspect-ratio: 1;
+}
+
+.button-icon-only.button-sm {
+    padding: var(--space-2);
+}
+
+.button-icon-only.button-lg {
+    padding: var(--space-4);
+}
+
+/* Loading State */
+.button-loading {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    z-index: 1;
+    color: transparent;
+    pointer-events: none;
 }
 
-/* Glitch effect for primary buttons */
-.button-glitch {
+.button-loading::after {
+    content: '';
     position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(100%) skewY(12deg);
-    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    color: var(--color-accent);
 }
 
-.button-primary:hover:not(:disabled) .button-glitch {
-    transform: translateY(0) skewY(12deg);
+.button-primary.button-loading::after {
+    color: var(--color-bg-void);
 }
 
-/* Loading spinner */
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-.button-loading {
-    animation: spin 1s linear infinite;
+/* Terminal Bracket Notation (optional class) */
+.button-bracketed::before {
+    content: '[';
+    margin-right: var(--space-1);
+}
+
+.button-bracketed::after {
+    content: ']';
+    margin-left: var(--space-1);
+}
+
+/* Glitch Effect on Active */
+.button:active:not(:disabled) {
+    animation: glitch 0.3s;
+}
+
+@keyframes glitch {
+
+    0%,
+    100% {
+        transform: translate(0);
+    }
+
+    33% {
+        transform: translate(-2px, 2px);
+    }
+
+    66% {
+        transform: translate(2px, -2px);
+    }
 }
