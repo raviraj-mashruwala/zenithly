@@ -103,7 +103,7 @@ export default function Onboarding() {
 
             if (categoriesError) throw categoriesError;
 
-            toast.success('Welcome to MonoLife! Your account is ready.');
+            toast.success('Welcome to Zenithly! Your account is ready.');
             navigate('/dashboard');
         } catch (error) {
             console.error('Onboarding error:', error);
@@ -118,7 +118,7 @@ export default function Onboarding() {
             <div className="onboarding-container">
                 {/* Header */}
                 <div className="onboarding-header">
-                    <h1 className="font-display">Welcome to MonoLife</h1>
+                    <h1 className="font-display">Welcome to <span className="text-acid-lime">Zenithly</span></h1>
                     <p className="text-secondary">Let's set up your account in 3 simple steps</p>
                 </div>
 

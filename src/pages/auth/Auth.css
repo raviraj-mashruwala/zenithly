@@ -1,99 +1,134 @@
+/* Auth Pages Styles */
+
 .auth-page {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-4);
-    background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Ambience */
+.auth-bg-glow-1 {
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: rgba(204, 255, 0, 0.05);
+    border-radius: 9999px;
+    filter: blur(120px);
+    pointer-events: none;
+}
+
+.auth-bg-glow-2 {
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: rgba(112, 0, 255, 0.05);
+    border-radius: 9999px;
+    filter: blur(120px);
+    pointer-events: none;
 }
 
 .auth-container {
     width: 100%;
-    max-width: 420px;
-    animation: slideUp var(--transition-slow);
+    max-width: 28rem;
+    position: relative;
+    z-index: 10;
 }
 
 .auth-header {
     text-align: center;
-    margin-bottom: var(--space-8);
+    margin-bottom: 2rem;
 }
 
 .auth-header h1 {
-    font-size: var(--text-4xl);
-    margin-bottom: var(--space-2);
-    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-hover) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: var(--font-bold);
+    letter-spacing: -0.05em;
+    margin-bottom: 0.5rem;
 }
 
-.auth-header p {
-    font-size: var(--text-base);
+.auth-subtitle {
+    color: var(--color-text-tertiary);
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .auth-card {
-    margin-bottom: var(--space-6);
+    backdrop-filter: blur(40px);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
-}
-
-.auth-link {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    text-align: right;
-    transition: color var(--transition-fast);
-}
-
-.auth-link:hover {
-    color: var(--color-accent-primary);
-}
-
-.auth-link-strong {
-    font-weight: var(--font-semibold);
-    color: var(--color-accent-primary);
-}
-
-.auth-link-strong:hover {
-    color: var(--color-accent-hover);
+    gap: 1.5rem;
 }
 
 .auth-divider {
     position: relative;
-    text-align: center;
-    margin: var(--space-2) 0;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
 }
 
 .auth-divider::before,
 .auth-divider::after {
     content: '';
-    position: absolute;
-    top: 50%;
-    width: 45%;
+    flex: 1;
     height: 1px;
-    background-color: var(--color-border-default);
-}
-
-.auth-divider::before {
-    left: 0;
-}
-
-.auth-divider::after {
-    right: 0;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .auth-divider span {
-    background-color: var(--color-surface);
-    padding: 0 var(--space-3);
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+    margin: 0 1rem;
+    font-size: 0.75rem;
+    color: var(--color-border-strong);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .auth-footer {
     text-align: center;
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    margin-top: 2rem;
+    color: var(--color-text-tertiary);
+    font-size: 0.875rem;
+}
+
+.auth-link {
+    color: var(--color-acid-lime);
+    text-decoration: none;
+    transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: var(--font-medium);
+}
+
+.auth-link:hover {
+    color: var(--color-text-primary);
+}
+
+.forgot-password-link {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+}
+
+.forgot-password-link a {
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.forgot-password-link a:hover {
+    color: var(--color-acid-lime);
 }

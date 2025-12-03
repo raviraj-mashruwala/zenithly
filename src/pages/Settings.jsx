@@ -248,7 +248,7 @@ export default function Settings() {
             {/* App Info */}
             <Card padding="md" className="app-info">
                 <div className="app-info-content">
-                    <div className="app-name">MonoLife Money Manager</div>
+                    <div className="app-name">Zenithly Money Manager</div>
                     <div className="app-version text-tertiary">Version 1.0.0 MVP</div>
                 </div>
             </Card>

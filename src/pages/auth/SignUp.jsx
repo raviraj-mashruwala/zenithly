@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Mail, Lock, User } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../../stores/authStore';
 import Button from '../../components/ui/Button';
@@ -38,10 +38,10 @@ export default function SignUp() {
         setIsLoading(true);
         try {
             await signUp(data.email, data.password, data.displayName);
-            toast.success('Account created! Please check your email to verify.');
+            toast.success('Identity Created. Verify Email.');
             navigate('/onboarding');
         } catch (error) {
-            toast.error(error.message || 'Failed to create account');
+            toast.error(error.message || 'Registration Failed');
         } finally {
             setIsLoading(false);
         }
@@ -49,20 +49,26 @@ export default function SignUp() {
 
     return (
         <div className="auth-page">
+            {/* Background Ambience */}
+            <div className="auth-bg-glow-2" style={{ top: '-20%', right: '-10%' }} />
+            <div className="auth-bg-glow-1" style={{ bottom: '-20%', left: '-10%' }} />
+
             <div className="auth-container">
                 <div className="auth-header">
-                    <h1 className="font-display">MonoLife</h1>
-                    <p className="text-secondary">Start managing your money better</p>
+                    <h1>
+                        ZENITH<span style={{ color: 'var(--color-acid-lime)' }}>LY</span>
+                    </h1>
+                    <p className="auth-subtitle">Create New Identity</p>
                 </div>
 
-                <Card padding="lg" className="auth-card">
+                <Card className="auth-card">
                     <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
                         <Input
                             {...register('displayName')}
                             type="text"
-                            label="Full Name"
+                            label="Display Name"
                             placeholder="John Doe"
-                            leftIcon={<User />}
+                            leftIcon={<User size={18} />}
                             error={errors.displayName?.message}
                             fullWidth
                             autoComplete="name"
@@ -71,9 +77,9 @@ export default function SignUp() {
                         <Input
                             {...register('email')}
                             type="email"
-                            label="Email"
-                            placeholder="your@email.com"
-                            leftIcon={<Mail />}
+                            label="Email Identity"
+                            placeholder="user@zenithly.com"
+                            leftIcon={<Mail size={18} />}
                             error={errors.email?.message}
                             fullWidth
                             autoComplete="email"
@@ -82,11 +88,11 @@ export default function SignUp() {
                         <Input
                             {...register('password')}
                             type="password"
-                            label="Password"
+                            label="Secret Key"
                             placeholder="••••••••"
-                            leftIcon={<Lock />}
+                            leftIcon={<Lock size={18} />}
                             error={errors.password?.message}
-                            helperText="At least 8 characters"
+                            helperText="Min 8 chars"
                             fullWidth
                             autoComplete="new-password"
                         />
@@ -94,9 +100,9 @@ export default function SignUp() {
                         <Input
                             {...register('confirmPassword')}
                             type="password"
-                            label="Confirm Password"
+                            label="Confirm Key"
                             placeholder="••••••••"
-                            leftIcon={<Lock />}
+                            leftIcon={<Lock size={18} />}
                             error={errors.confirmPassword?.message}
                             fullWidth
                             autoComplete="new-password"
@@ -107,15 +113,15 @@ export default function SignUp() {
                             fullWidth
                             isLoading={isLoading}
                         >
-                            Create Account
+                            Initialize Account <ArrowRight size={16} />
                         </Button>
                     </form>
                 </Card>
 
                 <p className="auth-footer">
-                    Already have an account?{' '}
-                    <Link to="/login" className="auth-link-strong">
-                        Sign in
+                    Already initialized?{' '}
+                    <Link to="/login" className="auth-link">
+                        Access System
                     </Link>
                 </p>
             </div>

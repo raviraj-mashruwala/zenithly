@@ -1,4 +1,4 @@
-// Default categories for MonoLife Money Manager
+// Default categories for Zenithly Money Manager
 // These will be seeded during onboarding
 
 export const DEFAULT_CATEGORIES = {

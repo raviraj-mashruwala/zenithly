@@ -21,9 +21,8 @@ export default function Dashboard() {
 
     const [showBalance, setShowBalance] = useState(true);
     const [topCategories, setTopCategories] = useState([]);
-    const [categoryPeriod, setCategoryPeriod] = useState('month'); // 'week' or 'month'
+    const [categoryPeriod, setCategoryPeriod] = useState('month');
 
-    // Current month date range
     const currentMonth = {
         start: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
         end: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
@@ -37,7 +36,6 @@ export default function Dashboard() {
         }
     }, [user, fetchWallets, fetchTransactions, fetchStats]);
 
-    // Fetch top spending categories
     useEffect(() => {
         if (user) {
             const fetchTopCategories = async () => {
@@ -65,99 +63,106 @@ export default function Dashboard() {
 
     if (walletsLoading && wallets.length === 0) {
         return (
-            <div className="page-container">
-                <div className="loading-container">
-                    <LoadingSpinner size="lg" />
-                </div>
+            <div className="empty-state" style={{ height: '24rem' }}>
+                <LoadingSpinner size="lg" />
             </div>
         );
     }
 
     return (
-        <div className="page-container dashboard-page">
+        <div className="dashboard-container">
             {/* Header */}
-            <div className="page-header">
+            <div className="dashboard-header">
                 <div>
-                    <h1 className="font-display">Dashboard</h1>
-                    <p className="text-secondary">Your financial overview</p>
+                    <h1 className="dashboard-title">Dashboard</h1>
+                    <p className="dashboard-subtitle">Your financial command center</p>
                 </div>
-                <Button onClick={() => navigate('/transactions')} leftIcon={<Plus />}>
-                    Add Transaction
+                <Button onClick={() => navigate('/transactions')} variant="primary">
+                    <Plus size={18} /> Add Transaction
                 </Button>
             </div>
 
             {/* Total Balance Card */}
-            <Card variant="elevated" padding="lg" className="total-balance-widget">
-                <div className="balance-header">
-                    <div>
-                        <div className="balance-label text-secondary">Total Balance</div>
-                        <div className="balance-amount">
-                            {showBalance ? (
-                                formatCompactCurrency(totalBalance, 'INR')
-                            ) : (
-                                <span className="masked-amount">••••••</span>
-                            )}
-                        </div>
-                        <div className="balance-wallets text-tertiary">
-                            {activeWallets.filter(w => w.included_in_total).length} wallets included
-                        </div>
+            <Card className="balance-card">
+                <div className="balance-icon">
+                    <Wallet size={120} />
+                </div>
+
+                <div className="balance-content">
+                    <div className="balance-header">
+                        <div className="balance-label">Total Balance</div>
+                        <button onClick={() => setShowBalance(!showBalance)} className="balance-toggle">
+                            {showBalance ? <Eye size={20} /> : <EyeOff size={20} />}
+                        </button>
                     </div>
-                    <button
-                        className="balance-toggle"
-                        onClick={() => setShowBalance(!showBalance)}
-                        aria-label={showBalance ? 'Hide balance' : 'Show balance'}
-                    >
-                        {showBalance ? <Eye size={24} /> : <EyeOff size={24} />}
-                    </button>
+
+                    <div className="balance-amount">
+                        {showBalance ? formatCompactCurrency(totalBalance, 'INR') : '••••••'}
+                    </div>
+
+                    <div className="balance-status">
+                        <div className="status-indicator" />
+                        {activeWallets.filter(w => w.included_in_total).length} active wallets connected
+                    </div>
                 </div>
             </Card>
 
             {/* Stats Grid */}
             {stats && (
                 <div className="stats-grid">
-                    <Card padding="md" className="stat-card income-card">
-                        <div className="stat-icon income">
-                            <ArrowUpRight size={20} />
+                    <Card className="stat-card income-card">
+                        <div className="stat-header">
+                            <div className="stat-icon income">
+                                <ArrowUpRight size={20} />
+                            </div>
+                            <span className="stat-label">Income</span>
                         </div>
-                        <div className="stat-label text-secondary">This Month Income</div>
-                        <div className="stat-value income">
+                        <div className="stat-value">
                             {formatCompactCurrency(stats.totalIncome, 'INR')}
                         </div>
                     </Card>
 
-                    <Card padding="md" className="stat-card expense-card">
-                        <div className="stat-icon expense">
-                            <ArrowDownRight size={20} />
+                    <Card className="stat-card expense-card">
+                        <div className="stat-header">
+                            <div className="stat-icon expense">
+                                <ArrowDownRight size={20} />
+                            </div>
+                            <span className="stat-label">Expense</span>
                         </div>
-                        <div className="stat-label text-secondary">This Month Expense</div>
-                        <div className="stat-value expense">
+                        <div className="stat-value">
                             {formatCompactCurrency(stats.totalExpense, 'INR')}
                         </div>
                     </Card>
 
-                    <Card padding="md" className="stat-card net-card">
-                        <div className="stat-icon">
-                            <TrendingUp size={20} />
+                    <Card className="stat-card net-card">
+                        <div className="stat-header">
+                            <div className="stat-icon net">
+                                <TrendingUp size={20} />
+                            </div>
+                            <span className="stat-label">Net Flow</span>
                         </div>
-                        <div className="stat-label text-secondary">Net Income</div>
                         <div className={`stat-value ${netIncome >= 0 ? 'positive' : 'negative'}`}>
                             {formatCompactCurrency(netIncome, 'INR')}
                         </div>
                     </Card>
 
-                    <Card padding="md" className="stat-card report-cta-card" hover onClick={() => navigate('/reports/income')}>
-                        <div className="stat-icon">
-                            <BarChart3 size={20} />
+                    <Card className="stat-card clickable" onClick={() => navigate('/reports/income')}>
+                        <div className="stat-cta">
+                            <div className="stat-cta-content">
+                                <div className="stat-icon neutral">
+                                    <BarChart3 size={20} />
+                                </div>
+                                <span className="stat-cta-label">View Reports</span>
+                            </div>
+                            <ArrowUpRight size={18} className="stat-cta-label" />
                         </div>
-                        <div className="stat-label text-secondary">View Reports</div>
-                        <div className="stat-cta">Detailed Analysis →</div>
                     </Card>
                 </div>
             )}
 
             <div className="dashboard-grid">
                 {/* My Wallets Widget */}
-                <Card className="dashboard-widget">
+                <Card className="widget">
                     <div className="widget-header">
                         <h2 className="widget-title">My Wallets</h2>
                         <Button variant="ghost" size="sm" onClick={() => navigate('/wallets')}>
@@ -166,16 +171,16 @@ export default function Dashboard() {
                     </div>
 
                     {activeWallets.length > 0 ? (
-                        <div className="wallets-list">
+                        <div className="wallet-list">
                             {activeWallets.slice(0, 4).map((wallet) => (
                                 <div key={wallet.id} className="wallet-item">
                                     <div className="wallet-info">
-                                        <div className="wallet-icon-small">
-                                            <Icon iconId={wallet.icon_id || 'wallet'} size={20} />
+                                        <div className="wallet-icon">
+                                            <Icon iconId={wallet.icon_id || 'wallet'} size={18} />
                                         </div>
                                         <div className="wallet-details">
                                             <div className="wallet-name">{wallet.name}</div>
-                                            <div className="wallet-type text-tertiary">{wallet.type}</div>
+                                            <div className="wallet-type">{wallet.type}</div>
                                         </div>
                                     </div>
                                     <div className="wallet-balance">
@@ -185,17 +190,17 @@ export default function Dashboard() {
                             ))}
                         </div>
                     ) : (
-                        <div className="empty-widget">
-                            <p className="text-secondary">No wallets yet</p>
+                        <div className="empty-state">
+                            <p className="empty-message">No wallets initialized</p>
                             <Button size="sm" onClick={() => navigate('/wallets')}>
-                                Add Wallet
+                                Create Wallet
                             </Button>
                         </div>
                     )}
                 </Card>
 
                 {/* Top Spending Categories Widget */}
-                <Card className="dashboard-widget">
+                <Card className="widget">
                     <div className="widget-header">
                         <h2 className="widget-title">Top Spending</h2>
                         <div className="period-tabs">
@@ -215,82 +220,71 @@ export default function Dashboard() {
                     </div>
 
                     {topCategories.length > 0 ? (
-                        <div className="top-categories-list">
+                        <div className="category-list">
                             {topCategories.map((item) => (
-                                <div key={item.category.id} className="category-spending-item">
-                                    <div className="category-info">
-                                        <div className="category-icon-small expense">
-                                            <Icon iconId={item.category.icon_id || 'circle'} size={16} />
+                                <div key={item.category.id} className="category-item">
+                                    <div className="category-header">
+                                        <div className="category-name">
+                                            <div className="category-dot" />
+                                            <span>{item.category.name}</span>
                                         </div>
-                                        <div className="category-details">
-                                            <div className="category-name-spending">{item.category.name}</div>
-                                            <div className="category-percentage text-tertiary">
-                                                {item.percentage.toFixed(1)}%
-                                            </div>
+                                        <div className="category-amount">
+                                            {formatCompactCurrency(item.total, 'INR')}
                                         </div>
                                     </div>
-                                    <div className="category-amount">
-                                        {formatCompactCurrency(item.total, 'INR')}
-                                    </div>
-                                    <div className="category-bar-container">
-                                        <div
-                                            className="category-bar"
-                                            style={{ width: `${item.percentage}%` }}
-                                        />
+                                    <div className="category-bar">
+                                        <div className="category-bar-fill" style={{ width: `${item.percentage}%` }} />
                                     </div>
                                 </div>
                             ))}
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                fullWidth
-                                onClick={() => navigate('/reports/expenses')}
-                            >
-                                View Details
-                            </Button>
+                            <div style={{ paddingTop: '1rem', marginTop: 'auto' }}>
+                                <Button variant="ghost" size="sm" fullWidth onClick={() => navigate('/reports/expenses')}>
+                                    Detailed Analysis
+                                </Button>
+                            </div>
                         </div>
                     ) : (
-                        <div className="empty-widget">
-                            <p className="text-secondary">No expenses yet</p>
+                        <div className="empty-state">
+                            <p className="empty-message">No data recorded</p>
                             <Button size="sm" onClick={() => navigate('/transactions')}>
-                                Add Expense
+                                Log Expense
                             </Button>
                         </div>
                     )}
                 </Card>
 
                 {/* Recent Transactions Widget */}
-                <Card className="dashboard-widget">
+                <Card className="widget">
                     <div className="widget-header">
-                        <h2 className="widget-title">Recent Transactions</h2>
+                        <h2 className="widget-title">Recent Activity</h2>
                         <Button variant="ghost" size="sm" onClick={() => navigate('/transactions')}>
-                            View All
+                            History
                         </Button>
                     </div>
 
                     {recentTransactions.length > 0 ? (
-                        <div className="transactions-list-widget">
+                        <div className="transaction-list">
                             {recentTransactions.map((transaction) => (
-                                <div key={transaction.id} className="transaction-item-widget">
+                                <div key={transaction.id} className="transaction-item">
                                     <div className="transaction-info">
-                                        <div className={`transaction-icon-small ${transaction.type.toLowerCase()}`}>
+                                        <div className={`transaction-icon ${transaction.type.toLowerCase()}`}>
                                             {transaction.category?.icon_id ? (
-                                                <Icon iconId={transaction.category.icon_id} size={16} />
+                                                <Icon iconId={transaction.category.icon_id} size={14} />
                                             ) : (
-                                                transaction.type === 'Income' ? <ArrowUpRight size={16} /> :
-                                                    transaction.type === 'Expense' ? <ArrowDownRight size={16} /> : <Wallet size={16} />
+                                                transaction.type === 'Income' ? <ArrowUpRight size={14} /> :
+                                                    transaction.type === 'Expense' ? <ArrowDownRight size={14} /> : <Wallet size={14} />
                                             )}
                                         </div>
                                         <div className="transaction-details">
-                                            <div className="transaction-desc">
-                                                {transaction.description || `${transaction.type} Transaction`}
+                                            <div className="transaction-description">
+                                                {transaction.description || transaction.type}
                                             </div>
-                                            <div className="transaction-date text-tertiary">
+                                            <div className="transaction-date">
                                                 {format(new Date(transaction.date), 'MMM dd')}
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={`transaction-amount-widget ${transaction.type.toLowerCase()}`}>
+                                    <div className={`transaction-amount ${transaction.type.toLowerCase()}`}>
                                         {transaction.type === 'Expense' && '−'}
                                         {transaction.type === 'Income' && '+'}
                                         {formatCompactCurrency(transaction.amount, 'INR')}
@@ -299,10 +293,10 @@ export default function Dashboard() {
                             ))}
                         </div>
                     ) : (
-                        <div className="empty-widget">
-                            <p className="text-secondary">No transactions yet</p>
+                        <div className="empty-state">
+                            <p className="empty-message">No activity yet</p>
                             <Button size="sm" onClick={() => navigate('/transactions')}>
-                                Add Transaction
+                                New Entry
                             </Button>
                         </div>
                     )}
@@ -311,18 +305,18 @@ export default function Dashboard() {
 
             {/* Empty State for New Users */}
             {activeWallets.length === 0 && (
-                <Card padding="xl" className="empty-state-dashboard">
-                    <div className="empty-icon">🎯</div>
-                    <h3>Welcome to MonoLife!</h3>
-                    <p className="text-secondary">
-                        Get started by creating your first wallet and start tracking your finances
+                <Card className="welcome-card">
+                    <div className="empty-icon">🚀</div>
+                    <h3 className="welcome-title">Welcome to Zenithly</h3>
+                    <p className="welcome-message">
+                        Initialize your financial command center by creating your first wallet.
                     </p>
                     <div className="empty-actions">
-                        <Button onClick={() => navigate('/wallets')} leftIcon={<Plus />}>
-                            Add Wallet
+                        <Button onClick={() => navigate('/wallets')}>
+                            <Plus size={16} /> Create Wallet
                         </Button>
                         <Button variant="outline" onClick={() => navigate('/categories')}>
-                            Setup Categories
+                            Configure Categories
                         </Button>
                     </div>
                 </Card>

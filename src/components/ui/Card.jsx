@@ -1,26 +1,23 @@
+import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import './Card.css';
 
-export default function Card({
-    children,
-    variant = 'default',
-    padding = 'md',
-    hover = false,
-    className = '',
-    ...props
-}) {
+const Card = ({ children, className = '', hover = false, ...props }) => {
+    const Component = hover ? motion.div : 'div';
+
     return (
-        <div
-            className={clsx(
-                'card',
-                `card-${variant}`,
-                `card-padding-${padding}`,
-                hover && 'card-hover',
-                className
-            )}
+        <Component
+            className={clsx('card', hover && 'card-hover', className)}
             {...props}
         >
-            {children}
-        </div>
+            {/* Subtle gradient noise overlay */}
+            <div className="card-overlay" />
+
+            <div className="card-content">
+                {children}
+            </div>
+        </Component>
     );
-}
+};
+
+export default Card;

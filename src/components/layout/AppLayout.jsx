@@ -1,35 +1,146 @@
-import { motion } from 'framer-motion';
-import Sidebar from './Sidebar';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    LayoutDashboard,
+    Wallet,
+    PieChart,
+    ArrowRightLeft,
+    Settings,
+    LogOut,
+    Menu,
+    X
+} from 'lucide-react';
+import { useAuthStore } from '../../stores/authStore';
 import './AppLayout.css';
 
-const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-};
+const NavItem = ({ to, icon: Icon, label, isActive, onClick }) => (
+    <Link
+        to={to}
+        onClick={onClick}
+        className={`nav-item ${isActive ? 'active' : ''}`}
+    >
+        <Icon size={20} />
+        <span className="nav-item-label">{label}</span>
+    </Link>
+);
 
-const pageTransition = {
-    type: 'tween',
-    ease: 'easeInOut',
-    duration: 0.3,
-};
+const AppLayout = ({ children }) => {
+    const { signOut, user } = useAuthStore();
+    const location = useLocation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-export default function AppLayout({ children }) {
+    const navItems = [
+        { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { path: '/wallets', label: 'Wallets', icon: Wallet },
+        { path: '/transactions', label: 'Transactions', icon: ArrowRightLeft },
+        { path: '/reports/income', label: 'Reports', icon: PieChart },
+        { path: '/settings', label: 'Settings', icon: Settings },
+    ];
+
     return (
         <div className="app-layout">
-            <Sidebar />
-            <main className="app-main">
-                <motion.div
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    variants={pageVariants}
-                    transition={pageTransition}
-                    className="page-content"
+            {/* Desktop Sidebar */}
+            <aside className="app-sidebar">
+                <div className="sidebar-header">
+                    <h1 className="sidebar-logo">
+                        ZENITH<span className="sidebar-logo-accent">LY</span>
+                    </h1>
+                    <p className="sidebar-subtitle">Financial Command</p>
+                </div>
+
+                <nav className="sidebar-nav">
+                    {navItems.map((item) => (
+                        <NavItem
+                            key={item.path}
+                            to={item.path}
+                            icon={item.icon}
+                            label={item.label}
+                            isActive={location.pathname.startsWith(item.path)}
+                        />
+                    ))}
+                </nav>
+
+                <div className="sidebar-footer">
+                    <div className="user-profile">
+                        <div className="user-avatar">
+                            {user?.email?.[0].toUpperCase()}
+                        </div>
+                        <div className="user-info">
+                            <p className="user-email">{user?.email}</p>
+                            <p className="user-plan">Pro Plan</p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={() => signOut()}
+                        className="signout-button"
+                    >
+                        <LogOut size={16} />
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+            </aside>
+
+            {/* Mobile Header */}
+            <div className="mobile-header">
+                <h1 className="mobile-logo">
+                    ZENITH<span className="sidebar-logo-accent">LY</span>
+                </h1>
+                <button
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="mobile-menu-button"
                 >
+                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="mobile-menu-overlay"
+                    >
+                        <nav className="sidebar-nav">
+                            {navItems.map((item) => (
+                                <NavItem
+                                    key={item.path}
+                                    to={item.path}
+                                    icon={item.icon}
+                                    label={item.label}
+                                    isActive={location.pathname.startsWith(item.path)}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                />
+                            ))}
+                            <button
+                                onClick={() => signOut()}
+                                className="signout-button"
+                                style={{ marginTop: '2rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '2rem' }}
+                            >
+                                <LogOut size={20} />
+                                <span>Sign Out</span>
+                            </button>
+                        </nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Main Content */}
+            <main className="app-main">
+                {/* Background decorative elements */}
+                <div className="bg-decorations">
+                    <div className="bg-glow-1" />
+                    <div className="bg-glow-2" />
+                </div>
+
+                <div className="content-wrapper">
                     {children}
-                </motion.div>
+                </div>
             </main>
         </div>
     );
-}
+};
+
+export default AppLayout;

@@ -1,42 +1,43 @@
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 import clsx from 'clsx';
 import './Button.css';
 
-export default function Button({
+const Button = ({
     children,
     variant = 'primary',
     size = 'md',
-    fullWidth = false,
-    disabled = false,
     isLoading = false,
-    leftIcon,
-    rightIcon,
+    disabled = false,
+    fullWidth = false,
     className = '',
-    type = 'button',
     ...props
-}) {
+}) => {
     return (
-        <button
-            type={type}
-            disabled={disabled || isLoading}
+        <motion.button
+            whileHover={{ scale: disabled ? 1 : 1.02 }}
+            whileTap={{ scale: disabled ? 1 : 0.98 }}
             className={clsx(
-                'btn',
-                `btn-${variant}`,
-                `btn-${size}`,
-                fullWidth && 'btn-full',
-                isLoading && 'btn-loading',
+                'button',
+                `button-${variant}`,
+                `button-${size}`,
+                fullWidth && 'button-full',
                 className
             )}
+            disabled={disabled || isLoading}
             {...props}
         >
-            {isLoading ? (
-                <span className="btn-spinner" />
-            ) : (
-                <>
-                    {leftIcon && <span className="btn-icon-left">{leftIcon}</span>}
-                    <span>{children}</span>
-                    {rightIcon && <span className="btn-icon-right">{rightIcon}</span>}
-                </>
+            {/* Glitch effect overlay for primary buttons */}
+            {variant === 'primary' && !disabled && (
+                <div className="button-glitch" />
             )}
-        </button>
+
+            <span className="button-content">
+                {isLoading && <Loader2 className="button-loading" size={16} />}
+                {children}
+            </span>
+        </motion.button>
     );
-}
+};
+
+export default Button;
