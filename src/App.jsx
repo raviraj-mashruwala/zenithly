@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useAuthStore } from './stores/authStore';
 
 // Lazy load pages for code splitting
@@ -22,10 +23,12 @@ const Settings = lazy(() => import('./pages/Settings'));
 
 // Components
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import AppLayout from './components/layout/AppLayout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 
 function App() {
-    const { initialize, isLoading } = useAuthStore();
+    const { initialize, isLoading, user } = useAuthStore();
+    const location = useLocation();
 
     useEffect(() => {
         initialize();
@@ -39,28 +42,64 @@ function App() {
         );
     }
 
+    // Check if current route requires AppLayout (all protected routes except onboarding)
+    const showLayout = user && location.pathname !== '/onboarding' &&
+        !['/login', '/signup', '/forgot-password'].includes(location.pathname);
+
     return (
         <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
-            <Routes>
-                {/* Public routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+            <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                    {/* Public routes */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
 
-                {/* Protected routes */}
-                <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/wallets" element={<ProtectedRoute><WalletsList /></ProtectedRoute>} />
-                <Route path="/categories" element={<ProtectedRoute><CategoriesList /></ProtectedRoute>} />
-                <Route path="/transactions" element={<ProtectedRoute><TransactionsList /></ProtectedRoute>} />
-                <Route path="/reports/income" element={<ProtectedRoute><NetIncomeReport /></ProtectedRoute>} />
-                <Route path="/reports/expenses" element={<ProtectedRoute><ExpenseDetailsReport /></ProtectedRoute>} />
-                <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                    {/* Onboarding - no layout */}
+                    <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
 
-                {/* Default redirect */}
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
+                    {/* Protected routes with layout */}
+                    <Route path="/dashboard" element={
+                        <ProtectedRoute>
+                            <AppLayout><Dashboard /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/wallets" element={
+                        <ProtectedRoute>
+                            <AppLayout><WalletsList /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/categories" element={
+                        <ProtectedRoute>
+                            <AppLayout><CategoriesList /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/transactions" element={
+                        <ProtectedRoute>
+                            <AppLayout><TransactionsList /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/reports/income" element={
+                        <ProtectedRoute>
+                            <AppLayout><NetIncomeReport /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/reports/expenses" element={
+                        <ProtectedRoute>
+                            <AppLayout><ExpenseDetailsReport /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/settings" element={
+                        <ProtectedRoute>
+                            <AppLayout><Settings /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+
+                    {/* Default redirect */}
+                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                    <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                </Routes>
+            </AnimatePresence>
         </Suspense>
     );
 }

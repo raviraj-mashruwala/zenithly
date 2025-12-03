@@ -1,0 +1,35 @@
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+}
+
+.app-main {
+    flex: 1;
+    margin-left: 240px;
+    min-height: 100vh;
+    position: relative;
+    transition: margin-left var(--transition-base);
+}
+
+.sidebar.collapsed~.app-main {
+    margin-left: 72px;
+}
+
+.page-content {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .app-main {
+        margin-left: 0;
+        margin-bottom: 60px;
+        /* Space for bottom nav */
+    }
+
+    .sidebar.collapsed~.app-main {
+        margin-left: 0;
+    }
+}
