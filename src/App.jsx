@@ -12,6 +12,9 @@ const SignUp = lazy(() => import('./pages/auth/SignUp'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
 const Onboarding = lazy(() => import('./pages/auth/Onboarding'));
 
+// Landing page
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+
 // Protected pages
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const WalletsList = lazy(() => import('./pages/wallets/WalletsList'));
@@ -50,11 +53,6 @@ function App() {
         <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
             <AnimatePresence mode="wait">
                 <Routes location={location} key={location.pathname}>
-                    {/* Public routes */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-
                     {/* Onboarding - no layout */}
                     <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
 
@@ -95,9 +93,26 @@ function App() {
                         </ProtectedRoute>
                     } />
 
-                    {/* Default redirect */}
-                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                    <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                    {/* Root route - Landing or Dashboard */}
+                    <Route path="/" element={
+                        user ? <Navigate to="/dashboard" replace /> : <LandingPage />
+                    } />
+
+                    {/* Fallback auth routes (accessible directly) */}
+                    <Route path="/login" element={
+                        user ? <Navigate to="/dashboard" replace /> : <Login />
+                    } />
+                    <Route path="/signup" element={
+                        user ? <Navigate to="/dashboard" replace /> : <SignUp />
+                    } />
+                    <Route path="/forgot-password" element={
+                        user ? <Navigate to="/dashboard" replace /> : <ForgotPassword />
+                    } />
+
+                    {/* Catch-all redirect */}
+                    <Route path="*" element={
+                        user ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />
+                    } />
                 </Routes>
             </AnimatePresence>
         </Suspense>
