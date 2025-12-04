@@ -91,12 +91,22 @@ export const updateTransaction = async (transactionId, updates) => {
     // Get original transaction to reverse wallet balances
     const original = await getTransaction(transactionId);
 
+    const updateData = {
+        type: updates.type,
+        amount: updates.amount,
+        date: updates.date,
+        description: updates.description,
+        updated_at: new Date().toISOString(),
+    };
+
+    if (updates.walletId !== undefined) updateData.wallet_id = updates.walletId;
+    if (updates.categoryId !== undefined) updateData.category_id = updates.categoryId;
+    if (updates.fromWalletId !== undefined) updateData.from_wallet_id = updates.fromWalletId;
+    if (updates.toWalletId !== undefined) updateData.to_wallet_id = updates.toWalletId;
+
     const { data, error } = await supabase
         .from('transactions')
-        .update({
-            ...updates,
-            updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq('id', transactionId)
         .select()
         .single();
