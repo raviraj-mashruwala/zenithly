@@ -6,9 +6,8 @@ import { useAuthStore } from '../../stores/authStore';
 import { useTransactionStore } from '../../stores/transactionStore';
 import { useWalletStore } from '../../stores/walletStore';
 import { getCategoryBreakdown } from '../../services/report.service';
-import { formatCurrency, formatCompactCurrency } from '../../utils/currency';
+import { formatCompactCurrency } from '../../utils/currency';
 import Button from '../../components/ui/Button';
-import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import PeriodSelector from '../../components/transactions/PeriodSelector';
 import Icon from '../../components/ui/Icon';
@@ -110,37 +109,38 @@ export default function NetIncomeReport() {
     return (
         <div className="page-container report-page">
             {/* Header */}
-            <div className="page-header">
-                <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate(-1)}>
-                    Back
-                </Button>
+            <div className="report-header">
                 <div>
-                    <h1 className="font-display">Net Income Report</h1>
-                    <p className="text-secondary">Income vs Expense breakdown</p>
+                    <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate(-1)} className="mb-4">
+                        Back
+                    </Button>
+                    <h1 className="report-title">Net Income Report</h1>
+                    <p className="report-subtitle">Income vs Expense breakdown</p>
                 </div>
-                <div></div>
-            </div>
 
-            {/* Period Selector */}
-            <PeriodSelector currentDate={currentDate} onDateChange={setCurrentDate} />
+                <div className="flex flex-col gap-4 items-end">
+                    {/* Period Selector */}
+                    <PeriodSelector currentDate={currentDate} onDateChange={setCurrentDate} />
 
-            {/* Wallet Filter */}
-            <div className="wallet-filter">
-                <label className="filter-label">Filter by Wallet:</label>
-                <select
-                    value={selectedWallet}
-                    onChange={(e) => setSelectedWallet(e.target.value)}
-                    className="filter-select"
-                >
-                    <option value="all">All Wallets</option>
-                    {wallets.filter(w => w.status === 'Active').map(wallet => (
-                        <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
-                    ))}
-                </select>
+                    {/* Wallet Filter */}
+                    <div className="wallet-filter">
+                        <label className="filter-label">Wallet:</label>
+                        <select
+                            value={selectedWallet}
+                            onChange={(e) => setSelectedWallet(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="all">All Wallets</option>
+                            {wallets.filter(w => w.status === 'Active').map(wallet => (
+                                <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
             </div>
 
             {/* Net Income Card */}
-            <Card padding="lg" className="net-income-card">
+            <div className="net-income-card">
                 <div className="net-income-header">
                     <div className="net-income-icon">
                         <TrendingUp size={32} />
@@ -150,12 +150,12 @@ export default function NetIncomeReport() {
                         <div className={`net-income-value ${netIncome >= 0 ? 'positive' : 'negative'}`}>
                             {formatCompactCurrency(netIncome, 'INR')}
                         </div>
-                        <div className="net-income-subtitle text-tertiary">
+                        <div className="net-income-subtitle">
                             Income - Expense for {format(currentDate, 'MMMM yyyy')}
                         </div>
                     </div>
                 </div>
-            </Card>
+            </div>
 
             {/* Income vs Expense Bars */}
             <div className="comparison-section">
@@ -199,7 +199,7 @@ export default function NetIncomeReport() {
             {/* Category Breakdowns */}
             <div className="categories-grid">
                 {/* Income Categories */}
-                <Card className="category-breakdown-card">
+                <div className="category-breakdown-card">
                     <h3 className="breakdown-title">Income by Category</h3>
                     {incomeCategories.length > 0 ? (
                         <div className="category-list">
@@ -233,10 +233,10 @@ export default function NetIncomeReport() {
                     ) : (
                         <p className="text-secondary text-center">No income transactions</p>
                     )}
-                </Card>
+                </div>
 
                 {/* Expense Categories */}
-                <Card className="category-breakdown-card">
+                <div className="category-breakdown-card">
                     <h3 className="breakdown-title">Expense by Category</h3>
                     {expenseCategories.length > 0 ? (
                         <div className="category-list">
@@ -270,7 +270,7 @@ export default function NetIncomeReport() {
                     ) : (
                         <p className="text-secondary text-center">No expense transactions</p>
                     )}
-                </Card>
+                </div>
             </div>
         </div>
     );

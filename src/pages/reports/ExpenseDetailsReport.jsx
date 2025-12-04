@@ -6,7 +6,6 @@ import { useAuthStore } from '../../stores/authStore';
 import { getCategoryBreakdown } from '../../services/report.service';
 import { formatCurrency, formatCompactCurrency } from '../../utils/currency';
 import Button from '../../components/ui/Button';
-import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import PeriodSelector from '../../components/transactions/PeriodSelector';
 import Icon from '../../components/ui/Icon';
@@ -90,49 +89,50 @@ export default function ExpenseDetailsReport() {
     return (
         <div className="page-container report-page expense-report">
             {/* Header */}
-            <div className="page-header">
-                <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate(-1)}>
-                    Back
-                </Button>
+            <div className="report-header">
                 <div>
-                    <h1 className="font-display">Expense Details</h1>
-                    <p className="text-secondary">Track your spending patterns</p>
+                    <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate(-1)} className="mb-4">
+                        Back
+                    </Button>
+                    <h1 className="report-title">Expense Details</h1>
+                    <p className="report-subtitle">Track your spending patterns</p>
                 </div>
-                <div></div>
-            </div>
 
-            {/* Period Selector */}
-            <PeriodSelector currentDate={currentDate} onDateChange={setCurrentDate} />
+                <div className="flex flex-col gap-4 items-end">
+                    {/* Period Selector */}
+                    <PeriodSelector currentDate={currentDate} onDateChange={setCurrentDate} />
+                </div>
+            </div>
 
             {/* Summary Cards */}
             <div className="summary-grid">
-                <Card padding="md" className="summary-card total-card">
+                <div className="summary-card total-card">
                     <div className="summary-icon expense">
-                        <TrendingDown size={24} />
+                        <TrendingDown size={64} />
                     </div>
                     <div className="summary-content">
-                        <div className="summary-label text-tertiary">Total Expense</div>
+                        <div className="summary-label">Total Expense</div>
                         <div className="summary-value expense">
                             {formatCurrency(totalExpense, 'INR')}
                         </div>
                     </div>
-                </Card>
+                </div>
 
-                <Card padding="md" className="summary-card">
+                <div className="summary-card">
                     <div className="summary-content">
-                        <div className="summary-label text-tertiary">Daily Average</div>
+                        <div className="summary-label">Daily Average</div>
                         <div className="summary-value">
                             {formatCompactCurrency(dailyAverage, 'INR')}
                         </div>
-                        <div className="summary-subtitle text-tertiary">
+                        <div className="summary-subtitle">
                             ÷ {daysInMonth} days
                         </div>
                     </div>
-                </Card>
+                </div>
 
-                <Card padding="md" className="summary-card">
+                <div className="summary-card">
                     <div className="summary-content">
-                        <div className="summary-label text-tertiary">3-Month Average</div>
+                        <div className="summary-label">3-Month Average</div>
                         <div className="summary-value">
                             {formatCompactCurrency(threeMonthAverage, 'INR')}
                         </div>
@@ -140,11 +140,11 @@ export default function ExpenseDetailsReport() {
                             {comparison >= 0 ? '+' : ''}{comparison.toFixed(1)}% vs avg
                         </div>
                     </div>
-                </Card>
+                </div>
             </div>
 
             {/* Category Breakdown */}
-            <Card className="breakdown-section">
+            <div className="breakdown-section">
                 <div className="breakdown-header">
                     <h2 className="section-title">Breakdown by Category</h2>
                     <div className="breakdown-total">
@@ -192,7 +192,7 @@ export default function ExpenseDetailsReport() {
                         <p className="text-secondary">No expense transactions for this period</p>
                     </div>
                 )}
-            </Card>
+            </div>
         </div>
     );
 }
