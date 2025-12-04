@@ -14,21 +14,21 @@
     --color-text-inverse: #111111;
 
     /* Accent Colors - Terminal Brutalism */
-    --color-accent: #00D9FF;
+    --color-accent: #5bdff6;
     /* electric cyan */
     --color-accent-soft: #66E7FF;
     /* lighter cyan */
-    --color-accent-secondary: #00FF41;
+    --color-accent-secondary: #46b862;
     /* terminal green */
 
     /* Functional */
-    --color-success: #00FF41;
+    --color-success: #46b862;
     /* terminal green */
     --color-warning: #FFB000;
     /* terminal amber */
     --color-error: #FF0040;
     /* terminal red */
-    --color-info: #00D9FF;
+    --color-info: #5bdff6;
     /* electric cyan */
 
     /* Borders */
@@ -37,13 +37,13 @@
     --color-border-strong: #474747;
 
     /* Terminal Brutalism Palette (Landing Page) */
-    --color-terminal-cyan: #00D9FF;
-    --color-terminal-green: #00FF41;
+    --color-terminal-cyan: #5bdff6;
+    --color-terminal-green: #46b862;
     --color-terminal-amber: #FFB000;
     --color-terminal-red: #FF0040;
     --color-landing-bg: #0A0A0A;
     --color-landing-surface: #141414;
-    --color-landing-border: #00D9FF;
+    --color-landing-border: #5bdff6;
 
     /* === Typography === */
     /* Primary Application Fonts - Terminal Brutalism */

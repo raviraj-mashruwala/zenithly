@@ -1,10 +1,8 @@
 import { MoreVertical, Edit, Trash2, ArrowUpRight, ArrowDownRight, ArrowRightLeft } from 'lucide-react';
 import { useState } from 'react';
-import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { useTransactionStore } from '../../stores/transactionStore';
 import { formatCurrency } from '../../utils/currency';
-import Card from '../ui/Card';
 import Icon from '../ui/Icon';
 import './TransactionCard.css';
 
@@ -54,48 +52,41 @@ export default function TransactionCard({ transaction, onEdit }) {
     const typeColor = getTypeColor(transaction.type);
 
     return (
-        <Card className="transaction-card" hover>
-            <div className="transaction-main">
-                <div className="transaction-left">
-                    <div className={`transaction-icon ${typeColor}`}>
-                        {transaction.category?.icon_id ? (
-                            <Icon iconId={transaction.category.icon_id} size={20} />
-                        ) : (
-                            getTypeIcon(transaction.type)
-                        )}
-                    </div>
+        <div className="transaction-card">
+            <div className={`transaction-icon ${typeColor}`}>
+                {transaction.category?.icon_id ? (
+                    <Icon iconId={transaction.category.icon_id} size={20} />
+                ) : (
+                    getTypeIcon(transaction.type)
+                )}
+            </div>
 
-                    <div className="transaction-details">
-                        <div className="transaction-description">
-                            {transaction.description || `${transaction.type} Transaction`}
-                        </div>
-
-                        <div className="transaction-meta text-tertiary">
-                            {transaction.type === 'Transfer' ? (
-                                <span>
-                                    {transaction.from_wallet?.name} → {transaction.to_wallet?.name}
-                                </span>
-                            ) : (
-                                <>
-                                    {transaction.wallet?.name && <span>{transaction.wallet.name}</span>}
-                                    {transaction.category?.name && <span> • {transaction.category.name}</span>}
-                                </>
-                            )}
-                        </div>
-                    </div>
+            <div className="transaction-details">
+                <div className="transaction-title">
+                    {transaction.type === 'Transfer' ? (
+                        <span>{transaction.from_wallet?.name} → {transaction.to_wallet?.name}</span>
+                    ) : (
+                        <span>{transaction.category?.name || transaction.type}</span>
+                    )}
                 </div>
 
-                <div className="transaction-right">
-                    <div className={`transaction-amount ${typeColor}`}>
-                        {transaction.type === 'Expense' && '−'}
-                        {transaction.type === 'Income' && '+'}
-                        {formatCurrency(transaction.amount, 'INR')}
+                {transaction.description && (
+                    <div className="transaction-subtitle">
+                        {transaction.description}
                     </div>
+                )}
 
-                    <div className="transaction-date text-tertiary">
-                        {format(new Date(transaction.date), 'MMM dd, yyyy')}
+                {transaction.type !== 'Transfer' && transaction.wallet?.name && (
+                    <div className="transaction-wallet">
+                        {transaction.wallet.name}
                     </div>
-                </div>
+                )}
+            </div>
+
+            <div className={`transaction-amount ${typeColor}`}>
+                {transaction.type === 'Expense' && '−'}
+                {transaction.type === 'Income' && '+'}
+                {formatCurrency(transaction.amount, 'INR')}
             </div>
 
             <div className="transaction-menu">
@@ -104,7 +95,7 @@ export default function TransactionCard({ transaction, onEdit }) {
                     onClick={() => setShowMenu(!showMenu)}
                     aria-label="Transaction options"
                 >
-                    <MoreVertical size={20} />
+                    <MoreVertical size={18} />
                 </button>
 
                 {showMenu && (
@@ -126,6 +117,6 @@ export default function TransactionCard({ transaction, onEdit }) {
                     </>
                 )}
             </div>
-        </Card>
+        </div>
     );
 }

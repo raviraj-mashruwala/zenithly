@@ -3,15 +3,15 @@
 
 .transaction-card {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--space-5);
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
     background: var(--color-bg-surface);
     border: 2px solid var(--color-border-default);
     border-radius: var(--radius-lg);
     transition: all var(--transition-base);
     position: relative;
-    overflow: hidden;
 }
 
 .transaction-card:hover {
@@ -35,20 +35,7 @@
     background: var(--color-accent);
 }
 
-.transaction-main {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex: 1;
-    gap: var(--space-4);
-}
-
-.transaction-left {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    flex: 1;
-}
+/* Obsolete wrappers removed */
 
 .transaction-icon {
     display: flex;
@@ -90,9 +77,10 @@
     flex-direction: column;
     gap: var(--space-1);
     flex: 1;
+    min-width: 0;
 }
 
-.transaction-description {
+.transaction-title {
     font-family: var(--font-display);
     font-size: var(--text-base);
     font-weight: 600;
@@ -100,7 +88,14 @@
     color: var(--color-text-primary);
 }
 
-.transaction-meta {
+.transaction-subtitle {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+}
+
+.transaction-wallet {
     font-family: var(--font-body);
     font-size: var(--text-xs);
     color: var(--color-text-tertiary);
@@ -109,18 +104,16 @@
     gap: var(--space-2);
 }
 
-.transaction-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--space-1);
-}
 
 .transaction-amount {
     font-family: var(--font-display);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     font-weight: 700;
     letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-align: right;
+    min-width: 100px;
+    flex-shrink: 0;
 }
 
 .transaction-amount.income {
@@ -138,18 +131,11 @@
     text-shadow: 0 0 10px rgba(0, 217, 255, 0.2);
 }
 
-.transaction-date {
-    font-family: var(--font-display);
-    font-size: var(--text-xs);
-    color: var(--color-text-tertiary);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
 
 /* Transaction Menu */
 .transaction-menu {
     position: relative;
-    margin-left: var(--space-4);
+    z-index: 10;
 }
 
 .menu-trigger {
