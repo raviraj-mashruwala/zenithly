@@ -121,12 +121,12 @@ export default function TransactionFormModal({ transaction, onClose, onSuccess }
                 {/* Transaction Type Tabs */}
                 <div className="form-group">
                     <label className="form-label">Transaction Type</label>
-                    <div className="transaction-types">
+                    <div className="type-selector">
                         {TRANSACTION_TYPES.map((type) => (
                             <button
                                 key={type.value}
                                 type="button"
-                                className={`transaction-type-btn ${type.color} ${selectedType === type.value ? 'selected' : ''}`}
+                                className={`type-option ${type.color} ${selectedType === type.value ? 'active' : ''}`}
                                 onClick={() => setValue('type', type.value)}
                             >
                                 {type.label}

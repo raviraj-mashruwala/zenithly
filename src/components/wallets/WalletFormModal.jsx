@@ -87,12 +87,12 @@ export default function WalletFormModal({ wallet, currency, onClose, onSuccess }
 
                 <div className="form-group">
                     <label className="form-label">Wallet Type</label>
-                    <div className="wallet-types-grid">
+                    <div className="type-selector-grid">
                         {WALLET_TYPES.map((type) => (
                             <button
                                 key={type.value}
                                 type="button"
-                                className={`wallet-type-btn ${selectedType === type.value ? 'selected' : ''}`}
+                                className={`type-option ${selectedType === type.value ? 'active' : ''}`}
                                 onClick={() => setValue('type', type.value)}
                             >
                                 {type.label}
@@ -114,20 +114,19 @@ export default function WalletFormModal({ wallet, currency, onClose, onSuccess }
                     />
                 )}
 
-                <div className="checkbox-field">
+                <label className="form-checkbox">
                     <input
                         type="checkbox"
-                        id="includedInTotal"
                         checked={includedInTotal}
                         onChange={(e) => setIncludedInTotal(e.target.checked)}
                     />
-                    <label htmlFor="includedInTotal">
+                    <div className="form-checkbox-label">
                         Include in total balance
-                        <span className="help-text">
+                        <div className="text-tertiary text-xs mt-1" style={{ fontSize: '10px', opacity: 0.7 }}>
                             (Uncheck if you don't want this counted in your total)
-                        </span>
-                    </label>
-                </div>
+                        </div>
+                    </div>
+                </label>
 
                 <div className="modal-actions">
                     <Button type="button" variant="secondary" onClick={onClose} disabled={isLoading}>

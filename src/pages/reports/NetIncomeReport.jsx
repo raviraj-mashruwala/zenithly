@@ -11,6 +11,7 @@ import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import PeriodSelector from '../../components/transactions/PeriodSelector';
 import Icon from '../../components/ui/Icon';
+import CategoryPieChart from '../../components/charts/CategoryPieChart';
 import './NetIncomeReport.css';
 
 export default function NetIncomeReport() {
@@ -86,8 +87,6 @@ export default function NetIncomeReport() {
     // Calculate averages
     const daysInMonth = differenceInDays(endOfMonth(currentDate), startOfMonth(currentDate)) + 1;
     const dailyAverage = totalIncome / daysInMonth;
-    // For now, 3-month average is just a placeholder or could be calculated if we fetched more data
-    // We'll stick to daily average for consistency with the expense report style
 
     if (isLoading) {
         return (
@@ -100,7 +99,7 @@ export default function NetIncomeReport() {
     }
 
     return (
-        <div className="page-container report-page">
+        <div className="page-container report-page net-income-report">
             {/* Header */}
             <div className="report-header">
                 <div>
@@ -169,6 +168,13 @@ export default function NetIncomeReport() {
             <div className="breakdown-section">
                 <div className="section-header">
                     <h2 className="section-title">Breakdown by Category</h2>
+                </div>
+
+                {/* Chart Section */}
+                <div className="mb-8 flex justify-center">
+                    <div className="w-full max-w-md">
+                        <CategoryPieChart data={incomeCategories} type="income" />
+                    </div>
                 </div>
 
                 {incomeCategories.length > 0 ? (

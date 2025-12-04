@@ -307,3 +307,20 @@
 .comparison-amount.expense {
     color: var(--color-error);
 }
+
+/* Category Reports Section */
+.category-reports-section {
+    margin-top: var(--space-10);
+}
+
+.category-reports-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+}
+
+@media (max-width: 768px) {
+    .category-reports-grid {
+        grid-template-columns: 1fr;
+    }
+}

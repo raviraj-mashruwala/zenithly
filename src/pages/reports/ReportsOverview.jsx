@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingUp, ChevronRight, PieChart, HelpCircle, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { ArrowLeft, TrendingUp, ChevronRight, HelpCircle, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { useAuthStore } from '../../stores/authStore';
 import { useTransactionStore } from '../../stores/transactionStore';
+import { getCategoryBreakdown } from '../../services/report.service';
 import { formatCompactCurrency } from '../../utils/currency';
 import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import PeriodSelector from '../../components/transactions/PeriodSelector';
+import CategoryPieChart from '../../components/charts/CategoryPieChart';
 import './ReportsOverview.css';
 
 export default function ReportsOverview() {
@@ -17,6 +19,8 @@ export default function ReportsOverview() {
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const [isLoading, setIsLoading] = useState(true);
+    const [incomeCategories, setIncomeCategories] = useState([]);
+    const [expenseCategories, setExpenseCategories] = useState([]);
 
     const periodStart = format(startOfMonth(currentDate), 'yyyy-MM-dd');
     const periodEnd = format(endOfMonth(currentDate), 'yyyy-MM-dd');
@@ -31,6 +35,12 @@ export default function ReportsOverview() {
         setIsLoading(true);
         try {
             await fetchStats(periodStart, periodEnd);
+
+            const incomeData = await getCategoryBreakdown(user.id, periodStart, periodEnd, 'Income');
+            const expenseData = await getCategoryBreakdown(user.id, periodStart, periodEnd, 'Expense');
+
+            setIncomeCategories(incomeData);
+            setExpenseCategories(expenseData);
         } catch (error) {
             console.error('Failed to fetch report data:', error);
         } finally {
@@ -131,10 +141,10 @@ export default function ReportsOverview() {
             </div>
 
             {/* Category Reports Section */}
-            <div className="mt-10">
-                <h2 className="section-title mb-6">Category Report</h2>
+            <div className="category-reports-section">
+                <h2 className="section-title">Category Report</h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="category-reports-grid">
                     {/* Income Report Card */}
                     <div
                         className="report-category-card income cursor-pointer group"
@@ -151,9 +161,7 @@ export default function ReportsOverview() {
                         </div>
 
                         <div className="chart-visual">
-                            <div className="chart-circle">
-                                <PieChart className="chart-icon" size={40} />
-                            </div>
+                            <CategoryPieChart data={incomeCategories} type="income" />
                         </div>
 
                         <div className="card-action">
@@ -177,9 +185,7 @@ export default function ReportsOverview() {
                         </div>
 
                         <div className="chart-visual">
-                            <div className="chart-circle">
-                                <PieChart className="chart-icon" size={40} />
-                            </div>
+                            <CategoryPieChart data={expenseCategories} type="expense" />
                         </div>
 
                         <div className="card-action">

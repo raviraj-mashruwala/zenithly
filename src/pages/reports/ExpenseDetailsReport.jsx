@@ -1,80 +1,92 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingDown } from 'lucide-react';
-import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { ArrowLeft, TrendingDown, Calendar, BarChart3 } from 'lucide-react';
+import { format, startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
 import { useAuthStore } from '../../stores/authStore';
+import { useTransactionStore } from '../../stores/transactionStore';
+import { useWalletStore } from '../../stores/walletStore';
 import { getCategoryBreakdown } from '../../services/report.service';
-import { formatCurrency, formatCompactCurrency } from '../../utils/currency';
+import { formatCompactCurrency } from '../../utils/currency';
 import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import PeriodSelector from '../../components/transactions/PeriodSelector';
 import Icon from '../../components/ui/Icon';
+import CategoryPieChart from '../../components/charts/CategoryPieChart';
 import './ExpenseDetailsReport.css';
 
 export default function ExpenseDetailsReport() {
     const navigate = useNavigate();
     const { user } = useAuthStore();
+    const { stats, fetchStats } = useTransactionStore();
+    const { wallets, fetchWallets } = useWalletStore();
 
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [categories, setCategories] = useState([]);
+    const [selectedWallet, setSelectedWallet] = useState('all');
+    const [expenseCategories, setExpenseCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [threeMonthAverage, setThreeMonthAverage] = useState(0);
 
     const periodStart = format(startOfMonth(currentDate), 'yyyy-MM-dd');
     const periodEnd = format(endOfMonth(currentDate), 'yyyy-MM-dd');
 
     useEffect(() => {
         if (user) {
+            fetchWallets();
             fetchData();
         }
-    }, [user, currentDate]);
+    }, [user, currentDate, selectedWallet]);
 
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            // Get expense categories for current month
+            await fetchStats(periodStart, periodEnd);
+
             const expenseData = await getCategoryBreakdown(user.id, periodStart, periodEnd, 'Expense');
 
+            // Calculate percentages
             const totalExpense = expenseData.reduce((sum, cat) => sum + cat.total, 0);
 
-            const categoriesWithPercent = expenseData.map(cat => ({
+            const expenseWithPercent = expenseData.map(cat => ({
                 ...cat,
                 percentage: totalExpense > 0 ? (cat.total / totalExpense) * 100 : 0,
             }));
 
-            setCategories(categoriesWithPercent);
+            // Group small categories
+            const groupedExpense = groupSmallCategories(expenseWithPercent);
 
-            // Calculate 3-month average
-            const month1 = await getCategoryBreakdown(
-                user.id,
-                format(startOfMonth(subMonths(currentDate, 2)), 'yyyy-MM-dd'),
-                format(endOfMonth(subMonths(currentDate, 2)), 'yyyy-MM-dd'),
-                'Expense'
-            );
-            const month2 = await getCategoryBreakdown(
-                user.id,
-                format(startOfMonth(subMonths(currentDate, 1)), 'yyyy-MM-dd'),
-                format(endOfMonth(subMonths(currentDate, 1)), 'yyyy-MM-dd'),
-                'Expense'
-            );
-            const month3 = expenseData;
-
-            const total1 = month1.reduce((sum, cat) => sum + cat.total, 0);
-            const total2 = month2.reduce((sum, cat) => sum + cat.total, 0);
-            const total3 = month3.reduce((sum, cat) => sum + cat.total, 0);
-
-            setThreeMonthAverage((total1 + total2 + total3) / 3);
+            setExpenseCategories(groupedExpense);
         } catch (error) {
-            console.error('Failed to fetch expense data:', error);
+            console.error('Failed to fetch report data:', error);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const totalExpense = categories.reduce((sum, cat) => sum + cat.total, 0);
-    const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+    // Group categories with <3% into "Others"
+    const groupSmallCategories = (categories) => {
+        const significant = categories.filter(cat => cat.percentage >= 3);
+        const small = categories.filter(cat => cat.percentage < 3);
+
+        if (small.length === 0) return significant;
+
+        const othersTotal = small.reduce((sum, cat) => sum + cat.total, 0);
+        const othersPercentage = small.reduce((sum, cat) => sum + cat.percentage, 0);
+
+        return [
+            ...significant,
+            {
+                category: { name: 'Others', icon_id: 'more-horizontal' },
+                total: othersTotal,
+                count: small.reduce((sum, cat) => sum + cat.count, 0),
+                percentage: othersPercentage,
+            },
+        ];
+    };
+
+    const totalExpense = stats ? stats.totalExpense : 0;
+
+    // Calculate averages
+    const daysInMonth = differenceInDays(endOfMonth(currentDate), startOfMonth(currentDate)) + 1;
     const dailyAverage = totalExpense / daysInMonth;
-    const comparison = threeMonthAverage > 0 ? ((totalExpense - threeMonthAverage) / threeMonthAverage) * 100 : 0;
 
     if (isLoading) {
         return (
@@ -87,100 +99,107 @@ export default function ExpenseDetailsReport() {
     }
 
     return (
-        <div className="page-container report-page expense-report">
+        <div className="page-container report-page expense-details-report">
             {/* Header */}
             <div className="report-header">
                 <div>
-                    <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate(-1)} className="mb-4">
-                        Back
+                    <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate('/reports')} className="mb-4">
+                        Back to Reports
                     </Button>
                     <h1 className="report-title">Expense Details</h1>
-                    <p className="report-subtitle">Track your spending patterns</p>
+                    <p className="report-subtitle">Breakdown for {format(currentDate, 'MMMM yyyy')}</p>
                 </div>
 
                 <div className="flex flex-col gap-4 items-end">
                     {/* Period Selector */}
                     <PeriodSelector currentDate={currentDate} onDateChange={setCurrentDate} />
+
+                    {/* Wallet Filter */}
+                    <div className="wallet-filter">
+                        <label className="filter-label">Wallet:</label>
+                        <select
+                            value={selectedWallet}
+                            onChange={(e) => setSelectedWallet(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="all">All Wallets</option>
+                            {wallets.filter(w => w.status === 'Active').map(wallet => (
+                                <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             </div>
 
             {/* Summary Cards */}
-            <div className="summary-grid">
-                <div className="summary-card total-card">
-                    <div className="summary-icon expense">
-                        <TrendingDown size={64} />
+            <div className="summary-cards">
+                <div className="summary-card total">
+                    <div className="summary-card-header">
+                        <span className="summary-label">Total Expense</span>
+                        <TrendingDown className="summary-icon" size={20} />
                     </div>
-                    <div className="summary-content">
-                        <div className="summary-label">Total Expense</div>
-                        <div className="summary-value expense">
-                            {formatCurrency(totalExpense, 'INR')}
-                        </div>
+                    <div className="summary-value">
+                        {formatCompactCurrency(totalExpense, 'INR')}
                     </div>
                 </div>
 
                 <div className="summary-card">
-                    <div className="summary-content">
-                        <div className="summary-label">Daily Average</div>
-                        <div className="summary-value">
-                            {formatCompactCurrency(dailyAverage, 'INR')}
-                        </div>
-                        <div className="summary-subtitle">
-                            ÷ {daysInMonth} days
-                        </div>
+                    <div className="summary-card-header">
+                        <span className="summary-label">Daily Average</span>
+                        <Calendar className="summary-icon" size={20} />
+                    </div>
+                    <div className="summary-value">
+                        {formatCompactCurrency(dailyAverage, 'INR')}
                     </div>
                 </div>
 
                 <div className="summary-card">
-                    <div className="summary-content">
-                        <div className="summary-label">3-Month Average</div>
-                        <div className="summary-value">
-                            {formatCompactCurrency(threeMonthAverage, 'INR')}
-                        </div>
-                        <div className={`summary-subtitle ${comparison >= 0 ? 'negative' : 'positive'}`}>
-                            {comparison >= 0 ? '+' : ''}{comparison.toFixed(1)}% vs avg
-                        </div>
+                    <div className="summary-card-header">
+                        <span className="summary-label">Top Spending</span>
+                        <BarChart3 className="summary-icon" size={20} />
+                    </div>
+                    <div className="summary-value text-xl">
+                        {expenseCategories.length > 0 ? expenseCategories[0].category.name : '-'}
                     </div>
                 </div>
             </div>
 
-            {/* Category Breakdown */}
+            {/* Breakdown Section */}
             <div className="breakdown-section">
-                <div className="breakdown-header">
+                <div className="section-header">
                     <h2 className="section-title">Breakdown by Category</h2>
-                    <div className="breakdown-total">
-                        Total: <span className="total-amount expense">{formatCompactCurrency(totalExpense, 'INR')}</span>
+                </div>
+
+                {/* Chart Section */}
+                <div className="mb-8 flex justify-center">
+                    <div className="w-full max-w-md">
+                        <CategoryPieChart data={expenseCategories} type="expense" />
                     </div>
                 </div>
 
-                {categories.length > 0 ? (
-                    <div className="expense-categories">
-                        {categories.map((item, index) => (
-                            <div key={index} className="expense-category-item">
-                                <div className="category-row">
-                                    <div className="category-left">
-                                        <div className="category-rank">{index + 1}</div>
-                                        <div className="category-icon-box expense">
-                                            <Icon iconId={item.category.icon_id || 'circle'} size={20} />
+                {expenseCategories.length > 0 ? (
+                    <div className="category-list">
+                        {expenseCategories.map((item, index) => (
+                            <div key={index} className="category-item">
+                                <div className="category-header">
+                                    <div className="category-info">
+                                        <div className="category-icon">
+                                            <Icon iconId={item.category.icon_id || 'circle'} size={18} />
                                         </div>
-                                        <div className="category-info-col">
-                                            <div className="category-name-text">{item.category.name}</div>
-                                            <div className="category-count text-tertiary">
-                                                {item.count} transaction{item.count !== 1 ? 's' : ''}
-                                            </div>
-                                        </div>
+                                        <span className="category-name">{item.category.name}</span>
                                     </div>
-                                    <div className="category-right">
-                                        <div className="category-amount-large expense">
-                                            {formatCurrency(item.total, 'INR')}
-                                        </div>
-                                        <div className="category-percentage">
+                                    <div className="category-stats">
+                                        <span className="category-amount">
+                                            {formatCompactCurrency(item.total, 'INR')}
+                                        </span>
+                                        <span className="category-percentage">
                                             {item.percentage.toFixed(1)}%
-                                        </div>
+                                        </span>
                                     </div>
                                 </div>
-                                <div className="category-bar-full">
+                                <div className="progress-container">
                                     <div
-                                        className="category-fill expense"
+                                        className="progress-bar"
                                         style={{ width: `${item.percentage}%` }}
                                     />
                                 </div>
@@ -188,8 +207,8 @@ export default function ExpenseDetailsReport() {
                         ))}
                     </div>
                 ) : (
-                    <div className="empty-breakdown">
-                        <p className="text-secondary">No expense transactions for this period</p>
+                    <div className="text-center py-12 text-tertiary">
+                        No expense transactions found for this period
                     </div>
                 )}
             </div>

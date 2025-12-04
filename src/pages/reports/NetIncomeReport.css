@@ -1,10 +1,10 @@
 /* Net Income Report - Terminal Brutalism */
 
-.report-page {
+.net-income-report.report-page {
     animation: fadeIn 0.4s ease-out;
 }
 
-.report-header {
+.net-income-report .report-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -13,7 +13,7 @@
     gap: var(--space-4);
 }
 
-.report-title {
+.net-income-report .report-title {
     font-family: var(--font-display);
     font-size: var(--text-4xl);
     font-weight: 700;
@@ -22,7 +22,7 @@
     margin-bottom: var(--space-2);
 }
 
-.report-subtitle {
+.net-income-report .report-subtitle {
     font-family: var(--font-display);
     font-size: var(--text-sm);
     color: var(--color-text-tertiary);
@@ -31,16 +31,16 @@
 }
 
 /* Summary Cards */
-.summary-cards {
+.net-income-report .summary-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-6);
     margin-bottom: var(--space-8);
 }
 
-.summary-card {
+.net-income-report .summary-card {
     background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
+    border: 2px solid var(--color-border-default);
     border-radius: var(--radius-lg);
     padding: var(--space-6);
     position: relative;
@@ -48,28 +48,28 @@
     transition: all var(--transition-base);
 }
 
-.summary-card:hover {
+.net-income-report .summary-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--glow-accent-soft);
     border-color: var(--color-accent-secondary);
 }
 
-.summary-card.total {
+.net-income-report .summary-card.total {
     background: linear-gradient(135deg,
-            rgba(0, 255, 65, 0.05) 0%,
+            rgba(0, 255, 65, 0.08) 0%,
             rgba(0, 217, 255, 0.02) 100%);
-    border: 1px solid var(--color-accent-secondary);
+    border: 2px solid var(--color-accent-secondary);
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
 }
 
-.summary-card-header {
+.net-income-report .summary-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: var(--space-4);
 }
 
-.summary-label {
+.net-income-report .summary-label {
     font-family: var(--font-display);
     font-size: var(--text-xs);
     letter-spacing: 0.15em;
@@ -77,12 +77,12 @@
     text-transform: uppercase;
 }
 
-.summary-icon {
+.net-income-report .summary-icon {
     color: var(--color-accent-secondary);
     opacity: 0.8;
 }
 
-.summary-value {
+.net-income-report .summary-value {
     font-family: var(--font-display);
     font-size: var(--text-3xl);
     font-weight: 700;
@@ -90,36 +90,21 @@
     color: var(--color-text-primary);
 }
 
-.summary-card.total .summary-value {
+.net-income-report .summary-card.total .summary-value {
     color: var(--color-accent-secondary);
     text-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
 }
 
-.summary-trend {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-top: var(--space-2);
-    font-size: var(--text-sm);
-}
-
-.summary-trend.up {
-    color: var(--color-accent-secondary);
-}
-
-.summary-trend.down {
-    color: var(--color-error);
-}
-
 /* Breakdown Section */
-.breakdown-section {
+.net-income-report .breakdown-section {
     background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
+    border: 2px solid var(--color-border-default);
     border-radius: var(--radius-lg);
     padding: var(--space-6);
+    min-height: 400px;
 }
 
-.section-header {
+.net-income-report .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -128,7 +113,7 @@
     border-bottom: 1px solid var(--color-border-subtle);
 }
 
-.section-title {
+.net-income-report .section-title {
     font-family: var(--font-display);
     font-size: var(--text-lg);
     font-weight: 600;
@@ -136,13 +121,13 @@
     color: var(--color-text-primary);
 }
 
-.category-list {
+.net-income-report .category-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
 }
 
-.income-category-item {
+.net-income-report .income-category-item {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -153,24 +138,24 @@
     transition: all var(--transition-fast);
 }
 
-.income-category-item:hover {
+.net-income-report .income-category-item:hover {
     background: rgba(0, 255, 65, 0.03);
     border-color: rgba(0, 255, 65, 0.2);
 }
 
-.category-header {
+.net-income-report .category-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.category-info {
+.net-income-report .category-info {
     display: flex;
     align-items: center;
     gap: var(--space-3);
 }
 
-.category-icon {
+.net-income-report .category-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -182,27 +167,27 @@
     border: 1px solid rgba(0, 255, 65, 0.2);
 }
 
-.category-name {
+.net-income-report .category-name {
     font-family: var(--font-display);
     font-size: var(--text-sm);
     font-weight: 500;
     letter-spacing: 0.02em;
 }
 
-.category-stats {
+.net-income-report .category-stats {
     display: flex;
     align-items: center;
     gap: var(--space-4);
 }
 
-.category-amount {
+.net-income-report .category-amount {
     font-family: var(--font-display);
     font-size: var(--text-base);
     font-weight: 600;
     color: var(--color-accent-secondary);
 }
 
-.category-percentage {
+.net-income-report .category-percentage {
     font-family: var(--font-display);
     font-size: var(--text-sm);
     color: var(--color-text-tertiary);
@@ -210,7 +195,7 @@
     text-align: right;
 }
 
-.progress-container {
+.net-income-report .progress-container {
     height: 4px;
     background: var(--color-border-subtle);
     border-radius: var(--radius-full);
@@ -219,7 +204,7 @@
     /* Align with text */
 }
 
-.progress-bar {
+.net-income-report .progress-bar {
     height: 100%;
     background: var(--color-accent-secondary);
     border-radius: var(--radius-full);
@@ -227,17 +212,17 @@
 }
 
 @media (max-width: 768px) {
-    .summary-cards {
+    .net-income-report .summary-cards {
         grid-template-columns: 1fr;
     }
 
-    .category-header {
+    .net-income-report .category-header {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--space-2);
     }
 
-    .category-stats {
+    .net-income-report .category-stats {
         width: 100%;
         justify-content: space-between;
         margin-left: 48px;

@@ -8,6 +8,14 @@
     gap: var(--space-5);
 }
 
+/* Main Form Layout */
+.wallet-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-top: var(--space-2);
+}
+
 .form-section {
     display: flex;
     flex-direction: column;
@@ -40,35 +48,52 @@
     border-top: 1px solid var(--color-border-subtle);
 }
 
-/* Type Selector (for transaction type) */
-.type-selector {
+/* Form Group Spacing */
+.form-group {
     display: flex;
+    flex-direction: column;
     gap: var(--space-2);
-    padding: var(--space-1);
-    background: var(--color-bg-deep);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+}
+
+.form-label {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Type Selector Grid (for wallet types) */
+.type-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--space-2);
 }
 
 .type-option {
-    flex: 1;
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-3) var(--space-2);
     font-family: var(--font-display);
     font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     text-align: center;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
 }
 
 .type-option:hover {
-    color: var(--color-accent);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
     background: rgba(0, 217, 255, 0.05);
 }
 
@@ -82,7 +107,7 @@
 /* Checkbox / Switch */
 .form-checkbox {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-3);
     padding: var(--space-3);
     background: rgba(0, 217, 255, 0.03);
@@ -102,6 +127,7 @@
     height: 20px;
     accent-color: var(--color-accent);
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .form-checkbox-label {
@@ -109,57 +135,16 @@
     font-size: var(--text-sm);
     letter-spacing: 0.05em;
     color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Color Indicators / Status */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-1) var(--space-3);
-    font-family: var(--font-display);
-    font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    border: 1px solid;
-}
-
-.status-badge.active {
-    background: rgba(0, 255, 65, 0.1);
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
-}
-
-.status-badge.inactive {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--color-border-default);
-    color: var(--color-text-tertiary);
-}
-
-/* Delete/Danger Actions */
-.danger-zone {
+/* Modal Actions */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
     margin-top: var(--space-6);
-    padding: var(--space-5);
-    background: rgba(255, 0, 64, 0.05);
-    border: 1px solid rgba(255, 0, 64, 0.2);
-    border-radius: var(--radius-md);
-}
-
-.danger-zone-title {
-    font-family: var(--font-display);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--color-error);
-    text-transform: uppercase;
-    margin-bottom: var(--space-3);
-}
-
-.danger-zone-description {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-    margin-bottom: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
 }
