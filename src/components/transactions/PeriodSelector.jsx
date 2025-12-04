@@ -29,11 +29,6 @@ export default function PeriodSelector({ currentDate, onDateChange }) {
 
             <div className="period-display">
                 <span className="period-month">{format(currentDate, 'MMMM yyyy')}</span>
-                {!isCurrentMonth && (
-                    <button className="period-today-btn" onClick={handleToday}>
-                        Today
-                    </button>
-                )}
             </div>
 
             <button
@@ -44,6 +39,15 @@ export default function PeriodSelector({ currentDate, onDateChange }) {
             >
                 <ChevronRight size={20} />
             </button>
+
+            {!isCurrentMonth && (
+                <>
+                    <span className="period-divider"></span>
+                    <button className="period-today-btn" onClick={handleToday}>
+                        Today
+                    </button>
+                </>
+            )}
         </div>
     );
 }
