@@ -7,8 +7,6 @@ import { useAuthStore } from './stores/authStore';
 import { lazy, Suspense } from 'react';
 
 // Auth pages
-const Login = lazy(() => import('./pages/auth/Login'));
-const SignUp = lazy(() => import('./pages/auth/SignUp'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
 const Onboarding = lazy(() => import('./pages/auth/Onboarding'));
 
@@ -47,7 +45,7 @@ function App() {
 
     // Check if current route requires AppLayout (all protected routes except onboarding)
     const showLayout = user && location.pathname !== '/onboarding' &&
-        !['/login', '/signup', '/forgot-password'].includes(location.pathname);
+        !['/forgot-password'].includes(location.pathname);
 
     return (
         <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
@@ -99,12 +97,7 @@ function App() {
                     } />
 
                     {/* Fallback auth routes (accessible directly) */}
-                    <Route path="/login" element={
-                        user ? <Navigate to="/dashboard" replace /> : <Login />
-                    } />
-                    <Route path="/signup" element={
-                        user ? <Navigate to="/dashboard" replace /> : <SignUp />
-                    } />
+
                     <Route path="/forgot-password" element={
                         user ? <Navigate to="/dashboard" replace /> : <ForgotPassword />
                     } />

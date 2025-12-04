@@ -83,7 +83,7 @@ export default function ForgotPassword() {
                             <p className="text-secondary" style={{ marginBottom: 'var(--space-4)' }}>
                                 We've sent a password reset link to your email. Please check your inbox and follow the instructions.
                             </p>
-                            <Button as={Link} to="/login" variant="secondary" fullWidth>
+                            <Button as={Link} to="/" variant="secondary" fullWidth>
                                 Back to Login
                             </Button>
                         </div>
@@ -91,7 +91,7 @@ export default function ForgotPassword() {
                 )}
 
                 <p className="auth-footer">
-                    <Link to="/login" className="auth-link-strong">
+                    <Link to="/" className="auth-link-strong">
                         <ArrowLeft size={16} style={{ display: 'inline', marginRight: '4px' }} />
                         Back to login
                     </Link>

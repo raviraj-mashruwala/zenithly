@@ -71,7 +71,7 @@ export default function Settings() {
         try {
             await logout();
             toast.success('Logged out successfully');
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             toast.error('Failed to logout');
         }
@@ -95,7 +95,7 @@ export default function Settings() {
             // Note: This needs to be done via Supabase admin API in production
             toast.success('Account deleted successfully');
             await logout();
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             toast.error(error.message || 'Failed to delete account');
             setIsLoading(false);
