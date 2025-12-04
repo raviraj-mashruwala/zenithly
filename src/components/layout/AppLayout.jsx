@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     LayoutDashboard,
     Wallet,
+    Tags,
     PieChart,
     ArrowRightLeft,
     Settings,
@@ -33,6 +34,7 @@ const AppLayout = ({ children }) => {
     const navItems = [
         { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { path: '/wallets', label: 'Wallets', icon: Wallet },
+        { path: '/categories', label: 'Categories', icon: Tags },
         { path: '/transactions', label: 'Transactions', icon: ArrowRightLeft },
         { path: '/reports', label: 'Reports', icon: PieChart },
         { path: '/settings', label: 'Settings', icon: Settings },

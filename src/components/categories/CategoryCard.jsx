@@ -1,9 +1,23 @@
 import { MoreVertical, Edit, Power, PowerOff, Trash2 } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useCategoryStore } from '../../stores/categoryStore';
 import Card from '../ui/Card';
 import './CategoryCard.css';
+
+// Helper to render icon from icon ID
+const renderIconFromId = (iconId, size = 24) => {
+    if (!iconId) return <LucideIcons.Tag size={size} />;
+
+    const iconName = iconId
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+
+    const IconComponent = LucideIcons[iconName];
+    return IconComponent ? <IconComponent size={size} /> : <LucideIcons.Tag size={size} />;
+};
 
 export default function CategoryCard({ category, onEdit }) {
     const [showMenu, setShowMenu] = useState(false);
@@ -65,7 +79,7 @@ export default function CategoryCard({ category, onEdit }) {
         >
             <div className="category-header">
                 <div className={`category-icon ${typeColor}`}>
-                    <span className="category-initial">{category.name[0]}</span>
+                    {renderIconFromId(category.icon_id)}
                 </div>
 
                 <div className="category-menu">
