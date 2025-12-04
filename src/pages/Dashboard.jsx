@@ -146,7 +146,7 @@ export default function Dashboard() {
                         </div>
                     </Card>
 
-                    <Card className="stat-card clickable" onClick={() => navigate('/reports/income')}>
+                    <Card className="stat-card clickable" onClick={() => navigate('/reports')}>
                         <div className="stat-cta">
                             <div className="stat-cta-content">
                                 <div className="stat-icon neutral">

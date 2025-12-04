@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight, ArrowDownRight, TrendingUp } from 'lucide-react';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { ArrowLeft, TrendingUp, Calendar, BarChart3 } from 'lucide-react';
+import { format, startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
 import { useAuthStore } from '../../stores/authStore';
 import { useTransactionStore } from '../../stores/transactionStore';
 import { useWalletStore } from '../../stores/walletStore';
@@ -22,7 +22,6 @@ export default function NetIncomeReport() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedWallet, setSelectedWallet] = useState('all');
     const [incomeCategories, setIncomeCategories] = useState([]);
-    const [expenseCategories, setExpenseCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const periodStart = format(startOfMonth(currentDate), 'yyyy-MM-dd');
@@ -41,28 +40,19 @@ export default function NetIncomeReport() {
             await fetchStats(periodStart, periodEnd);
 
             const incomeData = await getCategoryBreakdown(user.id, periodStart, periodEnd, 'Income');
-            const expenseData = await getCategoryBreakdown(user.id, periodStart, periodEnd, 'Expense');
 
             // Calculate percentages
             const totalIncome = incomeData.reduce((sum, cat) => sum + cat.total, 0);
-            const totalExpense = expenseData.reduce((sum, cat) => sum + cat.total, 0);
 
             const incomeWithPercent = incomeData.map(cat => ({
                 ...cat,
                 percentage: totalIncome > 0 ? (cat.total / totalIncome) * 100 : 0,
             }));
 
-            const expenseWithPercent = expenseData.map(cat => ({
-                ...cat,
-                percentage: totalExpense > 0 ? (cat.total / totalExpense) * 100 : 0,
-            }));
-
             // Group small categories
             const groupedIncome = groupSmallCategories(incomeWithPercent);
-            const groupedExpense = groupSmallCategories(expenseWithPercent);
 
             setIncomeCategories(groupedIncome);
-            setExpenseCategories(groupedExpense);
         } catch (error) {
             console.error('Failed to fetch report data:', error);
         } finally {
@@ -91,10 +81,13 @@ export default function NetIncomeReport() {
         ];
     };
 
-    const netIncome = stats ? stats.netIncome : 0;
     const totalIncome = stats ? stats.totalIncome : 0;
-    const totalExpense = stats ? stats.totalExpense : 0;
-    const maxAmount = Math.max(totalIncome, totalExpense);
+
+    // Calculate averages
+    const daysInMonth = differenceInDays(endOfMonth(currentDate), startOfMonth(currentDate)) + 1;
+    const dailyAverage = totalIncome / daysInMonth;
+    // For now, 3-month average is just a placeholder or could be calculated if we fetched more data
+    // We'll stick to daily average for consistency with the expense report style
 
     if (isLoading) {
         return (
@@ -111,11 +104,11 @@ export default function NetIncomeReport() {
             {/* Header */}
             <div className="report-header">
                 <div>
-                    <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate(-1)} className="mb-4">
-                        Back
+                    <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate('/reports')} className="mb-4">
+                        Back to Reports
                     </Button>
-                    <h1 className="report-title">Net Income Report</h1>
-                    <p className="report-subtitle">Income vs Expense breakdown</p>
+                    <h1 className="report-title">Income Details</h1>
+                    <p className="report-subtitle">Breakdown for {format(currentDate, 'MMMM yyyy')}</p>
                 </div>
 
                 <div className="flex flex-col gap-4 items-end">
@@ -139,138 +132,79 @@ export default function NetIncomeReport() {
                 </div>
             </div>
 
-            {/* Net Income Card */}
-            <div className="net-income-card">
-                <div className="net-income-header">
-                    <div className="net-income-icon">
-                        <TrendingUp size={32} />
+            {/* Summary Cards */}
+            <div className="summary-cards">
+                <div className="summary-card total">
+                    <div className="summary-card-header">
+                        <span className="summary-label">Total Income</span>
+                        <TrendingUp className="summary-icon" size={20} />
                     </div>
-                    <div>
-                        <div className="net-income-label">Net Income</div>
-                        <div className={`net-income-value ${netIncome >= 0 ? 'positive' : 'negative'}`}>
-                            {formatCompactCurrency(netIncome, 'INR')}
-                        </div>
-                        <div className="net-income-subtitle">
-                            Income - Expense for {format(currentDate, 'MMMM yyyy')}
-                        </div>
+                    <div className="summary-value">
+                        {formatCompactCurrency(totalIncome, 'INR')}
                     </div>
                 </div>
-            </div>
 
-            {/* Income vs Expense Bars */}
-            <div className="comparison-section">
-                <h2 className="section-title">Income vs Expense</h2>
-
-                <div className="comparison-bars">
-                    <div className="comparison-row">
-                        <div className="comparison-label">
-                            <ArrowUpRight className="income-icon" size={20} />
-                            <span>Income</span>
-                        </div>
-                        <div className="comparison-bar-container">
-                            <div
-                                className="comparison-bar income"
-                                style={{ width: maxAmount > 0 ? `${(totalIncome / maxAmount) * 100}%` : '0%' }}
-                            />
-                        </div>
-                        <div className="comparison-amount income">
-                            {formatCompactCurrency(totalIncome, 'INR')}
-                        </div>
+                <div className="summary-card">
+                    <div className="summary-card-header">
+                        <span className="summary-label">Daily Average</span>
+                        <Calendar className="summary-icon" size={20} />
                     </div>
+                    <div className="summary-value">
+                        {formatCompactCurrency(dailyAverage, 'INR')}
+                    </div>
+                </div>
 
-                    <div className="comparison-row">
-                        <div className="comparison-label">
-                            <ArrowDownRight className="expense-icon" size={20} />
-                            <span>Expense</span>
-                        </div>
-                        <div className="comparison-bar-container">
-                            <div
-                                className="comparison-bar expense"
-                                style={{ width: maxAmount > 0 ? `${(totalExpense / maxAmount) * 100}%` : '0%' }}
-                            />
-                        </div>
-                        <div className="comparison-amount expense">
-                            {formatCompactCurrency(totalExpense, 'INR')}
-                        </div>
+                <div className="summary-card">
+                    <div className="summary-card-header">
+                        <span className="summary-label">Top Source</span>
+                        <BarChart3 className="summary-icon" size={20} />
+                    </div>
+                    <div className="summary-value text-xl">
+                        {incomeCategories.length > 0 ? incomeCategories[0].category.name : '-'}
                     </div>
                 </div>
             </div>
 
-            {/* Category Breakdowns */}
-            <div className="categories-grid">
-                {/* Income Categories */}
-                <div className="category-breakdown-card">
-                    <h3 className="breakdown-title">Income by Category</h3>
-                    {incomeCategories.length > 0 ? (
-                        <div className="category-list">
-                            {incomeCategories.map((item, index) => (
-                                <div key={index} className="category-item">
-                                    <div className="category-header">
-                                        <div className="category-info-row">
-                                            <div className="category-icon-container income">
-                                                <Icon iconId={item.category.icon_id || 'circle'} size={16} />
-                                            </div>
-                                            <span className="category-name">{item.category.name}</span>
-                                        </div>
-                                        <div className="category-values">
-                                            <span className="category-amount income">
-                                                {formatCompactCurrency(item.total, 'INR')}
-                                            </span>
-                                            <span className="category-percent text-tertiary">
-                                                {item.percentage.toFixed(1)}%
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="category-progress-bar">
-                                        <div
-                                            className="category-progress income"
-                                            style={{ width: `${item.percentage}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-secondary text-center">No income transactions</p>
-                    )}
+            {/* Breakdown Section */}
+            <div className="breakdown-section">
+                <div className="section-header">
+                    <h2 className="section-title">Breakdown by Category</h2>
                 </div>
 
-                {/* Expense Categories */}
-                <div className="category-breakdown-card">
-                    <h3 className="breakdown-title">Expense by Category</h3>
-                    {expenseCategories.length > 0 ? (
-                        <div className="category-list">
-                            {expenseCategories.map((item, index) => (
-                                <div key={index} className="category-item">
-                                    <div className="category-header">
-                                        <div className="category-info-row">
-                                            <div className="category-icon-container expense">
-                                                <Icon iconId={item.category.icon_id || 'circle'} size={16} />
-                                            </div>
-                                            <span className="category-name">{item.category.name}</span>
+                {incomeCategories.length > 0 ? (
+                    <div className="category-list">
+                        {incomeCategories.map((item, index) => (
+                            <div key={index} className="income-category-item">
+                                <div className="category-header">
+                                    <div className="category-info">
+                                        <div className="category-icon">
+                                            <Icon iconId={item.category.icon_id || 'circle'} size={18} />
                                         </div>
-                                        <div className="category-values">
-                                            <span className="category-amount expense">
-                                                {formatCompactCurrency(item.total, 'INR')}
-                                            </span>
-                                            <span className="category-percent text-tertiary">
-                                                {item.percentage.toFixed(1)}%
-                                            </span>
-                                        </div>
+                                        <span className="category-name">{item.category.name}</span>
                                     </div>
-                                    <div className="category-progress-bar">
-                                        <div
-                                            className="category-progress expense"
-                                            style={{ width: `${item.percentage}%` }}
-                                        />
+                                    <div className="category-stats">
+                                        <span className="category-amount">
+                                            {formatCompactCurrency(item.total, 'INR')}
+                                        </span>
+                                        <span className="category-percentage">
+                                            {item.percentage.toFixed(1)}%
+                                        </span>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-secondary text-center">No expense transactions</p>
-                    )}
-                </div>
+                                <div className="progress-container">
+                                    <div
+                                        className="progress-bar"
+                                        style={{ width: `${item.percentage}%` }}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12 text-tertiary">
+                        No income transactions found for this period
+                    </div>
+                )}
             </div>
         </div>
     );

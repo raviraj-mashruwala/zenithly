@@ -34,7 +34,7 @@ const AppLayout = ({ children }) => {
         { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { path: '/wallets', label: 'Wallets', icon: Wallet },
         { path: '/transactions', label: 'Transactions', icon: ArrowRightLeft },
-        { path: '/reports/income', label: 'Reports', icon: PieChart },
+        { path: '/reports', label: 'Reports', icon: PieChart },
         { path: '/settings', label: 'Settings', icon: Settings },
     ];
 

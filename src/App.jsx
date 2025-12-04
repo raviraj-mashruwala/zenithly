@@ -18,6 +18,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const WalletsList = lazy(() => import('./pages/wallets/WalletsList'));
 const CategoriesList = lazy(() => import('./pages/categories/CategoriesList'));
 const TransactionsList = lazy(() => import('./pages/transactions/TransactionsList'));
+const ReportsOverview = lazy(() => import('./pages/reports/ReportsOverview'));
 const NetIncomeReport = lazy(() => import('./pages/reports/NetIncomeReport'));
 const ExpenseDetailsReport = lazy(() => import('./pages/reports/ExpenseDetailsReport'));
 const Settings = lazy(() => import('./pages/Settings'));
@@ -73,6 +74,11 @@ function App() {
                     <Route path="/transactions" element={
                         <ProtectedRoute>
                             <AppLayout><TransactionsList /></AppLayout>
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/reports" element={
+                        <ProtectedRoute>
+                            <AppLayout><ReportsOverview /></AppLayout>
                         </ProtectedRoute>
                     } />
                     <Route path="/reports/income" element={
