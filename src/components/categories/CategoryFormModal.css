@@ -40,6 +40,31 @@
     border-top: 1px solid var(--color-border-subtle);
 }
 
+/* Category Form Layout */
+.category-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-top: var(--space-2);
+}
+
+/* Form Group with relative positioning for dropdowns */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    position: relative;
+}
+
+.form-label {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
 /* Type Selector (for transaction type) */
 .type-selector {
     display: flex;
@@ -162,4 +187,85 @@
     font-size: var(--text-sm);
     color: var(--color-text-tertiary);
     margin-bottom: var(--space-4);
+}
+
+/* Category Types Grid */
+.category-types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+}
+
+.category-type-btn {
+    padding: var(--space-3) var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 48px;
+}
+
+.category-type-btn .type-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.category-type-btn:hover {
+    border-color: var(--color-accent);
+    background: rgba(0, 217, 255, 0.05);
+    color: var(--color-text-primary);
+}
+
+/* Expense variant */
+.category-type-btn.expense {
+    --type-color: var(--color-expense, #FF4D6D);
+}
+
+.category-type-btn.expense:hover,
+.category-type-btn.expense.selected {
+    border-color: var(--type-color);
+    background: rgba(255, 77, 109, 0.1);
+    color: var(--type-color);
+}
+
+/* Income variant */
+.category-type-btn.income {
+    --type-color: var(--color-income, #00FF41);
+}
+
+.category-type-btn.income:hover,
+.category-type-btn.income.selected {
+    border-color: var(--type-color);
+    background: rgba(0, 255, 65, 0.1);
+    color: var(--type-color);
+}
+
+/* Debt variant */
+.category-type-btn.debt {
+    --type-color: var(--color-accent, #00D9FF);
+}
+
+.category-type-btn.debt:hover,
+.category-type-btn.debt.selected {
+    border-color: var(--type-color);
+    background: rgba(0, 217, 255, 0.1);
+    color: var(--type-color);
+}
+
+.category-type-btn.selected {
+    box-shadow: var(--glow-accent-soft);
 }

@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X } from 'lucide-react';
+import { X, ChevronDown } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useWalletStore } from '../../stores/walletStore';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import Modal from '../ui/Modal';
+import IconPicker from '../ui/IconPicker';
 import { WALLET_TYPES } from '../../constants/currencies';
 import './WalletFormModal.css';
 
@@ -17,10 +19,25 @@ const walletSchema = z.object({
     openingBalance: z.number().optional(),
 });
 
+// Helper to render icon from icon ID
+const renderIconFromId = (iconId, size = 20) => {
+    if (!iconId) return <LucideIcons.Wallet size={size} />;
+
+    const iconName = iconId
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+
+    const IconComponent = LucideIcons[iconName];
+    return IconComponent ? <IconComponent size={size} /> : <LucideIcons.Wallet size={size} />;
+};
+
 export default function WalletFormModal({ wallet, currency, onClose, onSuccess }) {
     const { createWallet, updateWallet } = useWalletStore();
     const [isLoading, setIsLoading] = useState(false);
     const [includedInTotal, setIncludedInTotal] = useState(wallet?.included_in_total ?? true);
+    const [selectedIcon, setSelectedIcon] = useState(wallet?.icon_id || 'wallet');
+    const [showIconPicker, setShowIconPicker] = useState(false);
 
     const {
         register,
@@ -47,6 +64,7 @@ export default function WalletFormModal({ wallet, currency, onClose, onSuccess }
                 await updateWallet(wallet.id, {
                     name: data.name,
                     type: data.type,
+                    icon_id: selectedIcon,
                     included_in_total: includedInTotal,
                 });
             } else {
@@ -54,6 +72,7 @@ export default function WalletFormModal({ wallet, currency, onClose, onSuccess }
                 await createWallet({
                     name: data.name,
                     type: data.type,
+                    iconId: selectedIcon,
                     currency: currency,
                     openingBalance: data.openingBalance || 0,
                     includedInTotal,
@@ -76,6 +95,35 @@ export default function WalletFormModal({ wallet, currency, onClose, onSuccess }
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="wallet-form">
+                {/* Icon Picker Section */}
+                <div className="form-group">
+                    <label className="form-label">Wallet Icon</label>
+                    <button
+                        type="button"
+                        className="icon-picker-trigger"
+                        onClick={() => setShowIconPicker(!showIconPicker)}
+                    >
+                        <div className="icon-picker-preview">
+                            {renderIconFromId(selectedIcon, 24)}
+                            <span className="icon-picker-name">{selectedIcon || 'Choose icon'}</span>
+                        </div>
+                        <ChevronDown size={16} className={`icon-picker-chevron ${showIconPicker ? 'open' : ''}`} />
+                    </button>
+
+                    {showIconPicker && (
+                        <div className="icon-picker-dropdown">
+                            <IconPicker
+                                selectedIcon={selectedIcon}
+                                onSelect={(iconId) => {
+                                    setSelectedIcon(iconId);
+                                    setShowIconPicker(false);
+                                }}
+                                onClose={() => setShowIconPicker(false)}
+                            />
+                        </div>
+                    )}
+                </div>
+
                 <Input
                     {...register('name')}
                     label="Wallet Name"

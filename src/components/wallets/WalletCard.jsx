@@ -1,10 +1,24 @@
-import { MoreVertical, Edit, Archive, ArchiveRestore, Trash2 } from 'lucide-react';
+import { MoreVertical, Edit, Archive, ArchiveRestore, Trash2, Wallet } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useWalletStore } from '../../stores/walletStore';
 import { formatCurrency } from '../../utils/currency';
 import Card from '../ui/Card';
 import './WalletCard.css';
+
+// Helper to render icon from icon ID
+const renderIconFromId = (iconId, size = 20) => {
+    if (!iconId) return <Wallet size={size} />;
+
+    const iconName = iconId
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+
+    const IconComponent = LucideIcons[iconName];
+    return IconComponent ? <IconComponent size={size} /> : <Wallet size={size} />;
+};
 
 export default function WalletCard({ wallet, showBalance, onEdit }) {
     const [showMenu, setShowMenu] = useState(false);
@@ -52,7 +66,9 @@ export default function WalletCard({ wallet, showBalance, onEdit }) {
         >
             <div className="wallet-header">
                 <div className="wallet-icon">
-                    <div className="wallet-type-badge">{wallet.type[0]}</div>
+                    <div className="wallet-type-badge">
+                        {renderIconFromId(wallet.icon_id, 20)}
+                    </div>
                 </div>
 
                 <div className="wallet-menu">
