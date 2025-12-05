@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
     Wallet, TrendingUp, PieChart, Shield, BarChart3,
-    Target, Zap, Lock, ArrowRight, Terminal, Database,
-    Layers, RefreshCw, MessageSquare, Settings
+    Target, Zap, ArrowRight, Sparkles, CreditCard,
+    Layers, ChevronRight
 } from 'lucide-react';
 import AuthModal from '../components/auth/AuthModal';
 import './LandingPage.css';
@@ -26,127 +26,140 @@ export default function LandingPage() {
         {
             icon: Wallet,
             title: 'Multi-Wallet System',
-            description: 'Manage unlimited accounts: bank, credit, cash, UPI, investments. Track everything in one place.',
-            status: 'ACTIVE'
+            description: 'Manage bank accounts, credit cards, cash, and investments—all in one elegant dashboard.',
         },
         {
             icon: Target,
             title: 'Smart Categories',
-            description: 'Organize expenses and income with customizable categories and intelligent auto-classification.',
-            status: 'ACTIVE'
-        },
-        {
-            icon: Database,
-            title: 'Transaction Log',
-            description: 'Detailed tracking with search, filters, and export. Never lose sight of your money flow.',
-            status: 'ACTIVE'
+            description: 'Organize your finances with customizable categories and intelligent auto-classification.',
         },
         {
             icon: BarChart3,
             title: 'Visual Reports',
-            description: 'Income analysis, expense breakdowns, and trend visualization with interactive charts.',
-            status: 'ACTIVE'
+            description: 'Beautiful charts and analytics that make understanding your money a pleasure.',
         },
         {
             icon: TrendingUp,
-            title: 'Dashboard Control',
-            description: 'Real-time financial health overview with key metrics and actionable insights.',
-            status: 'ACTIVE'
+            title: 'Trend Insights',
+            description: 'Track spending patterns over time and discover opportunities to save.',
+        },
+        {
+            icon: CreditCard,
+            title: 'Transaction Tracking',
+            description: 'Every transaction logged with search, filters, and seamless categorization.',
         },
         {
             icon: Shield,
-            title: 'Secure Auth',
-            description: 'Email/password + Google OAuth. Your data encrypted and protected with industry standards.',
-            status: 'ACTIVE'
+            title: 'Bank-Level Security',
+            description: 'Your data encrypted and protected with industry-leading security standards.',
         }
     ];
 
-    const capabilities = [
-        { feature: 'User Authentication', spec: 'Email/Password + OAuth2', status: '✓' },
-        { feature: 'Wallet Management', spec: 'CRUD + Balance Tracking', status: '✓' },
-        { feature: 'Category System', spec: 'Custom + Icons', status: '✓' },
-        { feature: 'Transaction Engine', spec: 'Real-time Logging', status: '✓' },
-        { feature: 'Report Generation', spec: 'Charts + Analytics', status: '✓' },
-        { feature: 'Data Persistence', spec: 'PostgreSQL + Supabase', status: '✓' },
-        { feature: 'State Management', spec: 'Zustand Store', status: '✓' },
-        { feature: 'UI Components', spec: 'Custom Design System', status: '✓' },
-    ];
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0 }
+    };
+
+    const staggerContainer = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
 
     return (
         <div className="landing-page">
-            {/* Background Elements */}
-            <div className="landing-bg-grid" />
-            <div className="landing-bg-scanlines" />
-            <div className="landing-bg-glow" />
+            {/* Ambient Background */}
+            <div className="ambient-bg">
+                <div className="ambient-orb orb-1" />
+                <div className="ambient-orb orb-2" />
+                <div className="ambient-orb orb-3" />
+            </div>
+
+            {/* Navigation */}
+            <motion.nav
+                className="landing-nav"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
+                <div className="container nav-container">
+                    <div className="nav-brand">
+                        <Sparkles className="brand-icon" size={24} />
+                        <span className="brand-name">Zenithly</span>
+                    </div>
+                    <div className="nav-actions">
+                        <button className="nav-link" onClick={openLogin}>
+                            Sign In
+                        </button>
+                        <button className="nav-cta" onClick={openSignup}>
+                            Get Started
+                            <ArrowRight size={16} />
+                        </button>
+                    </div>
+                </div>
+            </motion.nav>
 
             {/* Hero Section */}
-            <motion.section
-                className="hero-section"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-            >
+            <section className="hero-section">
                 <div className="container">
                     <motion.div
                         className="hero-content"
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.8 }}
+                        initial="hidden"
+                        animate="visible"
+                        variants={staggerContainer}
                     >
-                        {/* Terminal Header */}
-                        <div className="terminal-header">
-                            <div className="terminal-dots">
-                                <span className="dot red" />
-                                <span className="dot amber" />
-                                <span className="dot green" />
+                        <motion.div className="hero-badge" variants={fadeInUp}>
+                            <Sparkles size={14} />
+                            <span>Personal Finance, Reimagined</span>
+                        </motion.div>
+
+                        <motion.h1 className="hero-title" variants={fadeInUp}>
+                            Your Money,
+                            <br />
+                            <span className="title-accent">Beautifully Managed</span>
+                        </motion.h1>
+
+                        <motion.p className="hero-description" variants={fadeInUp}>
+                            Track expenses, manage wallets, and gain insights into your financial health
+                            with an interface designed for clarity and delight.
+                        </motion.p>
+
+                        <motion.div className="hero-ctas" variants={fadeInUp}>
+                            <button className="cta-primary" onClick={openSignup}>
+                                <span>Start Free</span>
+                                <ArrowRight size={18} />
+                            </button>
+                            <button className="cta-secondary" onClick={openLogin}>
+                                <span>I have an account</span>
+                            </button>
+                        </motion.div>
+
+                        <motion.div className="hero-stats" variants={fadeInUp}>
+                            <div className="stat-item">
+                                <span className="stat-value">100%</span>
+                                <span className="stat-label">Free to Use</span>
                             </div>
-                            <div className="terminal-title">zenithly.sh</div>
-                        </div>
-
-                        {/* Logo */}
-                        <h1 className="hero-logo">
-                            <span className="logo-bracket">{'>'}</span>
-                            ZENITH<span className="logo-accent">LY</span>
-                            <span className="logo-cursor">_</span>
-                        </h1>
-
-                        {/* Headline */}
-                        <h2 className="hero-headline">
-                            Your Financial<br />
-                            <span className="headline-highlight">Command Center</span>
-                        </h2>
-
-                        {/* Subheadline */}
-                        <p className="hero-subheadline">
-                            Track, analyze, and optimize your money with a modern personal finance
-                            management system built for precision and clarity.
-                        </p>
-
-                        {/* CTA Buttons */}
-                        <div className="hero-ctas">
-                            <button className="cta-primary" onClick={openLogin}>
-                                <Terminal size={18} />
-                                <span>Launch Terminal</span>
-                                <ArrowRight size={16} />
-                            </button>
-                            <button className="cta-secondary" onClick={openSignup}>
-                                <Zap size={18} />
-                                <span>Initialize System</span>
-                            </button>
-                        </div>
-
-                        {/* Status Line */}
-                        <div className="hero-status">
-                            <span className="status-indicator" />
-                            <span className="status-text">SYSTEM ONLINE</span>
-                            <span className="status-divider">|</span>
-                            <span className="status-text">v1.0.0</span>
-                        </div>
+                            <div className="stat-divider" />
+                            <div className="stat-item">
+                                <span className="stat-value">∞</span>
+                                <span className="stat-label">Wallets</span>
+                            </div>
+                            <div className="stat-divider" />
+                            <div className="stat-item">
+                                <span className="stat-value">Secure</span>
+                                <span className="stat-label">Always</span>
+                            </div>
+                        </motion.div>
                     </motion.div>
                 </div>
-            </motion.section>
+            </section>
 
-            {/* Features Grid */}
+            {/* Features Section */}
             <section className="features-section">
                 <div className="container">
                     <motion.div
@@ -156,96 +169,45 @@ export default function LandingPage() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
+                        <span className="section-tag">Features</span>
                         <h2 className="section-title">
-                            <span className="title-bracket">[[</span>
-                            CAPABILITIES
-                            <span className="title-bracket">]]</span>
+                            Everything You Need
                         </h2>
-                        <p className="section-subtitle">
-                            Enterprise-grade features for personal finance management
+                        <p className="section-description">
+                            Powerful tools wrapped in a beautiful experience
                         </p>
                     </motion.div>
 
-                    <div className="features-grid">
+                    <motion.div
+                        className="features-grid"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={staggerContainer}
+                    >
                         {features.map((feature, index) => (
                             <motion.div
                                 key={index}
                                 className="feature-card"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1, duration: 0.5 }}
-                                whileHover={{ y: -4 }}
+                                variants={fadeInUp}
+                                whileHover={{ y: -8, transition: { duration: 0.3 } }}
                             >
-                                <div className="feature-header">
-                                    <div className="feature-icon">
-                                        <feature.icon size={24} />
-                                    </div>
-                                    <span className="feature-status">{feature.status}</span>
+                                <div className="feature-icon">
+                                    <feature.icon size={24} />
                                 </div>
                                 <h3 className="feature-title">{feature.title}</h3>
                                 <p className="feature-description">{feature.description}</p>
-                                <div className="feature-border" />
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Capabilities Matrix */}
-            <section className="capabilities-section">
-                <div className="container">
-                    <motion.div
-                        className="section-header"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h2 className="section-title">
-                            <span className="title-bracket">[[</span>
-                            SYSTEM SPEC
-                            <span className="title-bracket">]]</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div
-                        className="capabilities-matrix"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <div className="matrix-header">
-                            <div className="matrix-col">MODULE</div>
-                            <div className="matrix-col">SPECIFICATION</div>
-                            <div className="matrix-col">STATUS</div>
-                        </div>
-                        {capabilities.map((cap, index) => (
-                            <motion.div
-                                key={index}
-                                className="matrix-row"
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.05, duration: 0.4 }}
-                            >
-                                <div className="matrix-cell">{cap.feature}</div>
-                                <div className="matrix-cell">{cap.spec}</div>
-                                <div className="matrix-cell status-cell">
-                                    <span className="status-check">{cap.status}</span>
-                                </div>
                             </motion.div>
                         ))}
                     </motion.div>
                 </div>
             </section>
 
-            {/* Final CTA */}
+            {/* CTA Section */}
             <section className="cta-section">
                 <div className="container">
                     <motion.div
-                        className="cta-box"
+                        className="cta-card"
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -254,21 +216,19 @@ export default function LandingPage() {
                         <div className="cta-content">
                             <h2 className="cta-title">Ready to take control?</h2>
                             <p className="cta-description">
-                                Join users who've streamlined their financial management with Zenithly
+                                Join thousands who've transformed their relationship with money.
                             </p>
                             <div className="cta-buttons">
                                 <button className="cta-primary" onClick={openSignup}>
                                     <Zap size={18} />
-                                    <span>Get Started</span>
+                                    <span>Get Started Free</span>
                                     <ArrowRight size={16} />
-                                </button>
-                                <button className="cta-secondary" onClick={openLogin}>
-                                    <Terminal size={18} />
-                                    <span>Sign In</span>
                                 </button>
                             </div>
                         </div>
-                        <div className="cta-decoration" />
+                        <div className="cta-decoration">
+                            <Layers size={120} />
+                        </div>
                     </motion.div>
                 </div>
             </section>
@@ -278,13 +238,13 @@ export default function LandingPage() {
                 <div className="container">
                     <div className="footer-content">
                         <div className="footer-brand">
-                            <span className="footer-logo">ZENITHLY</span>
-                            <span className="footer-tagline">Financial Command Center</span>
+                            <Sparkles className="brand-icon" size={20} />
+                            <span className="footer-logo">Zenithly</span>
                         </div>
                         <div className="footer-info">
-                            <span>Built with React + Vite + Supabase</span>
+                            <span>Built with React + Supabase</span>
                             <span className="footer-divider">•</span>
-                            <span>MIT License</span>
+                            <span>© 2024</span>
                         </div>
                     </div>
                 </div>

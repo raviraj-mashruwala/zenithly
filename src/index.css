@@ -1,10 +1,16 @@
-/* Zenithly - App Entry Point */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ZENITHLY — Global Styles (Liquid Glass Design System)
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+/* Typography Imports */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Design Tokens */
 @import './styles/tokens.css';
 
-/* === Reset & Base === */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 *,
 *::before,
@@ -18,72 +24,43 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-bg-void);
+    background-color: var(--color-bg-base);
 }
 
 body {
     font-family: var(--font-body);
     font-size: var(--text-base);
+    font-weight: var(--font-normal);
     line-height: var(--leading-normal);
     color: var(--color-text-primary);
-    background-color: var(--color-bg-void);
+    background-color: var(--color-bg-base);
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
 }
 
-/* Grid Background - Terminal Brutalism */
+/* Subtle noise texture for depth */
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-        linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.015;
     pointer-events: none;
-    z-index: 1;
-}
-
-/* Scanline Overlay - Terminal Brutalism */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(0deg,
-            rgba(0, 0, 0, 0.1) 0px,
-            transparent 1px,
-            transparent 2px,
-            rgba(0, 0, 0, 0.1) 3px);
-    opacity: 0.2;
-    pointer-events: none;
-    z-index: 9998;
-    animation: scanlines 8s linear infinite;
-}
-
-@keyframes scanlines {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(4px);
-    }
+    z-index: 0;
 }
 
 #root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
-/* === Typography === */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 h1,
 h2,
@@ -92,15 +69,15 @@ h4,
 h5,
 h6 {
     font-family: var(--font-display);
-    font-weight: var(--font-bold);
+    font-weight: var(--font-semibold);
     color: var(--color-text-primary);
     line-height: var(--leading-tight);
-    letter-spacing: -0.02em;
+    letter-spacing: var(--tracking-tight);
 }
 
 h1 {
     font-size: var(--text-5xl);
-    font-weight: var(--font-extrabold);
+    font-weight: var(--font-bold);
 }
 
 h2 {
@@ -126,153 +103,232 @@ h6 {
 p {
     margin-bottom: var(--space-4);
     max-width: 65ch;
+    color: var(--color-text-secondary);
 }
 
 a {
-    color: var(--color-text-primary);
+    color: var(--color-accent);
     text-decoration: none;
-    border-bottom: 1px solid var(--color-accent);
-    transition: all var(--transition-fast);
+    transition: color var(--transition-fast);
 }
 
 a:hover {
-    color: var(--color-accent);
-    border-bottom-color: transparent;
-    text-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+    color: var(--color-accent-light);
 }
 
-/* === Utility Classes === */
+strong,
+b {
+    font-weight: var(--font-semibold);
+}
+
+small {
+    font-size: var(--text-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Text Colors */
+.text-primary {
+    color: var(--color-text-primary);
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
 
 .text-accent {
     color: var(--color-accent);
 }
 
-.text-accent-soft {
-    color: var(--color-accent-soft);
+.text-success {
+    color: var(--color-success);
 }
 
-.text-subtle {
-    color: var(--color-text-secondary);
+.text-error {
+    color: var(--color-error);
 }
 
-.bg-void {
-    background-color: var(--color-bg-void);
+.text-warning {
+    color: var(--color-warning);
 }
 
-.bg-deep {
-    background-color: var(--color-bg-deep);
+/* Background Colors */
+.bg-base {
+    background-color: var(--color-bg-base);
+}
+
+.bg-elevated {
+    background-color: var(--color-bg-elevated);
 }
 
 .bg-surface {
     background-color: var(--color-bg-surface);
 }
 
-.border-accent {
-    border: 1px solid var(--color-accent);
+.bg-glass {
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
 }
 
-.border-subtle {
-    border: 1px solid var(--color-border-subtle);
-}
-
+/* Layout */
 .container {
     width: 100%;
-    max-width: 1400px;
+    max-width: var(--container-2xl);
     margin: 0 auto;
     padding: 0 var(--space-6);
 }
 
-/* Terminal Cursor Animation */
-.terminal-cursor {
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-
-    0%,
-    50% {
-        opacity: 1;
-    }
-
-    51%,
-    100% {
-        opacity: 0;
+@media (max-width: 768px) {
+    .container {
+        padding: 0 var(--space-4);
     }
 }
 
-/* === Custom Scrollbar === */
+/* Flex Utilities */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-2 {
+    gap: var(--space-2);
+}
+
+.gap-4 {
+    gap: var(--space-4);
+}
+
+.gap-6 {
+    gap: var(--space-6);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLASS MORPHISM UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.glass-panel {
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-glass);
+}
+
+.glass-panel:hover {
+    background: var(--color-bg-glass-hover);
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-glass-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM SCROLLBAR
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--color-bg-void);
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
     background: var(--color-border-strong);
     border-radius: var(--radius-full);
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-accent);
+    background-clip: padding-box;
 }
 
-/* === Global Select Styling - Terminal Brutalism === */
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL SELECT STYLING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 select {
     width: 100%;
     padding: var(--space-3) var(--space-4);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    background-color: rgba(0, 217, 255, 0.05);
-    border: 2px solid var(--color-border-default);
+    font-weight: var(--font-medium);
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
     border-radius: var(--radius-md);
     color: var(--color-text-primary);
     cursor: pointer;
-    transition: all var(--transition-base);
+    transition: all var(--transition-fast);
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300D9FF' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E8A87C' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right var(--space-4) center;
     padding-right: calc(var(--space-4) * 2.5);
 }
 
 select:hover {
-    border-color: var(--color-accent);
-    background-color: rgba(0, 217, 255, 0.08);
+    border-color: var(--color-border-strong);
+    background-color: var(--color-bg-surface-hover);
 }
 
 select:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
+    box-shadow: 0 0 0 3px var(--color-accent-muted);
 }
 
 select option {
     background-color: var(--color-bg-surface);
     color: var(--color-text-primary);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     padding: var(--space-2);
 }
 
-/* Back Button - Terminal Style */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BACK BUTTON
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .back-button {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-weight: var(--font-medium);
     background: transparent;
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
-    color: var(--color-text-tertiary);
+    border-radius: var(--radius-full);
+    color: var(--color-text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
     text-decoration: none;
@@ -281,27 +337,32 @@ select option {
 .back-button:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
-    background: rgba(0, 217, 255, 0.05);
+    background: var(--color-accent-muted);
     transform: translateX(-2px);
 }
 
-/* Filter Section - Terminal Style */
+/* ═══════════════════════════════════════════════════════════════════════════
+   FILTER SECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .filter-section {
     display: flex;
     gap: var(--space-3);
     align-items: center;
     padding: var(--space-4);
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur-sm);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xl);
     margin-bottom: var(--space-6);
     flex-wrap: wrap;
 }
 
 .filter-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    letter-spacing: 0.1em;
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
     color: var(--color-text-tertiary);
     display: flex;
@@ -309,15 +370,18 @@ select option {
     gap: var(--space-2);
 }
 
-/* Month/Period Picker - Terminal Style */
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERIOD/MONTH PICKER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .month-picker {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2);
+    gap: var(--space-1);
+    padding: var(--space-1);
     background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-full);
 }
 
 .month-picker button {
@@ -327,39 +391,41 @@ select option {
     width: 32px;
     height: 32px;
     background: transparent;
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-sm);
+    border: none;
+    border-radius: var(--radius-full);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .month-picker button:hover {
-    border-color: var(--color-accent);
     color: var(--color-accent);
-    background: rgba(0, 217, 255, 0.1);
+    background: var(--color-accent-muted);
 }
 
 .month-picker span {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.05em;
+    font-weight: var(--font-medium);
     color: var(--color-text-primary);
     min-width: 120px;
     text-align: center;
+    padding: 0 var(--space-2);
 }
 
-/* Action Menu Button (3-dot menu) */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ACTION MENU BUTTON
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .action-menu-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     background: transparent;
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -368,22 +434,27 @@ select option {
 .action-menu-button:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
-    background: rgba(0, 217, 255, 0.1);
+    background: var(--color-accent-muted);
 }
 
-/* Stats Summary Box */
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATS SUMMARY BOX
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .stats-summary {
     padding: var(--space-6);
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-2xl);
     margin-bottom: var(--space-6);
 }
 
 .stats-summary-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    letter-spacing: 0.1em;
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
     color: var(--color-text-tertiary);
     margin-bottom: var(--space-2);
@@ -392,22 +463,106 @@ select option {
 .stats-summary-value {
     font-family: var(--font-display);
     font-size: var(--text-3xl);
-    font-weight: 700;
+    font-weight: var(--font-bold);
     color: var(--color-accent);
-    letter-spacing: 0.025em;
+    letter-spacing: var(--tracking-tight);
 }
 
 .stats-summary-meta {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.05em;
     margin-top: var(--space-1);
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   SELECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* === Selection === */
 ::selection {
     background-color: var(--color-accent);
-    color: var(--color-bg-void);
+    color: var(--color-text-inverse);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Utility Animation Classes */
+.animate-fade-in {
+    animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp var(--duration-slow) var(--ease-out-expo);
+}
+
+.animate-pulse {
+    animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+.animate-float {
+    animation: float 6s var(--ease-in-out) infinite;
 }

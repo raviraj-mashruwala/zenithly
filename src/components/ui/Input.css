@@ -1,4 +1,6 @@
-/* Input Component - Terminal Brutalism */
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT COMPONENT — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .input-wrapper {
     display: flex;
@@ -10,14 +12,16 @@
     width: 100%;
 }
 
-/* Label - Monospace Terminal Style */
+/* ═══════════════════════════════════════════════════════════════════════════
+   LABEL
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .input-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.05em;
+    font-weight: var(--font-medium);
     color: var(--color-text-secondary);
-    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
 }
 
 .input-required {
@@ -25,15 +29,10 @@
     margin-left: var(--space-1);
 }
 
-.input-required::before {
-    content: '[';
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT CONTAINER
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-.input-required::after {
-    content: ']';
-}
-
-/* Input Container */
 .input-container {
     position: relative;
 }
@@ -72,17 +71,20 @@
     color: var(--color-accent);
 }
 
-/* Input Field */
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT FIELD
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .input {
     width: 100%;
-    background-color: rgba(0, 217, 255, 0.05);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
     padding: var(--space-3) var(--space-4);
     color: var(--color-text-primary);
     font-family: var(--font-body);
     font-size: var(--text-base);
-    transition: all var(--transition-base);
+    transition: all var(--transition-fast);
 }
 
 .input.input-with-left-icon {
@@ -94,37 +96,37 @@
 }
 
 .input::placeholder {
-    color: var(--color-text-tertiary);
+    color: var(--color-text-muted);
     font-family: var(--font-body);
 }
 
+/* Focus State */
 .input:focus {
     outline: none;
     border-color: var(--color-accent);
-    background-color: rgba(0, 217, 255, 0.08);
-    box-shadow: var(--glow-accent-soft);
-}
-
-.input:focus::after {
-    content: '_';
-    color: var(--color-accent);
-    animation: blink 1s infinite;
+    background-color: var(--color-bg-surface-hover);
+    box-shadow: 0 0 0 3px var(--color-accent-muted);
 }
 
 /* Hover State */
-.input:hover:not(:focus) {
+.input:hover:not(:focus):not(:disabled) {
     border-color: var(--color-border-strong);
+    background-color: var(--color-bg-surface-hover);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT STATES
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Error State */
 .input-container.input-error .input {
     border-color: var(--color-error);
-    background-color: rgba(255, 0, 64, 0.05);
+    background-color: var(--color-error-muted);
 }
 
 .input-container.input-error .input:focus {
     border-color: var(--color-error);
-    box-shadow: 0 0 20px rgba(255, 0, 64, 0.2);
+    box-shadow: 0 0 0 3px var(--color-error-muted);
 }
 
 .input-container.input-error .input-icon-left {
@@ -133,25 +135,32 @@
 
 /* Success State */
 .input-container.input-success .input {
-    border-color: var(--color-accent-secondary);
-    background-color: rgba(0, 255, 65, 0.05);
+    border-color: var(--color-success);
+    background-color: var(--color-success-muted);
+}
+
+.input-container.input-success .input:focus {
+    border-color: var(--color-success);
+    box-shadow: 0 0 0 3px var(--color-success-muted);
 }
 
 /* Disabled State */
 .input:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background-color: var(--color-bg-deep);
+    background-color: var(--color-bg-elevated);
     border-color: var(--color-border-subtle);
 }
 
-/* Hint Text */
+/* ═══════════════════════════════════════════════════════════════════════════
+   HINT TEXT
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .input-hint {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    margin-left: var(--space-1);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.05em;
+    margin-top: var(--space-1);
 }
 
 .input-hint-error {
@@ -159,30 +168,90 @@
 }
 
 .input-hint-success {
-    color: var(--color-accent-secondary);
+    color: var(--color-success);
 }
 
-/* Textarea */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEXTAREA
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 textarea.input {
     resize: vertical;
-    min-height: 100px;
-    font-family: var(--font-body);
-    line-height: var(--leading-normal);
+    min-height: 120px;
+    line-height: var(--leading-relaxed);
 }
 
-/* Select */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SELECT (INPUT VARIANT)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 select.input {
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300D9FF' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E8A87C' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right var(--space-4) center;
-    padding-right: calc(var(--space-4) * 2);
+    padding-right: calc(var(--space-4) * 2.5);
 }
 
-/* Responsive */
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT SIZES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.input-sm {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    border-radius: var(--radius-md);
+}
+
+.input-lg {
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-lg);
+    border-radius: var(--radius-xl);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FLOATING LABEL VARIANT
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.input-floating {
+    position: relative;
+}
+
+.input-floating .input {
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-2);
+}
+
+.input-floating .input-label {
+    position: absolute;
+    left: var(--space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    transition: all var(--transition-fast);
+    background: transparent;
+    padding: 0;
+    z-index: 1;
+}
+
+.input-floating .input:focus~.input-label,
+.input-floating .input:not(:placeholder-shown)~.input-label {
+    top: var(--space-2);
+    transform: translateY(0);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @media (max-width: 640px) {
     .input {
-        font-size: var(--text-sm);
+        font-size: var(--text-base);
+        /* Prevent zoom on iOS */
     }
 }

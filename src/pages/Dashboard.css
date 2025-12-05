@@ -1,11 +1,28 @@
-/* Dashboard Page - Terminal Command Center */
+/* ═══════════════════════════════════════════════════════════════════════════
+   DASHBOARD PAGE — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .dashboard-container {
     padding: 0;
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.4s var(--ease-out);
 }
 
-/* Header */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -18,40 +35,42 @@
 .dashboard-title {
     font-family: var(--font-display);
     font-size: var(--text-4xl);
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-weight: var(--font-bold);
+    letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     margin-bottom: var(--space-2);
 }
 
 .dashboard-subtitle {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
 }
 
-/* Balance Card - Terminal Style */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BALANCE CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .balance-card {
     position: relative;
-    background: linear-gradient(135deg,
-            rgba(0, 217, 255, 0.08) 0%,
-            rgba(0, 255, 65, 0.05) 100%);
-    border: 2px solid var(--color-accent);
-    min-height: 200px;
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-2xl);
+    min-height: 180px;
     display: flex;
     align-items: center;
     gap: var(--space-8);
     padding: var(--space-8);
     margin-bottom: var(--space-8);
     overflow: hidden;
-    box-shadow: var(--glow-accent-soft);
+    box-shadow: var(--shadow-glass);
 }
 
 .balance-icon {
     color: var(--color-accent);
-    opacity: 0.15;
+    opacity: 0.1;
 }
 
 .balance-content {
@@ -66,9 +85,10 @@
 }
 
 .balance-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.15em;
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wide);
     color: var(--color-text-tertiary);
     text-transform: uppercase;
 }
@@ -76,7 +96,7 @@
 .balance-toggle {
     background: transparent;
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-full);
     padding: var(--space-2);
     color: var(--color-text-tertiary);
     cursor: pointer;
@@ -86,57 +106,75 @@
 .balance-toggle:hover {
     color: var(--color-accent);
     border-color: var(--color-accent);
+    background: var(--color-accent-muted);
 }
 
 .balance-amount {
     font-family: var(--font-display);
     font-size: var(--text-5xl);
-    font-weight: 700;
+    font-weight: var(--font-bold);
     color: var(--color-accent);
-    letter-spacing: 0.025em;
+    letter-spacing: var(--tracking-tight);
     margin-bottom: var(--space-3);
-    text-shadow: var(--glow-accent-soft);
 }
 
 .balance-status {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
 }
 
 .status-indicator {
     width: 8px;
     height: 8px;
-    background-color: var(--color-accent-secondary);
+    background-color: var(--color-success);
     border-radius: 50%;
-    animation: pulse 2s infinite;
+    box-shadow: 0 0 8px var(--color-success);
+    animation: pulse 2s ease-in-out infinite;
 }
 
-/* Stats Grid */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(0.9);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATS GRID
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: var(--space-4);
     margin-bottom: var(--space-8);
 }
 
 .stat-card {
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur-sm);
+    -webkit-backdrop-filter: var(--glass-blur-sm);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xl);
     padding: var(--space-6);
     transition: all var(--transition-base);
     cursor: default;
 }
 
 .stat-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-glass);
     transform: translateY(-2px);
 }
 
@@ -155,54 +193,50 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    border: 1px solid;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
 }
 
 .stat-icon.income {
-    background: rgba(0, 255, 65, 0.1);
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
+    background: var(--color-success-muted);
+    color: var(--color-success);
 }
 
 .stat-icon.expense {
-    background: rgba(255, 0, 64, 0.1);
-    border-color: var(--color-error);
+    background: var(--color-error-muted);
     color: var(--color-error);
 }
 
 .stat-icon.net {
-    background: rgba(0, 217, 255, 0.1);
-    border-color: var(--color-accent);
+    background: var(--color-accent-muted);
     color: var(--color-accent);
 }
 
 .stat-icon.neutral {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--color-border-strong);
+    background: var(--color-bg-surface);
     color: var(--color-text-secondary);
 }
 
 .stat-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
+    font-weight: var(--font-medium);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.1em;
     text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
 }
 
 .stat-value {
     font-family: var(--font-display);
     font-size: var(--text-3xl);
-    font-weight: 700;
+    font-weight: var(--font-bold);
     color: var(--color-text-primary);
-    letter-spacing: 0.025em;
+    letter-spacing: var(--tracking-tight);
 }
 
 .stat-value.positive {
-    color: var(--color-accent-secondary);
+    color: var(--color-success);
 }
 
 .stat-value.negative {
@@ -222,24 +256,27 @@
 }
 
 .stat-cta-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.05em;
     color: var(--color-text-secondary);
 }
 
-/* Dashboard Grid (Widgets) */
+/* ═══════════════════════════════════════════════════════════════════════════
+   DASHBOARD GRID (WIDGETS)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: var(--space-6);
 }
 
-/* Widget */
 .widget {
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-2xl);
     padding: var(--space-6);
     min-height: 400px;
     display: flex;
@@ -256,18 +293,20 @@
 }
 
 .widget-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-lg);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-weight: var(--font-semibold);
     color: var(--color-text-primary);
 }
 
-/* Wallet List */
+/* ═══════════════════════════════════════════════════════════════════════════
+   WALLET LIST
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .wallet-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
 }
 
 .wallet-item {
@@ -275,15 +314,15 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--space-4);
-    background: rgba(0, 217, 255, 0.03);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     transition: all var(--transition-fast);
 }
 
 .wallet-item:hover {
-    background: rgba(0, 217, 255, 0.08);
-    border-color: var(--color-accent);
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-default);
 }
 
 .wallet-info {
@@ -296,11 +335,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: rgba(0, 217, 255, 0.1);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius-md);
+    width: 40px;
+    height: 40px;
+    background: var(--color-accent-muted);
+    border-radius: var(--radius-lg);
     color: var(--color-accent);
 }
 
@@ -311,59 +349,63 @@
 }
 
 .wallet-name {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.025em;
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
 }
 
 .wallet-type {
-    font-family: var(--font-display);
-    font-size: 10px;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
 }
 
 .wallet-balance {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-base);
-    font-weight: 600;
+    font-weight: var(--font-semibold);
     color: var(--color-accent);
 }
 
-/* Period Tabs */
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERIOD TABS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .period-tabs {
     display: flex;
-    gap: var(--space-2);
+    gap: var(--space-1);
+    background: var(--color-bg-surface);
+    padding: var(--space-1);
+    border-radius: var(--radius-full);
 }
 
 .period-tab {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: var(--space-1) var(--space-3);
+    font-weight: var(--font-medium);
+    padding: var(--space-2) var(--space-3);
     background: transparent;
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border: none;
+    border-radius: var(--radius-full);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .period-tab:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
+    color: var(--color-text-primary);
 }
 
 .period-tab.active {
-    background: rgba(0, 217, 255, 0.1);
-    border-color: var(--color-accent);
-    color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
 }
 
-/* Category List */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CATEGORY LIST
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .category-list {
     display: flex;
     flex-direction: column;
@@ -387,10 +429,10 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.025em;
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
 }
 
 .category-dot {
@@ -401,14 +443,14 @@
 }
 
 .category-amount {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: var(--font-semibold);
     color: var(--color-accent);
 }
 
 .category-bar {
-    height: 6px;
+    height: 4px;
     background: var(--color-border-subtle);
     border-radius: var(--radius-full);
     overflow: hidden;
@@ -416,15 +458,19 @@
 
 .category-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+    border-radius: var(--radius-full);
     transition: width var(--transition-base);
 }
 
-/* Transaction List */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRANSACTION LIST
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .transaction-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
 }
 
 .transaction-item {
@@ -432,15 +478,15 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--space-3);
-    background: rgba(0, 217, 255, 0.03);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-surface);
+    border: 1px solid transparent;
+    border-radius: var(--radius-lg);
     transition: all var(--transition-fast);
 }
 
 .transaction-item:hover {
-    background: rgba(0, 217, 255, 0.08);
-    border-color: var(--color-accent);
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-subtle);
 }
 
 .transaction-info {
@@ -453,21 +499,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-md);
-    border: 1px solid;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-lg);
 }
 
 .transaction-icon.income {
-    background: rgba(0, 255, 65, 0.1);
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
+    background: var(--color-success-muted);
+    color: var(--color-success);
 }
 
 .transaction-icon.expense {
-    background: rgba(255, 0, 64, 0.1);
-    border-color: var(--color-error);
+    background: var(--color-error-muted);
     color: var(--color-error);
 }
 
@@ -478,35 +521,36 @@
 }
 
 .transaction-description {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.025em;
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
 }
 
 .transaction-date {
-    font-family: var(--font-display);
-    font-size: 10px;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
 }
 
 .transaction-amount {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-base);
-    font-weight: 600;
+    font-weight: var(--font-semibold);
 }
 
 .transaction-amount.income {
-    color: var(--color-accent-secondary);
+    color: var(--color-success);
 }
 
 .transaction-amount.expense {
     color: var(--color-error);
 }
 
-/* Empty State */
+/* ═══════════════════════════════════════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .empty-state {
     display: flex;
     flex-direction: column;
@@ -515,39 +559,46 @@
     gap: var(--space-4);
     padding: var(--space-8);
     min-height: 200px;
-}
-
-.empty-message {
-    font-family: var(--font-display);
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    text-align: center;
 }
 
 .empty-icon {
     font-size: var(--text-5xl);
+    opacity: 0.5;
+}
+
+.empty-message {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
 }
 
 .empty-actions {
     display: flex;
     gap: var(--space-3);
     flex-wrap: wrap;
+    justify-content: center;
 }
 
-/* Welcome Card */
+/* ═══════════════════════════════════════════════════════════════════════════
+   WELCOME CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .welcome-card {
     text-align: center;
     padding: var(--space-12);
-    background: linear-gradient(135deg,
-            rgba(0, 217, 255, 0.05) 0%,
-            rgba(0, 255, 65, 0.03) 100%);
-    border: 2px solid var(--color-accent);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-2xl);
 }
 
 .welcome-title {
     font-family: var(--font-display);
     font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
     margin-top: var(--space-4);
     margin-bottom: var(--space-3);
 }
@@ -556,39 +607,15 @@
     font-family: var(--font-body);
     color: var(--color-text-secondary);
     margin-bottom: var(--space-6);
-    max-width: 600px;
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-        box-shadow: 0 0 8px var(--color-accent-secondary);
-    }
-
-    50% {
-        opacity: 0.5;
-        box-shadow: none;
-    }
-}
-
-/* Responsive */
 @media (max-width: 768px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -602,9 +629,14 @@
         flex-direction: column;
         align-items: flex-start;
         min-height: auto;
+        padding: var(--space-6);
     }
 
     .balance-amount {
         font-size: var(--text-4xl);
+    }
+
+    .dashboard-title {
+        font-size: var(--text-3xl);
     }
 }

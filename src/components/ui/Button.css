@@ -1,23 +1,25 @@
-/* Button Component - Terminal Brutalism */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTON COMPONENT — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    padding: var(--space-3) var(--space-5);
-    font-family: var(--font-display);
+    padding: var(--space-3) var(--space-6);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    border: 2px solid;
-    border-radius: var(--radius-md);
+    font-weight: var(--font-semibold);
+    letter-spacing: var(--tracking-wide);
+    border-radius: var(--radius-full);
+    border: none;
     cursor: pointer;
     transition: all var(--transition-base);
     position: relative;
     overflow: hidden;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .button:disabled {
@@ -26,114 +28,126 @@
     pointer-events: none;
 }
 
-/* === Variants === */
+/* ═══════════════════════════════════════════════════════════════════════════
+   VARIANTS
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Primary - Electric Cyan */
+/* Primary — Rose Gold Gradient */
 .button-primary {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-    color: var(--color-bg-void);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-text-inverse);
+    box-shadow: 0 4px 15px var(--color-accent-glow);
 }
 
 .button-primary:hover:not(:disabled) {
-    background-color: transparent;
-    color: var(--color-accent);
-    box-shadow: var(--glow-accent);
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--color-accent-glow);
 }
 
-.button-primary::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background-color: var(--color-accent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s, opacity 0.6s;
+.button-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px var(--color-accent-glow);
 }
 
-.button-primary:hover::before {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-}
-
-/* Secondary - Terminal Green */
+/* Secondary — Subtle Border */
 .button-secondary {
-    background-color: transparent;
-    border-color: var(--color-border-strong);
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
     color: var(--color-text-primary);
 }
 
 .button-secondary:hover:not(:disabled) {
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
-    box-shadow: var(--glow-green);
-    transform: translateY(-2px);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-muted);
 }
 
-/* Outline */
+/* Outline — Accent Border */
 .button-outline {
-    background-color: transparent;
-    border-color: var(--color-accent);
+    background: transparent;
+    border: 1px solid var(--color-accent);
     color: var(--color-accent);
 }
 
 .button-outline:hover:not(:disabled) {
-    background-color: var(--color-accent);
-    color: var(--color-bg-void);
-    box-shadow: var(--glow-accent);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+    box-shadow: 0 4px 15px var(--color-accent-glow);
 }
 
-/* Ghost */
+/* Ghost — Minimal */
 .button-ghost {
-    background-color: transparent;
-    border-color: transparent;
+    background: transparent;
+    border: none;
     color: var(--color-text-secondary);
 }
 
 .button-ghost:hover:not(:disabled) {
     color: var(--color-accent);
-    background-color: rgba(0, 217, 255, 0.1);
-    border-color: var(--color-accent);
-    text-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+    background: var(--color-accent-muted);
 }
 
-/* Danger */
-.button-danger {
-    background-color: var(--color-error);
-    border-color: var(--color-error);
+/* Glass — Frosted Effect */
+.button-glass {
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur-sm);
+    border: 1px solid var(--color-border-default);
     color: var(--color-text-primary);
 }
 
-.button-danger:hover:not(:disabled) {
-    background-color: transparent;
-    border-color: var(--color-error);
-    box-shadow: 0 0 20px rgba(255, 0, 64, 0.3);
+.button-glass:hover:not(:disabled) {
+    background: var(--color-bg-glass-hover);
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-glass);
 }
 
-/* === Sizes === */
+/* Danger — Soft Coral */
+.button-danger {
+    background: linear-gradient(135deg, var(--color-error) 0%, #e84a4a 100%);
+    color: var(--color-text-primary);
+    box-shadow: 0 4px 15px var(--color-error-muted);
+}
+
+.button-danger:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+/* Success */
+.button-success {
+    background: linear-gradient(135deg, var(--color-success) 0%, #54b362 100%);
+    color: var(--color-text-inverse);
+    box-shadow: 0 4px 15px var(--color-success-muted);
+}
+
+.button-success:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(107, 203, 119, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIZES
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .button-sm {
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-2) var(--space-4);
     font-size: var(--text-xs);
     gap: var(--space-1);
 }
 
 .button-md {
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-3) var(--space-6);
     font-size: var(--text-sm);
 }
 
 .button-lg {
-    padding: var(--space-4) var(--space-6);
+    padding: var(--space-4) var(--space-8);
     font-size: var(--text-base);
 }
 
-/* === Modifiers === */
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODIFIERS
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .button-full-width {
     width: 100%;
@@ -142,6 +156,7 @@
 .button-icon-only {
     padding: var(--space-3);
     aspect-ratio: 1;
+    border-radius: var(--radius-full);
 }
 
 .button-icon-only.button-sm {
@@ -152,11 +167,18 @@
     padding: var(--space-4);
 }
 
-/* Loading State */
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOADING STATE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .button-loading {
     position: relative;
-    color: transparent;
+    color: transparent !important;
     pointer-events: none;
+}
+
+.button-loading>* {
+    visibility: hidden;
 }
 
 .button-loading::after {
@@ -164,18 +186,31 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 16px;
-    height: 16px;
-    margin: -8px 0 0 -8px;
+    width: 18px;
+    height: 18px;
+    margin: -9px 0 0 -9px;
     border: 2px solid currentColor;
     border-top-color: transparent;
     border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    color: var(--color-accent);
+    animation: spin 0.7s linear infinite;
 }
 
 .button-primary.button-loading::after {
-    color: var(--color-bg-void);
+    border-color: var(--color-text-inverse);
+    border-top-color: transparent;
+}
+
+/* Loading shimmer effect */
+.button-loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
 }
 
 @keyframes spin {
@@ -184,34 +219,50 @@
     }
 }
 
-/* Terminal Bracket Notation (optional class) */
-.button-bracketed::before {
-    content: '[';
-    margin-right: var(--space-1);
-}
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
 
-.button-bracketed::after {
-    content: ']';
-    margin-left: var(--space-1);
-}
-
-/* Glitch Effect on Active */
-.button:active:not(:disabled) {
-    animation: glitch 0.3s;
-}
-
-@keyframes glitch {
-
-    0%,
     100% {
-        transform: translate(0);
+        background-position: 200% 0;
     }
+}
 
-    33% {
-        transform: translate(-2px, 2px);
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   HOVER RIPPLE EFFECT
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-    66% {
-        transform: translate(2px, -2px);
-    }
+.button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s var(--ease-out-expo), height 0.4s var(--ease-out-expo), opacity 0.4s;
+    opacity: 0;
+}
+
+.button:active::before {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOCUS STATES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-accent-muted), 0 4px 15px var(--color-accent-glow);
+}
+
+.button-secondary:focus-visible,
+.button-ghost:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-accent-muted);
 }
