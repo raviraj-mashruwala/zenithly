@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingDown, Calendar, BarChart3 } from 'lucide-react';
+import { ArrowLeft, TrendingDown, Calendar, BarChart3, List, Layers, ChevronRight, ChevronDown } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
 import { useAuthStore } from '../../stores/authStore';
 import { useTransactionStore } from '../../stores/transactionStore';
 import { useWalletStore } from '../../stores/walletStore';
-import { getCategoryBreakdown } from '../../services/report.service';
+import { getCategoryBreakdown, getHierarchicalCategoryBreakdown } from '../../services/report.service';
 import { formatCompactCurrency } from '../../utils/currency';
 import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -23,7 +23,10 @@ export default function ExpenseDetailsReport() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedWallet, setSelectedWallet] = useState('all');
     const [expenseCategories, setExpenseCategories] = useState([]);
+    const [hierarchicalCategories, setHierarchicalCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [viewMode, setViewMode] = useState('flat'); // 'flat' | 'grouped'
+    const [expandedCategory, setExpandedCategory] = useState(null);
 
     const periodStart = format(startOfMonth(currentDate), 'yyyy-MM-dd');
     const periodEnd = format(endOfMonth(currentDate), 'yyyy-MM-dd');
@@ -40,9 +43,10 @@ export default function ExpenseDetailsReport() {
         try {
             await fetchStats(periodStart, periodEnd);
 
+            // Fetch flat breakdown
             const expenseData = await getCategoryBreakdown(user.id, periodStart, periodEnd, 'Expense');
 
-            // Calculate percentages
+            // Calculate percentages for flat view
             const totalExpense = expenseData.reduce((sum, cat) => sum + cat.total, 0);
 
             const expenseWithPercent = expenseData.map(cat => ({
@@ -50,10 +54,25 @@ export default function ExpenseDetailsReport() {
                 percentage: totalExpense > 0 ? (cat.total / totalExpense) * 100 : 0,
             }));
 
-            // Group small categories
+            // Group small categories for flat view
             const groupedExpense = groupSmallCategories(expenseWithPercent);
-
             setExpenseCategories(groupedExpense);
+
+            // Fetch hierarchical breakdown
+            const hierarchicalData = await getHierarchicalCategoryBreakdown(user.id, periodStart, periodEnd, 'Expense');
+
+            // Calculate percentages for hierarchical view
+            const hierarchicalTotal = hierarchicalData.reduce((sum, cat) => sum + cat.total, 0);
+            const hierarchicalWithPercent = hierarchicalData.map(cat => ({
+                ...cat,
+                percentage: hierarchicalTotal > 0 ? (cat.total / hierarchicalTotal) * 100 : 0,
+                ownPercentage: hierarchicalTotal > 0 ? (cat.ownTotal / hierarchicalTotal) * 100 : 0,
+                children: cat.children.map(child => ({
+                    ...child,
+                    percentage: cat.total > 0 ? (child.total / cat.total) * 100 : 0,
+                })),
+            }));
+            setHierarchicalCategories(hierarchicalWithPercent);
         } catch (error) {
             console.error('Failed to fetch report data:', error);
         } finally {
@@ -168,16 +187,36 @@ export default function ExpenseDetailsReport() {
             <div className="breakdown-section">
                 <div className="section-header">
                     <h2 className="section-title">Breakdown by Category</h2>
+                    <div className="view-toggle">
+                        <button
+                            className={`toggle-btn ${viewMode === 'flat' ? 'active' : ''}`}
+                            onClick={() => { setViewMode('flat'); setExpandedCategory(null); }}
+                        >
+                            <List size={16} />
+                            <span>All</span>
+                        </button>
+                        <button
+                            className={`toggle-btn ${viewMode === 'grouped' ? 'active' : ''}`}
+                            onClick={() => { setViewMode('grouped'); setExpandedCategory(null); }}
+                        >
+                            <Layers size={16} />
+                            <span>Grouped</span>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Chart Section */}
                 <div className="mb-8 flex justify-center">
                     <div className="w-full max-w-md">
-                        <CategoryPieChart data={expenseCategories} type="expense" />
+                        <CategoryPieChart
+                            data={viewMode === 'flat' ? expenseCategories : hierarchicalCategories}
+                            type="expense"
+                        />
                     </div>
                 </div>
 
-                {expenseCategories.length > 0 ? (
+                {/* Flat View */}
+                {viewMode === 'flat' && expenseCategories.length > 0 && (
                     <div className="category-list">
                         {expenseCategories.map((item, index) => (
                             <div key={index} className="category-item">
@@ -206,7 +245,114 @@ export default function ExpenseDetailsReport() {
                             </div>
                         ))}
                     </div>
-                ) : (
+                )}
+
+                {/* Grouped View */}
+                {viewMode === 'grouped' && hierarchicalCategories.length > 0 && (
+                    <div className="category-list">
+                        {hierarchicalCategories.map((item, index) => (
+                            <div key={index} className="parent-category-wrapper">
+                                <div
+                                    className={`category-item parent-category-item ${item.children.length > 0 ? 'has-children' : ''} ${expandedCategory === item.category.id ? 'expanded' : ''}`}
+                                    onClick={() => item.children.length > 0 && setExpandedCategory(
+                                        expandedCategory === item.category.id ? null : item.category.id
+                                    )}
+                                >
+                                    <div className="category-header">
+                                        <div className="category-info">
+                                            {item.children.length > 0 && (
+                                                <div className="expand-indicator">
+                                                    {expandedCategory === item.category.id ?
+                                                        <ChevronDown size={16} /> :
+                                                        <ChevronRight size={16} />
+                                                    }
+                                                </div>
+                                            )}
+                                            <div className="category-icon">
+                                                <Icon iconId={item.category.icon_id || 'circle'} size={18} />
+                                            </div>
+                                            <div className="category-name-group">
+                                                <span className="category-name">{item.category.name}</span>
+                                                {item.children.length > 0 && (
+                                                    <span className="child-count">{item.children.length} subcategories</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="category-stats">
+                                            <span className="category-amount">
+                                                {formatCompactCurrency(
+                                                    expandedCategory === item.category.id && item.children.length > 0
+                                                        ? item.ownTotal
+                                                        : item.total,
+                                                    'INR'
+                                                )}
+                                            </span>
+                                            <span className="category-percentage">
+                                                {(expandedCategory === item.category.id && item.children.length > 0
+                                                    ? item.ownPercentage
+                                                    : item.percentage
+                                                ).toFixed(1)}%
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="progress-container">
+                                        <div
+                                            className="progress-bar"
+                                            style={{
+                                                width: `${expandedCategory === item.category.id && item.children.length > 0
+                                                    ? item.ownPercentage
+                                                    : item.percentage}%`
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Drill-down: Child categories */}
+                                {expandedCategory === item.category.id && item.children.length > 0 && (
+                                    <div className="drill-down-panel">
+                                        <div className="drill-down-header">
+                                            <span className="drill-down-title">Breakdown of {item.category.name}</span>
+                                        </div>
+                                        {item.children.map((child, childIndex) => (
+                                            <div key={childIndex} className="child-category-item">
+                                                <div className="category-header">
+                                                    <div className="category-info">
+                                                        <div className="category-icon child">
+                                                            <Icon iconId={child.category.icon_id || 'circle'} size={14} />
+                                                        </div>
+                                                        <span className="category-name">{child.category.name}</span>
+                                                    </div>
+                                                    <div className="category-stats">
+                                                        <span className="category-amount">
+                                                            {formatCompactCurrency(child.total, 'INR')}
+                                                        </span>
+                                                        <span className="category-percentage">
+                                                            {child.percentage.toFixed(1)}%
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="progress-container child">
+                                                    <div
+                                                        className="progress-bar"
+                                                        style={{ width: `${child.percentage}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Empty States */}
+                {viewMode === 'flat' && expenseCategories.length === 0 && (
+                    <div className="text-center py-12 text-tertiary">
+                        No expense transactions found for this period
+                    </div>
+                )}
+                {viewMode === 'grouped' && hierarchicalCategories.length === 0 && (
                     <div className="text-center py-12 text-tertiary">
                         No expense transactions found for this period
                     </div>
