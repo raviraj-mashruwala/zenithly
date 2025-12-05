@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 import { useAuthStore } from './authStore';
 import * as categoryService from '../services/category.service';
+import * as categoryWalletMapService from '../services/categoryWalletMap.service';
 
 export const useCategoryStore = create((set, get) => ({
     categories: [],
+    categoryWalletMappings: [],
     isLoading: false,
     error: null,
 
@@ -34,6 +36,19 @@ export const useCategoryStore = create((set, get) => ({
             return categories;
         } catch (error) {
             set({ error: error.message, isLoading: false });
+            throw error;
+        }
+    },
+
+    // Fetch parent categories (for dropdown)
+    fetchParentCategories: async (type = null) => {
+        try {
+            const { user } = useAuthStore.getState();
+            if (!user) throw new Error('Not authenticated');
+
+            return await categoryService.getParentCategories(user.id, type);
+        } catch (error) {
+            set({ error: error.message });
             throw error;
         }
     },
@@ -69,7 +84,7 @@ export const useCategoryStore = create((set, get) => ({
         }
     },
 
-    // Deactivate category
+    // Deactivate category globally
     deactivateCategory: async (categoryId) => {
         try {
             const deactivatedCategory = await categoryService.deactivateCategory(categoryId);
@@ -85,7 +100,7 @@ export const useCategoryStore = create((set, get) => ({
         }
     },
 
-    // Activate category
+    // Activate category globally
     activateCategory: async (categoryId) => {
         try {
             const activatedCategory = await categoryService.activateCategory(categoryId);
@@ -114,18 +129,122 @@ export const useCategoryStore = create((set, get) => ({
         }
     },
 
+    // Merge categories
+    mergeCategories: async (sourceCategoryId, targetCategoryId) => {
+        try {
+            const result = await categoryService.mergeCategories(sourceCategoryId, targetCategoryId);
+            // Update the source category as archived in the store
+            set({
+                categories: get().categories.map(c =>
+                    c.id === sourceCategoryId ? { ...c, is_active_global: false } : c
+                ),
+            });
+            return result;
+        } catch (error) {
+            set({ error: error.message });
+            throw error;
+        }
+    },
+
+    // Get transaction count for a category
+    getCategoryTransactionCount: async (categoryId) => {
+        try {
+            return await categoryService.getCategoryTransactionCount(categoryId);
+        } catch (error) {
+            set({ error: error.message });
+            throw error;
+        }
+    },
+
+    // ==== Wallet Activation Methods ====
+
+    // Fetch wallet activations for a category
+    fetchWalletActivationsForCategory: async (categoryId) => {
+        try {
+            return await categoryWalletMapService.getWalletActivationsForCategory(categoryId);
+        } catch (error) {
+            set({ error: error.message });
+            throw error;
+        }
+    },
+
+    // Get activation count for a category
+    getActivationCount: async (categoryId) => {
+        try {
+            return await categoryWalletMapService.getActivationCountForCategory(categoryId);
+        } catch (error) {
+            set({ error: error.message });
+            return 0;
+        }
+    },
+
+    // Toggle category for a wallet
+    toggleCategoryForWallet: async (categoryId, walletId, active) => {
+        try {
+            return await categoryWalletMapService.toggleCategoryForWallet(categoryId, walletId, active);
+        } catch (error) {
+            set({ error: error.message });
+            throw error;
+        }
+    },
+
+    // Bulk update category activations
+    bulkUpdateCategoryActivations: async (categoryId, walletActivations) => {
+        try {
+            return await categoryWalletMapService.bulkUpdateCategoryActivations(categoryId, walletActivations);
+        } catch (error) {
+            set({ error: error.message });
+            throw error;
+        }
+    },
+
+    // Get active categories for a specific wallet
+    getActiveCategoriesForWallet: async (walletId) => {
+        try {
+            return await categoryWalletMapService.getActiveCategoriesForWallet(walletId);
+        } catch (error) {
+            set({ error: error.message });
+            return [];
+        }
+    },
+
+    // ==== Selector Methods ====
+
     // Get categories by type from state
     getCategoriesByType: (type) => {
         return get().categories.filter(c => c.type === type);
     },
 
-    // Get active categories from state
+    // Get active categories from state (globally active)
     getActiveCategories: () => {
-        return get().categories.filter(c => c.is_active);
+        return get().categories.filter(c => c.is_active_global);
     },
 
-    // Get inactive categories from state
+    // Get inactive categories from state (globally inactive)
     getInactiveCategories: () => {
-        return get().categories.filter(c => !c.is_active);
+        return get().categories.filter(c => !c.is_active_global);
+    },
+
+    // Get parent categories from state
+    getParentCategoriesFromState: (type = null) => {
+        let cats = get().categories.filter(c => !c.parent_category_id && c.is_active_global);
+        if (type) {
+            cats = cats.filter(c => c.type === type);
+        }
+        return cats;
+    },
+
+    // Get child categories for a parent
+    getChildCategories: (parentId) => {
+        return get().categories.filter(c => c.parent_category_id === parentId);
+    },
+
+    // Get category hierarchy display name
+    getCategoryDisplayName: (category) => {
+        if (!category) return '';
+        if (category.parent) {
+            return `${category.parent.name} > ${category.name}`;
+        }
+        return category.name;
     },
 }));

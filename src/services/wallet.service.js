@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { createMappingsForNewWallet } from './categoryWalletMap.service';
 
 // Ensure user profile exists (create if not)
 const ensureUserProfile = async (userId, userEmail) => {
@@ -83,6 +84,15 @@ export const createWallet = async (userId, userEmail, walletData) => {
         .single();
 
     if (error) throw error;
+
+    // Create category-wallet mappings for all existing categories
+    try {
+        await createMappingsForNewWallet(data.id, userId);
+    } catch (mappingError) {
+        console.error('Failed to create category mappings for new wallet:', mappingError);
+        // Don't throw - wallet was created successfully
+    }
+
     return data;
 };
 

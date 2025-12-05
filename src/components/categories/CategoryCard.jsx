@@ -1,6 +1,6 @@
-import { MoreVertical, Edit, Power, PowerOff, Trash2 } from 'lucide-react';
+import { MoreVertical, Edit, Power, PowerOff, Trash2, Wallet } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useCategoryStore } from '../../stores/categoryStore';
 import Card from '../ui/Card';
@@ -21,12 +21,32 @@ const renderIconFromId = (iconId, size = 24) => {
 
 export default function CategoryCard({ category, onEdit }) {
     const [showMenu, setShowMenu] = useState(false);
-    const { deactivateCategory, activateCategory, deleteCategory } = useCategoryStore();
+    const [activationCount, setActivationCount] = useState(0);
+    const {
+        deactivateCategory,
+        activateCategory,
+        deleteCategory,
+        getActivationCount,
+        getCategoryDisplayName
+    } = useCategoryStore();
+
+    // Fetch activation count on mount and when category is updated
+    useEffect(() => {
+        const fetchActivationCount = async () => {
+            try {
+                const count = await getActivationCount(category.id);
+                setActivationCount(count);
+            } catch (error) {
+                console.error('Failed to fetch activation count:', error);
+            }
+        };
+        fetchActivationCount();
+    }, [category.id, category.updated_at, getActivationCount]);
 
     const handleDeactivate = async () => {
         try {
             await deactivateCategory(category.id);
-            toast.success('Category deactivated');
+            toast.success('Category deactivated globally');
             setShowMenu(false);
         } catch (error) {
             toast.error(error.message || 'Failed to deactivate category');
@@ -70,7 +90,9 @@ export default function CategoryCard({ category, onEdit }) {
     };
 
     const typeColor = getTypeColor(category.type);
-    const isActive = category.is_active;
+    const isActive = category.is_active_global;
+    const displayName = getCategoryDisplayName(category);
+    const hasParent = category.parent !== null && category.parent !== undefined;
 
     return (
         <Card
@@ -103,12 +125,12 @@ export default function CategoryCard({ category, onEdit }) {
                                 {isActive ? (
                                     <button className="menu-item" onClick={handleDeactivate}>
                                         <PowerOff size={16} />
-                                        <span>Deactivate</span>
+                                        <span>Archive</span>
                                     </button>
                                 ) : (
                                     <button className="menu-item" onClick={handleActivate}>
                                         <Power size={16} />
-                                        <span>Activate</span>
+                                        <span>Restore</span>
                                     </button>
                                 )}
 
@@ -125,13 +147,31 @@ export default function CategoryCard({ category, onEdit }) {
             </div>
 
             <div className="category-content">
+                {/* Parent category hierarchy display */}
+                {hasParent && (
+                    <div className="category-parent-label">
+                        {category.parent.name}
+                    </div>
+                )}
+
                 <div className="category-name">{category.name}</div>
-                <div className={`category-type-badge ${typeColor}`}>
-                    {category.type}
+
+                <div className="category-meta">
+                    <div className={`category-type-badge ${typeColor}`}>
+                        {category.type}
+                    </div>
+
+                    {/* Wallet activation count */}
+                    {isActive && activationCount > 0 && (
+                        <div className="category-wallet-count">
+                            <Wallet size={12} />
+                            <span>Active in {activationCount} {activationCount === 1 ? 'wallet' : 'wallets'}</span>
+                        </div>
+                    )}
                 </div>
 
                 {!isActive && (
-                    <div className="inactive-badge">Inactive</div>
+                    <div className="inactive-badge">Archived</div>
                 )}
             </div>
         </Card>

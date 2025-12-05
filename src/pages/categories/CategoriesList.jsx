@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Plus, Eye, EyeOff } from 'lucide-react';
+import { useEffect, useState, useMemo } from 'react';
+import { Plus, Eye, EyeOff, CornerDownRight } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useCategoryStore } from '../../stores/categoryStore';
 import { useAuthStore } from '../../stores/authStore';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
-import CategoryCard from '../../components/categories/CategoryCard';
 import CategoryFormModal from '../../components/categories/CategoryFormModal';
 import './CategoriesList.css';
 
@@ -16,21 +16,33 @@ const CATEGORY_TYPES = [
     { value: 'Debt/Loan', label: 'Debt & Loans', color: 'debt' },
 ];
 
+// Helper to render icon from icon ID
+const renderIconFromId = (iconId, size = 20) => {
+    if (!iconId) return <LucideIcons.Tag size={size} />;
+
+    const iconName = iconId
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+
+    const IconComponent = LucideIcons[iconName];
+    return IconComponent ? <IconComponent size={size} /> : <LucideIcons.Tag size={size} />;
+};
+
 export default function CategoriesList() {
     const { user } = useAuthStore();
     const {
         categories,
         isLoading,
         fetchCategories,
-        getCategoriesByType,
-        getActiveCategories,
-        getInactiveCategories,
+        getActivationCount,
     } = useCategoryStore();
 
     const [activeTab, setActiveTab] = useState('Expense');
     const [showInactive, setShowInactive] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCategory, setEditingCategory] = useState(null);
+    const [activationCounts, setActivationCounts] = useState({});
 
     useEffect(() => {
         if (user) {
@@ -38,12 +50,60 @@ export default function CategoriesList() {
         }
     }, [user, fetchCategories]);
 
-    const activeCategories = getActiveCategories();
-    const inactiveCategories = getInactiveCategories();
+    // Fetch activation counts for all categories
+    useEffect(() => {
+        const fetchCounts = async () => {
+            const counts = {};
+            for (const cat of categories) {
+                try {
+                    counts[cat.id] = await getActivationCount(cat.id);
+                } catch (error) {
+                    counts[cat.id] = 0;
+                }
+            }
+            setActivationCounts(counts);
+        };
+        if (categories.length > 0) {
+            fetchCounts();
+        }
+    }, [categories, getActivationCount]);
 
-    const displayedCategories = showInactive
-        ? getCategoriesByType(activeTab)
-        : getCategoriesByType(activeTab).filter(c => c.is_active);
+    // Use useMemo to ensure proper reactivity when categories load
+    const activeCategories = useMemo(() =>
+        categories.filter(c => c.is_active_global),
+        [categories]
+    );
+
+    const inactiveCategories = useMemo(() =>
+        categories.filter(c => !c.is_active_global),
+        [categories]
+    );
+
+    const displayedCategories = useMemo(() => {
+        const typeCategories = categories.filter(c => c.type === activeTab);
+        return showInactive
+            ? typeCategories
+            : typeCategories.filter(c => c.is_active_global);
+    }, [categories, activeTab, showInactive]);
+
+    // Group categories by parent (hierarchical structure)
+    const hierarchicalCategories = useMemo(() => {
+        const parents = displayedCategories.filter(c => !c.parent_category_id);
+        const children = displayedCategories.filter(c => c.parent_category_id);
+
+        // Build hierarchy
+        const hierarchy = parents.map(parent => ({
+            ...parent,
+            children: children.filter(child => child.parent_category_id === parent.id)
+        }));
+
+        // Also include orphan children (parents not in current view due to filtering)
+        const orphanChildren = children.filter(child =>
+            !parents.some(p => p.id === child.parent_category_id)
+        );
+
+        return { hierarchy, orphanChildren };
+    }, [displayedCategories]);
 
     const handleAddCategory = () => {
         setEditingCategory(null);
@@ -67,9 +127,54 @@ export default function CategoriesList() {
     };
 
     const getTabCounts = (type) => {
-        const typeCategories = getCategoriesByType(type);
-        const active = typeCategories.filter(c => c.is_active).length;
+        const typeCategories = categories.filter(c => c.type === type);
+        const active = typeCategories.filter(c => c.is_active_global).length;
         return { active, total: typeCategories.length };
+    };
+
+    const getTypeColor = (type) => {
+        switch (type) {
+            case 'Expense': return 'expense';
+            case 'Income': return 'income';
+            case 'Debt/Loan': return 'debt';
+            default: return 'expense';
+        }
+    };
+
+    const typeColor = getTypeColor(activeTab);
+
+    // Render a single category row
+    const renderCategoryRow = (category, isChild = false) => {
+        const isActive = category.is_active_global;
+        const walletCount = activationCounts[category.id] || 0;
+
+        return (
+            <div
+                key={category.id}
+                className={`category-row ${isChild ? 'child' : 'parent'} ${!isActive ? 'inactive' : ''}`}
+                onClick={() => handleEditCategory(category)}
+            >
+                {isChild && (
+                    <div className="child-connector">
+                        <CornerDownRight size={16} />
+                    </div>
+                )}
+                <div className={`category-row-icon ${typeColor}`}>
+                    {renderIconFromId(category.icon_id, 20)}
+                </div>
+                <div className="category-row-info">
+                    <span className="category-row-name">{category.name}</span>
+                    {isActive && walletCount > 0 && (
+                        <span className="category-row-wallets">
+                            Active in {walletCount} {walletCount === 1 ? 'wallet' : 'wallets'}
+                        </span>
+                    )}
+                </div>
+                {!isActive && (
+                    <span className="category-row-badge inactive">Archived</span>
+                )}
+            </div>
+        );
     };
 
     if (isLoading && categories.length === 0) {
@@ -135,19 +240,30 @@ export default function CategoriesList() {
                     onClick={() => setShowInactive(!showInactive)}
                 >
                     {showInactive ? <Eye size={16} /> : <EyeOff size={16} />}
-                    <span>{showInactive ? 'Hide' : 'Show'} inactive categories</span>
+                    <span>{showInactive ? 'Hide' : 'Show'} archived categories</span>
                 </button>
             </div>
 
-            {/* Categories Grid */}
+            {/* Categories List (Hierarchical) */}
             {displayedCategories.length > 0 ? (
-                <div className="categories-grid">
-                    {displayedCategories.map((category) => (
-                        <CategoryCard
-                            key={category.id}
-                            category={category}
-                            onEdit={() => handleEditCategory(category)}
-                        />
+                <div className="categories-list">
+                    {/* Parent categories with their children */}
+                    {hierarchicalCategories.hierarchy.map((parent) => (
+                        <div key={parent.id} className="category-group">
+                            {renderCategoryRow(parent, false)}
+                            {parent.children.length > 0 && (
+                                <div className="category-children">
+                                    {parent.children.map(child => renderCategoryRow(child, true))}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+
+                    {/* Orphan children (parent not visible) */}
+                    {hierarchicalCategories.orphanChildren.map(child => (
+                        <div key={child.id} className="category-group orphan">
+                            {renderCategoryRow(child, true)}
+                        </div>
                     ))}
                 </div>
             ) : (
@@ -157,7 +273,7 @@ export default function CategoriesList() {
                     <p className="text-secondary">
                         {showInactive
                             ? `You don't have any ${activeTab.toLowerCase()} categories yet`
-                            : `All ${activeTab.toLowerCase()} categories are inactive`}
+                            : `All ${activeTab.toLowerCase()} categories are archived`}
                     </p>
                     <Button onClick={handleAddCategory} leftIcon={<Plus />}>
                         Add {activeTab} Category

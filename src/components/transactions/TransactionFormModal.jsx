@@ -43,8 +43,9 @@ const TRANSACTION_TYPES = [
 export default function TransactionFormModal({ transaction, onClose, onSuccess }) {
     const { createTransaction, updateTransaction } = useTransactionStore();
     const { wallets } = useWalletStore();
-    const { categories } = useCategoryStore();
+    const { categories, getActiveCategoriesForWallet, getCategoryDisplayName } = useCategoryStore();
     const [isLoading, setIsLoading] = useState(false);
+    const [walletFilteredCategories, setWalletFilteredCategories] = useState([]);
 
     const {
         register,
@@ -67,15 +68,43 @@ export default function TransactionFormModal({ transaction, onClose, onSuccess }
     });
 
     const selectedType = watch('type');
+    const selectedWalletId = watch('walletId');
     const activeWallets = wallets.filter(w => w.status === 'Active');
 
-    // Filter categories by type
-    const availableCategories = categories.filter(c => {
+    // Fetch categories active for the selected wallet
+    useEffect(() => {
+        const fetchWalletCategories = async () => {
+            if (selectedWalletId && selectedType !== 'Transfer') {
+                try {
+                    const activeCats = await getActiveCategoriesForWallet(selectedWalletId);
+                    setWalletFilteredCategories(activeCats);
+                } catch (error) {
+                    console.error('Failed to fetch wallet categories:', error);
+                    // Fallback to all categories
+                    setWalletFilteredCategories(categories);
+                }
+            } else {
+                setWalletFilteredCategories(categories);
+            }
+        };
+        fetchWalletCategories();
+    }, [selectedWalletId, selectedType, categories, getActiveCategoriesForWallet]);
+
+    // Filter categories by type (from wallet-filtered categories or all categories)
+    const availableCategories = walletFilteredCategories.filter(c => {
         if (selectedType === 'Transfer') return false;
-        if (selectedType === 'Income') return c.type === 'Income' && c.is_active;
-        if (selectedType === 'Expense') return (c.type === 'Expense' || c.type === 'Debt/Loan') && c.is_active;
-        return c.is_active;
+        if (selectedType === 'Income') return c.type === 'Income' && c.is_active_global;
+        if (selectedType === 'Expense') return (c.type === 'Expense' || c.type === 'Debt/Loan') && c.is_active_global;
+        return c.is_active_global;
     });
+
+    // Get display name for category (with parent hierarchy)
+    const getCategoryLabel = (category) => {
+        if (category.parent) {
+            return `${category.parent.name} → ${category.name}`;
+        }
+        return category.name;
+    };
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -215,13 +244,22 @@ export default function TransactionFormModal({ transaction, onClose, onSuccess }
                                 {...register('categoryId')}
                                 className="form-select"
                             >
-                                <option value="">Select category</option>
+                                <option value="">
+                                    {selectedWalletId
+                                        ? 'Select category'
+                                        : 'Select a wallet first'}
+                                </option>
                                 {availableCategories.map(category => (
-                                    <option key={category.id} value={category.id}>{category.name}</option>
+                                    <option key={category.id} value={category.id}>
+                                        {getCategoryLabel(category)}
+                                    </option>
                                 ))}
                             </select>
                             {errors.categoryId && (
                                 <p className="error-message">{errors.categoryId.message}</p>
+                            )}
+                            {selectedWalletId && availableCategories.length === 0 && (
+                                <p className="form-hint">No categories available for this wallet</p>
                             )}
                         </div>
                     </>
