@@ -87,14 +87,11 @@ export default function Settings() {
 
         setIsLoading(true);
         try {
-            // Delete user data
-            await supabase.from('transactions').delete().eq('user_id', user.id);
-            await supabase.from('categories').delete().eq('user_id', user.id);
-            await supabase.from('wallets').delete().eq('user_id', user.id);
-            await supabase.from('users').delete().eq('id', user.id);
+            // Call the database function to delete user and all data
+            const { error } = await supabase.rpc('delete_user_account');
 
-            // Delete auth user (this will cascade delete everything)
-            // Note: This needs to be done via Supabase admin API in production
+            if (error) throw error;
+
             toast.success('Account deleted successfully');
             await signOut();
             navigate('/');
