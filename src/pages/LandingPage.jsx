@@ -242,9 +242,7 @@ export default function LandingPage() {
                             <span className="footer-logo">Zenithly</span>
                         </div>
                         <div className="footer-info">
-                            <span>Built with React + Supabase</span>
-                            <span className="footer-divider">•</span>
-                            <span>© 2024</span>
+                            <span>© 2025</span>
                         </div>
                     </div>
                 </div>
