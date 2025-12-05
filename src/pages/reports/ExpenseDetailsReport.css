@@ -1,8 +1,10 @@
-/* Reports Pages - Terminal Brutalism */
+/* ═══════════════════════════════════════════════════════════════════════════
+   EXPENSE DETAILS REPORT — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .expense-details-report.reports-container {
     padding: 0;
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.4s var(--ease-out);
 }
 
 .expense-details-report .report-header {
@@ -17,79 +19,83 @@
 .expense-details-report .report-title {
     font-family: var(--font-display);
     font-size: var(--text-4xl);
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-weight: var(--font-bold);
+    letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     margin-bottom: var(--space-2);
 }
 
 .expense-details-report .report-subtitle {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
 }
 
-/* Summary Grid (3 Columns) */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SUMMARY CARDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .expense-details-report .summary-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-6);
+    gap: var(--space-4);
     margin-bottom: var(--space-8);
 }
 
 .expense-details-report .summary-card {
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur-sm);
+    -webkit-backdrop-filter: var(--glass-blur-sm);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xl);
     padding: var(--space-6);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 140px;
+    min-height: 130px;
     transition: all var(--transition-base);
     position: relative;
     overflow: hidden;
 }
 
 .expense-details-report .summary-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-glass);
     transform: translateY(-2px);
 }
 
 .expense-details-report .summary-card.total {
     background: linear-gradient(135deg,
-            rgba(255, 0, 64, 0.08) 0%,
-            rgba(255, 0, 64, 0.02) 100%);
-    border-color: var(--color-error);
+            rgba(255, 107, 107, 0.08) 0%,
+            rgba(255, 107, 107, 0.02) 100%);
+    border-color: rgba(255, 107, 107, 0.3);
 }
 
 .expense-details-report .summary-icon {
     position: absolute;
     top: var(--space-4);
     right: var(--space-4);
-    opacity: 0.2;
+    opacity: 0.15;
     color: var(--color-text-tertiary);
 }
 
 .expense-details-report .summary-icon.expense {
     color: var(--color-error);
-    opacity: 0.3;
+    opacity: 0.25;
 }
 
 .expense-details-report .summary-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
 }
 
 .expense-details-report .summary-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    letter-spacing: 0.15em;
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
     color: var(--color-text-tertiary);
     margin-bottom: var(--space-2);
@@ -98,22 +104,26 @@
 .expense-details-report .summary-value {
     font-family: var(--font-display);
     font-size: var(--text-3xl);
-    font-weight: 700;
-    letter-spacing: 0.025em;
+    font-weight: var(--font-bold);
+    letter-spacing: var(--tracking-tight);
     margin-top: auto;
     color: var(--color-text-primary);
 }
 
 .expense-details-report .summary-card.total .summary-value {
     color: var(--color-error);
-    text-shadow: 0 0 10px rgba(255, 0, 64, 0.3);
 }
 
-/* Breakdown Section */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BREAKDOWN SECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .expense-details-report .breakdown-section {
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+    background: var(--color-bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-2xl);
     padding: var(--space-6);
     min-height: 400px;
 }
@@ -128,17 +138,16 @@
 }
 
 .expense-details-report .section-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-lg);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-weight: var(--font-semibold);
     color: var(--color-text-primary);
 }
 
 .expense-details-report .category-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
 }
 
 .expense-details-report .category-item {
@@ -146,15 +155,15 @@
     flex-direction: column;
     gap: var(--space-3);
     padding: var(--space-4);
-    background: rgba(255, 0, 64, 0.03);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     transition: all var(--transition-fast);
 }
 
 .expense-details-report .category-item:hover {
-    background: rgba(255, 0, 64, 0.08);
-    border-color: var(--color-error);
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-default);
 }
 
 .expense-details-report .category-header {
@@ -175,17 +184,16 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border-radius: var(--radius-md);
-    background: rgba(255, 0, 64, 0.1);
+    border-radius: var(--radius-lg);
+    background: var(--color-error-muted);
     color: var(--color-error);
-    border: 1px solid rgba(255, 0, 64, 0.2);
 }
 
 .expense-details-report .category-name {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
 }
 
 .expense-details-report .category-stats {
@@ -195,14 +203,14 @@
 }
 
 .expense-details-report .category-amount {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-base);
-    font-weight: 600;
+    font-weight: var(--font-semibold);
     color: var(--color-error);
 }
 
 .expense-details-report .category-percentage {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     color: var(--color-text-tertiary);
     width: 40px;
@@ -215,41 +223,24 @@
     border-radius: var(--radius-full);
     overflow: hidden;
     margin-left: 48px;
-    /* Align with text */
 }
 
 .expense-details-report .progress-bar {
     height: 100%;
-    background: var(--color-error);
+    background: linear-gradient(90deg, var(--color-error), #ff8080);
     border-radius: var(--radius-full);
-    box-shadow: 0 0 8px rgba(255, 0, 64, 0.3);
 }
 
-@media (max-width: 768px) {
-    .expense-details-report .summary-cards {
-        grid-template-columns: 1fr;
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   VIEW TOGGLE
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-    .expense-details-report .category-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-2);
-    }
-
-    .expense-details-report .category-stats {
-        width: 100%;
-        justify-content: space-between;
-        margin-left: 48px;
-    }
-}
-
-/* View Toggle */
 .expense-details-report .view-toggle {
     display: flex;
     gap: var(--space-1);
-    background: var(--color-bg-elevated);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
     padding: var(--space-1);
 }
 
@@ -257,54 +248,51 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    font-family: var(--font-display);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-weight: var(--font-medium);
     color: var(--color-text-tertiary);
     background: transparent;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .expense-details-report .toggle-btn:hover {
-    color: var(--color-text-secondary);
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary);
 }
 
 .expense-details-report .toggle-btn.active {
-    color: var(--color-error);
-    background: rgba(255, 0, 64, 0.1);
-    border: 1px solid rgba(255, 0, 64, 0.3);
+    color: var(--color-text-primary);
+    background: var(--color-bg-elevated);
 }
 
-/* Parent Category Wrapper */
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARENT CATEGORY / DRILL-DOWN
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .expense-details-report .parent-category-wrapper {
     display: flex;
     flex-direction: column;
 }
 
-/* Parent Category Item */
 .expense-details-report .parent-category-item.has-children {
     cursor: pointer;
 }
 
 .expense-details-report .parent-category-item.has-children:hover {
-    background: rgba(255, 0, 64, 0.1);
+    background: var(--color-bg-surface-hover);
 }
 
 .expense-details-report .parent-category-item.expanded {
-    background: rgba(255, 0, 64, 0.08);
-    border-color: var(--color-error);
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-default);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-/* Expand Indicator */
 .expense-details-report .expand-indicator {
     display: flex;
     align-items: center;
@@ -314,10 +302,9 @@
 }
 
 .expense-details-report .parent-category-item.expanded .expand-indicator {
-    color: var(--color-error);
+    color: var(--color-accent);
 }
 
-/* Category Name Group */
 .expense-details-report .category-name-group {
     display: flex;
     flex-direction: column;
@@ -325,21 +312,20 @@
 }
 
 .expense-details-report .child-count {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
     color: var(--color-text-tertiary);
-    letter-spacing: 0.02em;
 }
 
 /* Drill-down Panel */
 .expense-details-report .drill-down-panel {
-    background: rgba(255, 0, 64, 0.03);
-    border: 1px solid var(--color-error);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-default);
     border-top: none;
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     padding: var(--space-4);
     padding-left: var(--space-8);
-    animation: slideDown 0.2s ease-out;
+    animation: slideDown 0.2s var(--ease-out);
 }
 
 @keyframes slideDown {
@@ -364,10 +350,10 @@
 }
 
 .expense-details-report .drill-down-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
     color: var(--color-text-tertiary);
 }
@@ -380,7 +366,7 @@
     padding: var(--space-3);
     background: transparent;
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     margin-bottom: var(--space-2);
     transition: all var(--transition-fast);
 }
@@ -390,14 +376,12 @@
 }
 
 .expense-details-report .child-category-item:hover {
-    background: rgba(255, 0, 64, 0.05);
+    background: var(--color-bg-surface);
 }
 
 .expense-details-report .category-icon.child {
     width: 28px;
     height: 28px;
-    background: rgba(255, 0, 64, 0.08);
-    border: 1px solid rgba(255, 0, 64, 0.15);
 }
 
 .expense-details-report .progress-container.child {
@@ -405,8 +389,27 @@
     height: 3px;
 }
 
-/* Responsive adjustments for grouped view */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @media (max-width: 768px) {
+    .expense-details-report .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .expense-details-report .category-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+
+    .expense-details-report .category-stats {
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 48px;
+    }
+
     .expense-details-report .section-header {
         flex-direction: column;
         align-items: flex-start;
@@ -424,5 +427,17 @@
 
     .expense-details-report .drill-down-panel {
         padding-left: var(--space-4);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
