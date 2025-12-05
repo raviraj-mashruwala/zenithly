@@ -27,7 +27,7 @@ const DATE_FORMATS = [
 
 export default function Settings() {
     const navigate = useNavigate();
-    const { user, logout } = useAuthStore();
+    const { user, signOut } = useAuthStore();
     const { theme, toggleTheme } = useThemeStore();
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -71,7 +71,7 @@ export default function Settings() {
 
     const handleLogout = async () => {
         try {
-            await logout();
+            await signOut();
             toast.success('Logged out successfully');
             navigate('/');
         } catch (error) {
@@ -96,7 +96,7 @@ export default function Settings() {
             // Delete auth user (this will cascade delete everything)
             // Note: This needs to be done via Supabase admin API in production
             toast.success('Account deleted successfully');
-            await logout();
+            await signOut();
             navigate('/');
         } catch (error) {
             toast.error(error.message || 'Failed to delete account');
