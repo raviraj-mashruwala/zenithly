@@ -1,6 +1,7 @@
-/* Form Modals - Terminal Brutalism (Unified Pattern) */
-
-/* Used by: WalletFormModal, CategoryFormModal, TransactionFormModal */
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM MODALS — Liquid Glass Design System
+   Shared by: WalletFormModal, CategoryFormModal, TransactionFormModal
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .form-modal-content {
     display: flex;
@@ -9,7 +10,9 @@
 }
 
 /* Main Form Layout */
-.wallet-form {
+.wallet-form,
+.category-form,
+.transaction-form {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
@@ -23,12 +26,10 @@
 }
 
 .form-section-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-weight: var(--font-semibold);
     color: var(--color-accent);
-    text-transform: uppercase;
     padding-bottom: var(--space-2);
     border-bottom: 1px solid var(--color-border-subtle);
 }
@@ -48,7 +49,7 @@
     border-top: 1px solid var(--color-border-subtle);
 }
 
-/* Form Group Spacing */
+/* Form Group */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -57,15 +58,13 @@
 }
 
 .form-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
+    font-weight: var(--font-medium);
     color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-/* Type Selector Grid (for wallet types) */
+/* Type Selector Grid */
 .type-selector-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -74,15 +73,13 @@
 
 .type-option {
     padding: var(--space-3) var(--space-2);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-weight: var(--font-medium);
     text-align: center;
-    background: var(--color-bg-subtle);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -94,15 +91,14 @@
 
 .type-option:hover {
     color: var(--color-text-primary);
-    border-color: var(--color-accent);
-    background: rgba(0, 217, 255, 0.05);
+    border-color: var(--color-border-strong);
+    background: var(--color-bg-surface-hover);
 }
 
 .type-option.active {
-    background: rgba(0, 217, 255, 0.1);
+    background: var(--color-accent-muted);
     border-color: var(--color-accent);
     color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
 }
 
 /* Checkbox / Switch */
@@ -111,16 +107,16 @@
     align-items: flex-start;
     gap: var(--space-3);
     padding: var(--space-3);
-    background: rgba(0, 217, 255, 0.03);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .form-checkbox:hover {
-    background: rgba(0, 217, 255, 0.08);
-    border-color: var(--color-accent);
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-default);
 }
 
 .form-checkbox input[type="checkbox"] {
@@ -132,9 +128,8 @@
 }
 
 .form-checkbox-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.05em;
     color: var(--color-text-secondary);
     display: flex;
     flex-direction: column;

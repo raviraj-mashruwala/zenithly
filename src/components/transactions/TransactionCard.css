@@ -1,5 +1,6 @@
-/* Card Components - Terminal Brutalism (Unified) */
-/* Used by: WalletCard, CategoryCard, TransactionCard */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRANSACTION CARD — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .transaction-card {
     display: flex;
@@ -8,45 +9,28 @@
     gap: var(--space-4);
     padding: var(--space-4) var(--space-5);
     background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
     transition: all var(--transition-base);
     position: relative;
 }
 
 .transaction-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
-    transform: translateY(-2px);
+    border-color: var(--color-border-strong);
+    background: var(--color-bg-surface-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
-.transaction-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--color-border-default);
-    transition: background-color var(--transition-base);
-}
-
-.transaction-card:hover::before {
-    background: var(--color-accent);
-}
-
-/* Obsolete wrappers removed */
-
+/* Transaction Icon */
 .transaction-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-md);
-    border: 2px solid;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
     flex-shrink: 0;
-    background: var(--color-bg-subtle);
     transition: all var(--transition-base);
 }
 
@@ -55,23 +39,21 @@
 }
 
 .transaction-icon.income {
-    background: rgba(0, 255, 65, 0.05);
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
+    background: var(--color-success-muted);
+    color: var(--color-success);
 }
 
 .transaction-icon.expense {
-    background: rgba(255, 0, 64, 0.05);
-    border-color: var(--color-error);
+    background: var(--color-error-muted);
     color: var(--color-error);
 }
 
 .transaction-icon.transfer {
-    background: rgba(0, 217, 255, 0.05);
-    border-color: var(--color-accent);
+    background: var(--color-accent-muted);
     color: var(--color-accent);
 }
 
+/* Transaction Details */
 .transaction-details {
     display: flex;
     flex-direction: column;
@@ -81,10 +63,9 @@
 }
 
 .transaction-title {
-    font-family: var(--font-display);
-    font-size: var(--text-base);
-    font-weight: 600;
-    letter-spacing: 0.025em;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
     color: var(--color-text-primary);
 }
 
@@ -104,33 +85,28 @@
     gap: var(--space-2);
 }
 
-
+/* Transaction Amount */
 .transaction-amount {
-    font-family: var(--font-display);
-    font-size: var(--text-lg);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: var(--font-bold);
     white-space: nowrap;
     text-align: right;
-    min-width: 100px;
+    min-width: 90px;
     flex-shrink: 0;
 }
 
 .transaction-amount.income {
-    color: var(--color-accent-secondary);
-    text-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+    color: var(--color-success);
 }
 
 .transaction-amount.expense {
     color: var(--color-error);
-    text-shadow: 0 0 10px rgba(255, 0, 64, 0.2);
 }
 
 .transaction-amount.transfer {
     color: var(--color-accent);
-    text-shadow: 0 0 10px rgba(0, 217, 255, 0.2);
 }
-
 
 /* Transaction Menu */
 .transaction-menu {
@@ -146,14 +122,14 @@
     height: 32px;
     background: transparent;
     border: 1px solid transparent;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .menu-trigger:hover {
-    background: var(--color-bg-subtle);
+    background: var(--color-bg-surface);
     color: var(--color-text-primary);
     border-color: var(--color-border-default);
 }
@@ -172,13 +148,13 @@
     top: calc(100% + var(--space-2));
     right: 0;
     min-width: 160px;
-    background: var(--color-bg-surface);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 101;
     padding: var(--space-1);
-    animation: fadeIn 0.1s ease-out;
+    animation: fadeIn 0.15s var(--ease-out);
 }
 
 .menu-item {
@@ -187,12 +163,11 @@
     gap: var(--space-3);
     width: 100%;
     padding: var(--space-2) var(--space-3);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.025em;
     background: transparent;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     color: var(--color-text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -200,12 +175,12 @@
 }
 
 .menu-item:hover {
-    background: var(--color-bg-subtle);
+    background: var(--color-bg-surface);
     color: var(--color-text-primary);
 }
 
 .menu-item.danger:hover {
-    background: rgba(255, 0, 64, 0.1);
+    background: var(--color-error-muted);
     color: var(--color-error);
 }
 
@@ -215,35 +190,37 @@
     margin: var(--space-1) 0;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .transaction-card {
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--space-4);
+        padding: var(--space-3) var(--space-4);
     }
 
-    .transaction-main {
-        flex-direction: column;
-        align-items: stretch;
+    .transaction-icon {
+        width: 40px;
+        height: 40px;
     }
 
-    .transaction-left {
-        width: 100%;
-    }
-
-    .transaction-right {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding-top: var(--space-3);
-        border-top: 1px solid var(--color-border-subtle);
+    .transaction-amount {
+        font-size: var(--text-sm);
+        min-width: 70px;
     }
 
     .transaction-menu {
         position: absolute;
-        top: var(--space-4);
-        right: var(--space-4);
+        top: var(--space-3);
+        right: var(--space-3);
     }
 }

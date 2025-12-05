@@ -1,6 +1,6 @@
-/* Form Modals - Terminal Brutalism (Unified Pattern) */
-
-/* Used by: WalletFormModal, CategoryFormModal, TransactionFormModal */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CATEGORY FORM MODAL — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 .form-modal-content {
     display: flex;
@@ -15,12 +15,10 @@
 }
 
 .form-section-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-weight: var(--font-semibold);
     color: var(--color-accent);
-    text-transform: uppercase;
     padding-bottom: var(--space-2);
     border-bottom: 1px solid var(--color-border-subtle);
 }
@@ -48,7 +46,7 @@
     padding-top: var(--space-2);
 }
 
-/* Form Group with relative positioning for dropdowns */
+/* Form Group */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -57,51 +55,44 @@
 }
 
 .form-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
+    font-weight: var(--font-medium);
     color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-/* Type Selector (for transaction type) */
+/* Type Selector */
 .type-selector {
     display: flex;
-    gap: var(--space-2);
+    gap: var(--space-1);
     padding: var(--space-1);
-    background: var(--color-bg-deep);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-full);
 }
 
 .type-option {
     flex: 1;
     padding: var(--space-2) var(--space-4);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-weight: var(--font-medium);
     text-align: center;
     background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    border: none;
+    border-radius: var(--radius-full);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .type-option:hover {
-    color: var(--color-accent);
-    background: rgba(0, 217, 255, 0.05);
+    color: var(--color-text-primary);
 }
 
 .type-option.active {
-    background: rgba(0, 217, 255, 0.1);
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
+    background: var(--color-bg-elevated);
+    color: var(--color-text-primary);
 }
 
 /* Checkbox / Switch */
@@ -110,16 +101,16 @@
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-3);
-    background: rgba(0, 217, 255, 0.03);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .form-checkbox:hover {
-    background: rgba(0, 217, 255, 0.08);
-    border-color: var(--color-accent);
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-default);
 }
 
 .form-checkbox input[type="checkbox"] {
@@ -130,62 +121,54 @@
 }
 
 .form-checkbox-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.05em;
     color: var(--color-text-secondary);
 }
 
-/* Color Indicators / Status */
+/* Status Badge */
 .status-badge {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-1) var(--space-3);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    border: 1px solid;
+    font-weight: var(--font-medium);
+    border-radius: var(--radius-full);
 }
 
 .status-badge.active {
-    background: rgba(0, 255, 65, 0.1);
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
+    background: var(--color-success-muted);
+    color: var(--color-success);
 }
 
 .status-badge.inactive {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--color-border-default);
+    background: var(--color-bg-surface);
     color: var(--color-text-tertiary);
 }
 
-/* Delete/Danger Actions */
+/* Danger Zone */
 .danger-zone {
     margin-top: var(--space-6);
     padding: var(--space-5);
-    background: rgba(255, 0, 64, 0.05);
-    border: 1px solid rgba(255, 0, 64, 0.2);
-    border-radius: var(--radius-md);
+    background: var(--color-error-muted);
+    border: 1px solid rgba(240, 128, 128, 0.3);
+    border-radius: var(--radius-xl);
 }
 
 .danger-zone-title {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-weight: var(--font-semibold);
     color: var(--color-error);
-    text-transform: uppercase;
     margin-bottom: var(--space-3);
 }
 
 .danger-zone-description {
     font-family: var(--font-body);
     font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
+    color: var(--color-text-secondary);
     margin-bottom: var(--space-4);
 }
 
@@ -198,15 +181,13 @@
 
 .category-type-btn {
     padding: var(--space-3) var(--space-2);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-weight: var(--font-medium);
     text-align: center;
-    background: var(--color-bg-subtle);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--color-text-tertiary);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -225,79 +206,59 @@
 }
 
 .category-type-btn:hover {
-    border-color: var(--color-accent);
-    background: rgba(0, 217, 255, 0.05);
+    border-color: var(--color-border-strong);
+    background: var(--color-bg-surface-hover);
     color: var(--color-text-primary);
 }
 
 /* Expense variant */
-.category-type-btn.expense {
-    --type-color: var(--color-expense, #FF4D6D);
-}
-
-.category-type-btn.expense:hover,
 .category-type-btn.expense.selected {
-    border-color: var(--type-color);
-    background: rgba(255, 77, 109, 0.1);
-    color: var(--type-color);
+    border-color: var(--color-error);
+    background: var(--color-error-muted);
+    color: var(--color-error);
 }
 
 /* Income variant */
-.category-type-btn.income {
-    --type-color: var(--color-income, #00FF41);
-}
-
-.category-type-btn.income:hover,
 .category-type-btn.income.selected {
-    border-color: var(--type-color);
-    background: rgba(0, 255, 65, 0.1);
-    color: var(--type-color);
+    border-color: var(--color-success);
+    background: var(--color-success-muted);
+    color: var(--color-success);
 }
 
 /* Debt variant */
-.category-type-btn.debt {
-    --type-color: var(--color-accent, #00D9FF);
-}
-
-.category-type-btn.debt:hover,
 .category-type-btn.debt.selected {
-    border-color: var(--type-color);
-    background: rgba(0, 217, 255, 0.1);
-    color: var(--type-color);
-}
-
-.category-type-btn.selected {
-    box-shadow: var(--glow-accent-soft);
+    border-color: var(--color-accent);
+    background: var(--color-accent-muted);
+    color: var(--color-accent);
 }
 
 /* Form Select */
 .form-select {
     width: 100%;
     padding: var(--space-3);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.025em;
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--color-text-primary);
     cursor: pointer;
     transition: all var(--transition-fast);
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300D9FF' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E8A87C' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right var(--space-4) center;
     padding-right: calc(var(--space-4) * 2.5);
 }
 
 .form-select:hover {
-    border-color: var(--color-accent);
+    border-color: var(--color-border-strong);
 }
 
 .form-select:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: var(--glow-accent-soft);
+    box-shadow: 0 0 0 3px var(--color-accent-muted);
 }
 
 /* Form Hint */
@@ -328,9 +289,9 @@
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-3);
-    background: rgba(0, 217, 255, 0.03);
+    background: var(--color-bg-surface);
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
 }
 
 .wallet-activation-item {
@@ -338,14 +299,14 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--space-2) var(--space-3);
-    background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
     transition: all var(--transition-fast);
 }
 
 .wallet-activation-item:hover {
-    border-color: var(--color-accent);
+    border-color: var(--color-border-default);
 }
 
 .wallet-info {
@@ -360,17 +321,15 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    background: rgba(0, 217, 255, 0.1);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius-sm);
+    background: var(--color-accent-muted);
+    border-radius: var(--radius-md);
     color: var(--color-accent);
 }
 
 .wallet-name {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.025em;
+    font-weight: var(--font-medium);
     color: var(--color-text-primary);
 }
 
@@ -391,14 +350,14 @@
 }
 
 .activation-toggle.active {
-    color: var(--color-accent-secondary);
+    color: var(--color-success);
 }
 
 /* Merge Section */
 .merge-section {
     margin-top: var(--space-3);
     border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
 }
 
@@ -408,7 +367,7 @@
     justify-content: space-between;
     width: 100%;
     padding: var(--space-4);
-    background: rgba(0, 217, 255, 0.03);
+    background: var(--color-bg-surface);
     border: none;
     color: var(--color-text-secondary);
     cursor: pointer;
@@ -416,19 +375,17 @@
 }
 
 .section-toggle:hover {
-    background: rgba(0, 217, 255, 0.08);
-    color: var(--color-accent);
+    background: var(--color-bg-surface-hover);
+    color: var(--color-text-primary);
 }
 
 .section-toggle-left {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-weight: var(--font-medium);
 }
 
 .section-toggle .chevron {

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useAuthStore } from './stores/authStore';
+import { useThemeStore } from './stores/themeStore';
 
 // Lazy load pages for code splitting
 import { lazy, Suspense } from 'react';
@@ -30,11 +31,13 @@ import LoadingSpinner from './components/ui/LoadingSpinner';
 
 function App() {
     const { initialize, isLoading, user } = useAuthStore();
+    const { initTheme } = useThemeStore();
     const location = useLocation();
 
     useEffect(() => {
         initialize();
-    }, [initialize]);
+        initTheme();
+    }, [initialize, initTheme]);
 
     if (isLoading) {
         return (

@@ -1,205 +1,294 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    ZENITHLY DESIGN TOKENS — Liquid Glass Design System
+   Dual Theme: Midnight (Dark) + Daylight (Light)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-    /* ─────────────────────────────────────────────────────────────────────────
-       COLORS — Warm Neutrals + Rose Gold Palette
+   /* ─────────────────────────────────────────────────────────────────────────
+       TYPOGRAPHY — Editorial Elegance (Shared between themes)
        ───────────────────────────────────────────────────────────────────────── */
 
-    /* Backgrounds — Layered depth system */
-    --color-bg-base: #0D0D0F;
-    --color-bg-elevated: #16161A;
-    --color-bg-surface: #1C1C22;
-    --color-bg-surface-hover: #24242C;
-    --color-bg-glass: rgba(28, 28, 34, 0.6);
-    --color-bg-glass-hover: rgba(36, 36, 44, 0.7);
+   /* Font Families */
+   --font-display: 'Playfair Display', Georgia, serif;
+   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
-    /* Text — Warm cream tones */
-    --color-text-primary: #FFFAF5;
-    --color-text-secondary: #A8A8A8;
-    --color-text-tertiary: #6A6A6A;
-    --color-text-muted: #4A4A4A;
-    --color-text-inverse: #0D0D0F;
+   /* Font Scale */
+   --text-xs: 0.75rem;
+   --text-sm: 0.875rem;
+   --text-base: 1rem;
+   --text-lg: 1.125rem;
+   --text-xl: 1.25rem;
+   --text-2xl: 1.5rem;
+   --text-3xl: 2rem;
+   --text-4xl: 2.75rem;
+   --text-5xl: 3.5rem;
+   --text-6xl: 4.5rem;
+   --text-hero: clamp(3rem, 8vw, 5.5rem);
 
-    /* Accent — Rose Gold spectrum */
-    --color-accent: #E8A87C;
-    --color-accent-light: #FFD4B8;
-    --color-accent-dark: #C4896A;
-    --color-accent-muted: rgba(232, 168, 124, 0.15);
-    --color-accent-glow: rgba(232, 168, 124, 0.25);
+   /* Font Weights */
+   --font-light: 300;
+   --font-normal: 400;
+   --font-medium: 500;
+   --font-semibold: 600;
+   --font-bold: 700;
 
-    /* Semantic Colors — Softened for elegance */
-    --color-success: #6BCB77;
-    --color-success-muted: rgba(107, 203, 119, 0.15);
-    --color-warning: #FFD93D;
-    --color-warning-muted: rgba(255, 217, 61, 0.15);
-    --color-error: #FF6B6B;
-    --color-error-muted: rgba(255, 107, 107, 0.15);
-    --color-info: #74B9FF;
-    --color-info-muted: rgba(116, 185, 255, 0.15);
+   /* Line Heights */
+   --leading-none: 1;
+   --leading-tight: 1.15;
+   --leading-snug: 1.35;
+   --leading-normal: 1.5;
+   --leading-relaxed: 1.65;
 
-    /* Borders — Subtle glass edges */
-    --color-border-subtle: rgba(255, 255, 255, 0.04);
-    --color-border-default: rgba(255, 255, 255, 0.08);
-    --color-border-strong: rgba(255, 255, 255, 0.12);
-    --color-border-accent: rgba(232, 168, 124, 0.3);
+   /* Letter Spacing */
+   --tracking-tight: -0.02em;
+   --tracking-normal: 0;
+   --tracking-wide: 0.02em;
+   --tracking-wider: 0.05em;
+   --tracking-widest: 0.1em;
 
-    /* ─────────────────────────────────────────────────────────────────────────
-       TYPOGRAPHY — Editorial Elegance
-       ───────────────────────────────────────────────────────────────────────── */
-
-    /* Font Families */
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-    /* Font Scale */
-    --text-xs: 0.75rem;      /* 12px */
-    --text-sm: 0.875rem;     /* 14px */
-    --text-base: 1rem;       /* 16px */
-    --text-lg: 1.125rem;     /* 18px */
-    --text-xl: 1.25rem;      /* 20px */
-    --text-2xl: 1.5rem;      /* 24px */
-    --text-3xl: 2rem;        /* 32px */
-    --text-4xl: 2.75rem;     /* 44px */
-    --text-5xl: 3.5rem;      /* 56px */
-    --text-6xl: 4.5rem;      /* 72px */
-    --text-hero: clamp(3rem, 8vw, 5.5rem);
-
-    /* Font Weights */
-    --font-light: 300;
-    --font-normal: 400;
-    --font-medium: 500;
-    --font-semibold: 600;
-    --font-bold: 700;
-
-    /* Line Heights */
-    --leading-none: 1;
-    --leading-tight: 1.15;
-    --leading-snug: 1.35;
-    --leading-normal: 1.5;
-    --leading-relaxed: 1.65;
-
-    /* Letter Spacing */
-    --tracking-tight: -0.02em;
-    --tracking-normal: 0;
-    --tracking-wide: 0.02em;
-    --tracking-wider: 0.05em;
-    --tracking-widest: 0.1em;
-
-    /* ─────────────────────────────────────────────────────────────────────────
+   /* ─────────────────────────────────────────────────────────────────────────
        SPACING — Consistent rhythm
        ───────────────────────────────────────────────────────────────────────── */
 
-    --space-0: 0;
-    --space-1: 0.25rem;      /* 4px */
-    --space-2: 0.5rem;       /* 8px */
-    --space-3: 0.75rem;      /* 12px */
-    --space-4: 1rem;         /* 16px */
-    --space-5: 1.25rem;      /* 20px */
-    --space-6: 1.5rem;       /* 24px */
-    --space-8: 2rem;         /* 32px */
-    --space-10: 2.5rem;      /* 40px */
-    --space-12: 3rem;        /* 48px */
-    --space-16: 4rem;        /* 64px */
-    --space-20: 5rem;        /* 80px */
-    --space-24: 6rem;        /* 96px */
-    --space-32: 8rem;        /* 128px */
+   --space-0: 0;
+   --space-1: 0.25rem;
+   --space-2: 0.5rem;
+   --space-3: 0.75rem;
+   --space-4: 1rem;
+   --space-5: 1.25rem;
+   --space-6: 1.5rem;
+   --space-8: 2rem;
+   --space-10: 2.5rem;
+   --space-12: 3rem;
+   --space-16: 4rem;
+   --space-20: 5rem;
+   --space-24: 6rem;
+   --space-32: 8rem;
 
-    /* ─────────────────────────────────────────────────────────────────────────
+   /* ─────────────────────────────────────────────────────────────────────────
        RADII — Soft, rounded corners
        ───────────────────────────────────────────────────────────────────────── */
 
-    --radius-none: 0;
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    --radius-2xl: 24px;
-    --radius-3xl: 32px;
-    --radius-full: 9999px;
+   --radius-none: 0;
+   --radius-sm: 6px;
+   --radius-md: 12px;
+   --radius-lg: 16px;
+   --radius-xl: 20px;
+   --radius-2xl: 24px;
+   --radius-3xl: 32px;
+   --radius-full: 9999px;
 
-    /* ─────────────────────────────────────────────────────────────────────────
-       SHADOWS — Layered depth
-       ───────────────────────────────────────────────────────────────────────── */
-
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.4);
-    --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.5);
-
-    /* Glow Effects */
-    --glow-accent: 0 0 30px var(--color-accent-glow);
-    --glow-accent-soft: 0 4px 20px var(--color-accent-glow);
-    --glow-success: 0 0 20px rgba(107, 203, 119, 0.25);
-    --glow-error: 0 0 20px rgba(255, 107, 107, 0.25);
-
-    /* Glass Effect */
-    --shadow-glass: 
-        0 4px 30px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    --shadow-glass-hover:
-        0 8px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
-    /* ─────────────────────────────────────────────────────────────────────────
+   /* ─────────────────────────────────────────────────────────────────────────
        MOTION — Buttery smooth animations
        ───────────────────────────────────────────────────────────────────────── */
 
-    /* Durations */
-    --duration-instant: 100ms;
-    --duration-quick: 150ms;
-    --duration-normal: 300ms;
-    --duration-slow: 500ms;
-    --duration-slower: 700ms;
-    --duration-reveal: 800ms;
+   --duration-instant: 100ms;
+   --duration-quick: 150ms;
+   --duration-normal: 300ms;
+   --duration-slow: 500ms;
+   --duration-slower: 700ms;
+   --duration-reveal: 800ms;
 
-    /* Easing Curves */
-    --ease-linear: linear;
-    --ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-    --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+   --ease-linear: linear;
+   --ease-in: cubic-bezier(0.4, 0, 1, 1);
+   --ease-out: cubic-bezier(0, 0, 0.2, 1);
+   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+   --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Composite Transitions */
-    --transition-fast: var(--duration-quick) var(--ease-out);
-    --transition-base: var(--duration-normal) var(--ease-out);
-    --transition-slow: var(--duration-slow) var(--ease-out-expo);
-    --transition-bounce: var(--duration-slow) var(--ease-out-back);
+   --transition-fast: var(--duration-quick) var(--ease-out);
+   --transition-base: var(--duration-normal) var(--ease-out);
+   --transition-slow: var(--duration-slow) var(--ease-out-expo);
+   --transition-bounce: var(--duration-slow) var(--ease-out-back);
 
-    /* ─────────────────────────────────────────────────────────────────────────
-       GLASS MORPHISM — Frosted glass utilities
+   /* ─────────────────────────────────────────────────────────────────────────
+       GLASS MORPHISM
        ───────────────────────────────────────────────────────────────────────── */
 
-    --glass-blur: blur(20px);
-    --glass-blur-sm: blur(10px);
-    --glass-blur-lg: blur(40px);
+   --glass-blur: blur(20px);
+   --glass-blur-sm: blur(10px);
+   --glass-blur-lg: blur(40px);
 
-    /* ─────────────────────────────────────────────────────────────────────────
-       Z-INDEX — Layering system
+   /* ─────────────────────────────────────────────────────────────────────────
+       Z-INDEX
        ───────────────────────────────────────────────────────────────────────── */
 
-    --z-base: 0;
-    --z-dropdown: 100;
-    --z-sticky: 200;
-    --z-fixed: 300;
-    --z-modal-backdrop: 400;
-    --z-modal: 500;
-    --z-popover: 600;
-    --z-tooltip: 700;
-    --z-toast: 800;
+   --z-base: 0;
+   --z-dropdown: 100;
+   --z-sticky: 200;
+   --z-fixed: 300;
+   --z-modal-backdrop: 400;
+   --z-modal: 500;
+   --z-popover: 600;
+   --z-tooltip: 700;
+   --z-toast: 800;
 
-    /* ─────────────────────────────────────────────────────────────────────────
-       LAYOUT — Container widths
+   /* ─────────────────────────────────────────────────────────────────────────
+       LAYOUT
        ───────────────────────────────────────────────────────────────────────── */
 
-    --container-sm: 640px;
-    --container-md: 768px;
-    --container-lg: 1024px;
-    --container-xl: 1280px;
-    --container-2xl: 1400px;
+   --container-sm: 640px;
+   --container-md: 768px;
+   --container-lg: 1024px;
+   --container-xl: 1280px;
+   --container-2xl: 1400px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MIDNIGHT THEME (Dark) — Warm, cozy, not too dark
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"],
+:root {
+   /* Backgrounds — Warm charcoal tones */
+   --color-bg-base: #1A1A1E;
+   --color-bg-elevated: #222228;
+   --color-bg-surface: #2A2A32;
+   --color-bg-surface-hover: #32323C;
+   --color-bg-glass: rgba(42, 42, 50, 0.7);
+   --color-bg-glass-hover: rgba(50, 50, 60, 0.8);
+
+   /* Text — Warm cream tones */
+   --color-text-primary: #FAF8F5;
+   --color-text-secondary: #B8B5B0;
+   --color-text-tertiary: #7A7772;
+   --color-text-muted: #5A5855;
+   --color-text-inverse: #1A1A1E;
+
+   /* Accent — Rose Gold */
+   --color-accent: #E8A87C;
+   --color-accent-light: #FFD4B8;
+   --color-accent-dark: #C4896A;
+   --color-accent-muted: rgba(232, 168, 124, 0.15);
+   --color-accent-glow: rgba(232, 168, 124, 0.25);
+
+   /* Semantic Colors */
+   --color-success: #7DD98B;
+   --color-success-muted: rgba(125, 217, 139, 0.15);
+   --color-warning: #F5D76E;
+   --color-warning-muted: rgba(245, 215, 110, 0.15);
+   --color-error: #F08080;
+   --color-error-muted: rgba(240, 128, 128, 0.15);
+   --color-info: #88C8F5;
+   --color-info-muted: rgba(136, 200, 245, 0.15);
+
+   /* Borders */
+   --color-border-subtle: rgba(255, 255, 255, 0.05);
+   --color-border-default: rgba(255, 255, 255, 0.10);
+   --color-border-strong: rgba(255, 255, 255, 0.15);
+   --color-border-accent: rgba(232, 168, 124, 0.35);
+
+   /* Shadows */
+   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.20);
+   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.30);
+   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.35);
+   --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.40);
+
+   --glow-accent: 0 0 30px var(--color-accent-glow);
+   --glow-accent-soft: 0 4px 20px var(--color-accent-glow);
+   --glow-success: 0 0 20px rgba(125, 217, 139, 0.25);
+   --glow-error: 0 0 20px rgba(240, 128, 128, 0.25);
+
+   --shadow-glass:
+      0 4px 30px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+   --shadow-glass-hover:
+      0 8px 40px rgba(0, 0, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+   /* Landing Page Orbs */
+   --orb-color-1: rgba(232, 168, 124, 0.12);
+   --orb-color-2: rgba(180, 140, 100, 0.08);
+   --orb-color-3: rgba(160, 120, 80, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DAYLIGHT THEME (Light) — Soft cream and warm whites
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-theme="light"] {
+   /* Backgrounds — Warm cream tones */
+   --color-bg-base: #F8F5F0;
+   --color-bg-elevated: #FFFFFF;
+   --color-bg-surface: #FFFDFB;
+   --color-bg-surface-hover: #F5F2ED;
+   --color-bg-glass: rgba(255, 253, 251, 0.85);
+   --color-bg-glass-hover: rgba(248, 245, 240, 0.90);
+
+   /* Text — Rich warm tones */
+   --color-text-primary: #2D2A26;
+   --color-text-secondary: #5C5854;
+   --color-text-tertiary: #8A857E;
+   --color-text-muted: #B5AFA8;
+   --color-text-inverse: #FAF8F5;
+
+   /* Accent — Deeper Rose Gold for contrast */
+   --color-accent: #C4896A;
+   --color-accent-light: #E8A87C;
+   --color-accent-dark: #A06B4D;
+   --color-accent-muted: rgba(196, 137, 106, 0.12);
+   --color-accent-glow: rgba(196, 137, 106, 0.20);
+
+   /* Semantic Colors — Slightly deeper for light bg */
+   --color-success: #4CAF50;
+   --color-success-muted: rgba(76, 175, 80, 0.12);
+   --color-warning: #E5A835;
+   --color-warning-muted: rgba(229, 168, 53, 0.12);
+   --color-error: #E57373;
+   --color-error-muted: rgba(229, 115, 115, 0.12);
+   --color-info: #5C9CE5;
+   --color-info-muted: rgba(92, 156, 229, 0.12);
+
+   /* Borders — Soft warm grays */
+   --color-border-subtle: rgba(45, 42, 38, 0.06);
+   --color-border-default: rgba(45, 42, 38, 0.12);
+   --color-border-strong: rgba(45, 42, 38, 0.18);
+   --color-border-accent: rgba(196, 137, 106, 0.40);
+
+   /* Shadows — Warm-tinted */
+   --shadow-xs: 0 1px 2px rgba(45, 42, 38, 0.06);
+   --shadow-sm: 0 2px 4px rgba(45, 42, 38, 0.08);
+   --shadow-md: 0 4px 12px rgba(45, 42, 38, 0.10);
+   --shadow-lg: 0 8px 24px rgba(45, 42, 38, 0.12);
+   --shadow-xl: 0 16px 48px rgba(45, 42, 38, 0.15);
+   --shadow-2xl: 0 24px 64px rgba(45, 42, 38, 0.18);
+
+   --glow-accent: 0 0 30px var(--color-accent-glow);
+   --glow-accent-soft: 0 4px 20px var(--color-accent-glow);
+   --glow-success: 0 0 20px rgba(76, 175, 80, 0.20);
+   --glow-error: 0 0 20px rgba(229, 115, 115, 0.20);
+
+   --shadow-glass:
+      0 4px 30px rgba(45, 42, 38, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.80);
+   --shadow-glass-hover:
+      0 8px 40px rgba(45, 42, 38, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.90);
+
+   /* Landing Page Orbs */
+   --orb-color-1: rgba(196, 137, 106, 0.15);
+   --orb-color-2: rgba(220, 180, 140, 0.10);
+   --orb-color-3: rgba(180, 160, 120, 0.08);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THEME TRANSITION — Smooth theme switching
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+   transition:
+      background-color var(--duration-slow) var(--ease-out),
+      color var(--duration-slow) var(--ease-out);
+}
+
+body,
+.app-layout,
+.app-sidebar,
+.app-main {
+   transition:
+      background-color var(--duration-slow) var(--ease-out),
+      border-color var(--duration-slow) var(--ease-out);
 }

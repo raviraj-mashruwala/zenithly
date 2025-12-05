@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings as SettingsIcon, LogOut, Trash2, Save } from 'lucide-react';
+import { User, Settings as SettingsIcon, LogOut, Trash2, Save, Sun, Moon, Palette } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../stores/authStore';
+import { useThemeStore } from '../stores/themeStore';
 import { supabase } from '../lib/supabase';
 import { CURRENCY_OPTIONS } from '../constants/currencies';
 import Button from '../components/ui/Button';
@@ -27,6 +28,7 @@ const DATE_FORMATS = [
 export default function Settings() {
     const navigate = useNavigate();
     const { user, logout } = useAuthStore();
+    const { theme, toggleTheme } = useThemeStore();
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
@@ -172,6 +174,35 @@ export default function Settings() {
                     </div>
 
                     <div className="settings-form">
+                        {/* Theme Toggle */}
+                        <div className="form-group">
+                            <label className="form-label">
+                                <Palette size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                                Appearance
+                            </label>
+                            <div className="theme-toggle-wrapper">
+                                <button
+                                    className={`theme-option ${theme === 'light' ? 'active' : ''}`}
+                                    onClick={() => theme !== 'light' && toggleTheme()}
+                                    type="button"
+                                >
+                                    <Sun size={18} />
+                                    <span>Daylight</span>
+                                </button>
+                                <button
+                                    className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
+                                    onClick={() => theme !== 'dark' && toggleTheme()}
+                                    type="button"
+                                >
+                                    <Moon size={18} />
+                                    <span>Midnight</span>
+                                </button>
+                            </div>
+                            <p className="form-helper-text text-tertiary">
+                                Choose your preferred color theme
+                            </p>
+                        </div>
+
                         <div className="form-group">
                             <label className="form-label">Base Currency</label>
                             <select
