@@ -6,6 +6,14 @@
     animation: fadeIn 0.4s var(--ease-out);
 }
 
+/* Balance Summary */
+.balance-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
 /* Stats Grid */
 .stats-grid {
     display: grid;

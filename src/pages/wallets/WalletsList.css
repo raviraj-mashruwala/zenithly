@@ -3,44 +3,7 @@
    Used by: WalletsList, CategoriesList, TransactionsList
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.page-container {
-    padding: 0;
-    animation: fadeIn 0.4s var(--ease-out);
-}
 
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-8);
-    flex-wrap: wrap;
-    gap: var(--space-4);
-}
-
-.page-header-content {
-    flex: 1;
-}
-
-.page-title {
-    font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: var(--font-bold);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-2);
-}
-
-.page-subtitle {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-}
-
-.page-actions {
-    display: flex;
-    gap: var(--space-3);
-    align-items: center;
-}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TOTAL BALANCE CARD

@@ -66,13 +66,13 @@ export default function ReportsOverview() {
     return (
         <div className="page-container report-page">
             {/* Header */}
-            <div className="report-header">
+            <div className="page-header">
                 <div>
                     <Button variant="ghost" leftIcon={<ArrowLeft />} onClick={() => navigate('/dashboard')} className="mb-4">
                         Back to Dashboard
                     </Button>
-                    <h1 className="report-title">Financial Reports</h1>
-                    <p className="report-subtitle">Overview & Analysis</p>
+                    <h1 className="page-title">Financial Reports</h1>
+                    <p className="page-subtitle">Overview & Analysis</p>
                 </div>
 
                 <div className="flex flex-col gap-4 items-end">
