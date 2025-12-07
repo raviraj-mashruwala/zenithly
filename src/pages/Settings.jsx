@@ -13,6 +13,7 @@ import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Modal from '../components/ui/Modal';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
 import './Settings.css';
 
 const profileSchema = z.object({
@@ -33,6 +34,8 @@ export default function Settings() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
     const [baseCurrency, setBaseCurrency] = useState('INR');
+    const [pendingCurrency, setPendingCurrency] = useState(null);
+    const [showCurrencyConfirm, setShowCurrencyConfirm] = useState(false);
     const [dateFormat, setDateFormat] = useState('dd/MM/yyyy');
 
     const {
@@ -124,24 +127,31 @@ export default function Settings() {
         }
     };
 
-    const handleCurrencyChange = async (newCurrency) => {
+    const handleCurrencyChange = (newCurrency) => {
         if (baseCurrency !== newCurrency && baseCurrency) {
-            const confirmed = window.confirm(
-                'Changing your base currency will not convert existing transaction amounts. Are you sure?'
-            );
-            if (!confirmed) return;
+            setPendingCurrency(newCurrency);
+            setShowCurrencyConfirm(true);
+        } else {
+            executeCurrencyChange(newCurrency);
         }
+    };
+
+    const executeCurrencyChange = async (currencyToSet) => {
+        const currency = currencyToSet || pendingCurrency;
 
         try {
             await supabase
                 .from('users')
-                .update({ base_currency: newCurrency })
+                .update({ base_currency: currency })
                 .eq('id', user.id);
 
-            setBaseCurrency(newCurrency);
+            setBaseCurrency(currency);
             toast.success('Currency updated');
         } catch (error) {
             toast.error('Failed to update currency');
+        } finally {
+            setPendingCurrency(null);
+            setShowCurrencyConfirm(false);
         }
     };
 
@@ -348,6 +358,20 @@ export default function Settings() {
                     </div>
                 </Modal>
             )}
+
+            {/* Currency Change Confirmation */}
+            <ConfirmDialog
+                isOpen={showCurrencyConfirm}
+                onClose={() => {
+                    setShowCurrencyConfirm(false);
+                    setPendingCurrency(null);
+                }}
+                onConfirm={() => executeCurrencyChange()}
+                title="Change Currency"
+                message="Changing your base currency will not convert existing transaction amounts. Are you sure you want to proceed?"
+                confirmText="Change Currency"
+                variant="warning"
+            />
         </div>
     );
 }

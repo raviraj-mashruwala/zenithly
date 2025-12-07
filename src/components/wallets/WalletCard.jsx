@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useWalletStore } from '../../stores/walletStore';
 import { formatCurrency } from '../../utils/currency';
 import Card from '../ui/Card';
+import ConfirmDialog from '../ui/ConfirmDialog';
 import './WalletCard.css';
 
 // Helper to render icon from icon ID
@@ -22,6 +23,7 @@ const renderIconFromId = (iconId, size = 20) => {
 
 export default function WalletCard({ wallet, showBalance, onEdit }) {
     const [showMenu, setShowMenu] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const { archiveWallet, restoreWallet, deleteWallet } = useWalletStore();
 
     const handleArchive = async () => {
@@ -45,16 +47,17 @@ export default function WalletCard({ wallet, showBalance, onEdit }) {
     };
 
     const handleDelete = async () => {
-        if (!confirm('Are you sure you want to delete this wallet? This action cannot be undone.')) {
-            return;
-        }
-
         try {
             await deleteWallet(wallet.id);
             toast.success('Wallet deleted');
         } catch (error) {
             toast.error(error.message || 'Failed to delete wallet');
         }
+    };
+
+    const confirmDelete = () => {
+        setShowMenu(false);
+        setShowDeleteConfirm(true);
     };
 
     const isArchived = wallet.status === 'Archived';
@@ -103,7 +106,7 @@ export default function WalletCard({ wallet, showBalance, onEdit }) {
 
                                 <div className="menu-divider" />
 
-                                <button className="menu-item danger" onClick={handleDelete}>
+                                <button className="menu-item danger" onClick={confirmDelete}>
                                     <Trash2 size={16} />
                                     <span>Delete</span>
                                 </button>
@@ -136,6 +139,22 @@ export default function WalletCard({ wallet, showBalance, onEdit }) {
                     <span>Archived</span>
                 </div>
             )}
+            {isArchived && (
+                <div className="archived-overlay">
+                    <Archive size={16} />
+                    <span>Archived</span>
+                </div>
+            )}
+
+            <ConfirmDialog
+                isOpen={showDeleteConfirm}
+                onClose={() => setShowDeleteConfirm(false)}
+                onConfirm={handleDelete}
+                title="Delete Wallet"
+                message={`Are you sure you want to delete "${wallet.name}"? This action cannot be undone.`}
+                confirmText="Delete"
+                variant="danger"
+            />
         </Card>
     );
 }
