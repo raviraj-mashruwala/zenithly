@@ -87,6 +87,28 @@ export default function Settings() {
 
         setIsLoading(true);
         try {
+            // Manual cleanup of new relationships that might block cascading delete
+            // 1. Get all user wallets
+            const { data: userWallets } = await supabase
+                .from('wallets')
+                .select('id')
+                .eq('user_id', user.id);
+
+            if (userWallets && userWallets.length > 0) {
+                const walletIds = userWallets.map(w => w.id);
+
+                // 2. Delete wallet mappings
+                const { error: mapError } = await supabase
+                    .from('category_wallet_map')
+                    .delete()
+                    .in('wallet_id', walletIds);
+
+                if (mapError) {
+                    console.error('Failed to cleanup wallet mappings:', mapError);
+                    // Continue anyway, maybe the RPC can handle it or it's a different issue
+                }
+            }
+
             // Call the database function to delete user and all data
             const { error } = await supabase.rpc('delete_user_account');
 
@@ -96,6 +118,7 @@ export default function Settings() {
             await signOut();
             navigate('/');
         } catch (error) {
+            console.error('Delete account error:', error);
             toast.error(error.message || 'Failed to delete account');
             setIsLoading(false);
         }

@@ -30,7 +30,7 @@ import AppLayout from './components/layout/AppLayout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 
 function App() {
-    const { initialize, isLoading, user } = useAuthStore();
+    const { initialize, isLoading, user, isProfileComplete } = useAuthStore();
     const { initTheme } = useThemeStore();
     const location = useLocation();
 
@@ -102,7 +102,9 @@ function App() {
 
                     {/* Root route - Landing or Dashboard */}
                     <Route path="/" element={
-                        user ? <Navigate to="/dashboard" replace /> : <LandingPage />
+                        user ? (
+                            isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
+                        ) : <LandingPage />
                     } />
 
                     {/* Fallback auth routes (accessible directly) */}
@@ -113,7 +115,9 @@ function App() {
 
                     {/* Catch-all redirect */}
                     <Route path="*" element={
-                        user ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />
+                        user ? (
+                            isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
+                        ) : <Navigate to="/" replace />
                     } />
                 </Routes>
             </AnimatePresence>

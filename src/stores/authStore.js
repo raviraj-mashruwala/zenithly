@@ -6,6 +6,7 @@ export const useAuthStore = create((set, get) => ({
     session: null,
     isLoading: true,
     isAuthenticated: false,
+    isProfileComplete: false,
 
     // Initialize auth state
     initialize: async () => {
@@ -14,10 +15,18 @@ export const useAuthStore = create((set, get) => ({
             const { data: { session } } = await supabase.auth.getSession();
 
             if (session) {
+                // Check if user has completed onboarding (profile exists)
+                const { data: profile } = await supabase
+                    .from('users')
+                    .select('id')
+                    .eq('id', session.user.id)
+                    .single();
+
                 set({
                     session,
                     user: session.user,
                     isAuthenticated: true,
+                    isProfileComplete: !!profile,
                     isLoading: false,
                 });
             } else {
@@ -25,11 +34,23 @@ export const useAuthStore = create((set, get) => ({
             }
 
             // Listen for auth changes
-            supabase.auth.onAuthStateChange((_event, session) => {
+            supabase.auth.onAuthStateChange(async (_event, session) => {
+                let isProfileComplete = false;
+                
+                if (session?.user) {
+                     const { data: profile } = await supabase
+                        .from('users')
+                        .select('id')
+                        .eq('id', session.user.id)
+                        .single();
+                     isProfileComplete = !!profile;
+                }
+
                 set({
                     session,
                     user: session?.user ?? null,
                     isAuthenticated: !!session,
+                    isProfileComplete,
                 });
             });
         } catch (error) {
@@ -51,6 +72,17 @@ export const useAuthStore = create((set, get) => ({
         });
 
         if (error) throw error;
+
+        // If we get a session immediately (email confirmation disabled), update state
+        if (data.session) {
+            set({
+                session: data.session,
+                user: data.session.user,
+                isAuthenticated: true,
+                isLoading: false,
+            });
+        }
+
         return data;
     },
 

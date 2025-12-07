@@ -2,251 +2,314 @@
    ONBOARDING STEPS — Liquid Glass Design System
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Step Container */
-.step-content {
-    animation: fadeIn 0.3s var(--ease-out);
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMMON LAYOUT & TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.step-content-wrapper {
+    width: 100%;
+    animation: fadeIn 0.4s var(--ease-out);
+}
+
+.step-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: var(--space-3);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.step-subheading {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto var(--space-8);
+    line-height: var(--leading-relaxed);
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateX(10px);
+        transform: translateY(10px);
     }
 
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
-/* Welcome Step */
-.welcome-step {
-    text-align: center;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   CURRENCY STEP
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-.welcome-icon {
-    font-size: 4rem;
-    margin-bottom: var(--space-4);
-}
-
-.welcome-message {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-/* Form Steps */
-.step-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-}
-
-.step-description {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-    text-align: center;
-    margin-bottom: var(--space-4);
-}
-
-/* Currency/Wallet Selection Grid */
-.selection-grid {
+.currency-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-6);
 }
 
-.selection-option {
+.currency-option {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-4);
-    background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
+    padding: var(--space-5);
+    background: var(--color-bg-surface-glass);
+    border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-xl);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
 }
 
-.selection-option:hover {
-    border-color: var(--color-border-strong);
+.currency-option:hover {
     background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-default);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-.selection-option.selected {
+.currency-option.selected {
+    background: var(--color-accent-subtle);
     border-color: var(--color-accent);
-    background: var(--color-accent-muted);
+    box-shadow: 0 0 0 1px var(--color-accent), var(--shadow-lg);
 }
 
-.selection-icon {
-    font-size: 1.5rem;
-}
-
-.selection-label {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: var(--font-medium);
-    color: var(--color-text-primary);
-    text-align: center;
-}
-
-.selection-sublabel {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    color: var(--color-text-tertiary);
-}
-
-/* Wallet Setup List */
-.wallet-setup-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-}
-
-.wallet-setup-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4);
-    background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    transition: all var(--transition-fast);
-}
-
-.wallet-setup-item:hover {
-    border-color: var(--color-border-strong);
-}
-
-.wallet-setup-info {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-}
-
-.wallet-setup-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: var(--color-accent-muted);
-    border-radius: var(--radius-lg);
-    color: var(--color-accent);
-}
-
-.wallet-setup-name {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: var(--font-medium);
-    color: var(--color-text-primary);
-}
-
-.wallet-setup-type {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    color: var(--color-text-tertiary);
-}
-
-.wallet-setup-actions {
-    display: flex;
-    gap: var(--space-2);
-}
-
-/* Add Wallet Button */
-.add-wallet-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    width: 100%;
-    padding: var(--space-4);
-    background: transparent;
-    border: 1px dashed var(--color-border-default);
-    border-radius: var(--radius-lg);
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: var(--font-medium);
-    color: var(--color-text-tertiary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.add-wallet-btn:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    background: var(--color-accent-muted);
-}
-
-/* Completion Step */
-.completion-step {
-    text-align: center;
-}
-
-.completion-icon {
-    font-size: 4rem;
-    margin-bottom: var(--space-4);
-}
-
-.completion-title {
+.currency-symbol {
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     font-weight: var(--font-bold);
     color: var(--color-text-primary);
     margin-bottom: var(--space-2);
-}
-
-.completion-message {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
-    max-width: 400px;
-    margin: 0 auto var(--space-6);
-}
-
-/* Summary Card */
-.setup-summary {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--color-bg-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-xl);
-    padding: var(--space-5);
-    text-align: left;
-    margin-bottom: var(--space-6);
-}
-
-.summary-title {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: var(--font-semibold);
-    color: var(--color-accent);
+    border-radius: 50%;
     margin-bottom: var(--space-3);
+    transition: all var(--transition-normal);
 }
 
-.summary-list {
+.currency-option.selected .currency-symbol {
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+}
+
+.currency-details {
+    text-align: center;
+}
+
+.currency-code {
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+}
+
+.currency-name {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WALLET STEP
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.wallet-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-6);
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-.summary-item {
+.wallet-types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+    .wallet-types-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.wallet-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    height: 100px;
+}
+
+.wallet-type-card:hover {
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-border-strong);
+}
+
+.wallet-type-card.selected {
+    background: var(--color-accent-subtle);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.wallet-type-label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    text-align: center;
+}
+
+/* Custom Checkbox */
+.checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-bg-surface-subtle);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-subtle);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.checkbox-wrapper:hover {
+    background: var(--color-bg-surface-hover);
+}
+
+.checkbox-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-label {
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+}
+
+.checkbox-help {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CATEGORIES STEP
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.categories-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.category-group {
+    background: var(--color-bg-surface-glass);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+}
+
+.category-group-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
 }
 
-.summary-label {
+.category-badge {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.category-badge.expense {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.category-badge.income {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.category-badge.debt {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.category-count {
+    font-size: var(--text-xs);
     color: var(--color-text-tertiary);
 }
 
-.summary-value {
+.category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.category-chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.category-chip:hover {
+    border-color: var(--color-border-strong);
     color: var(--color-text-primary);
-    font-weight: var(--font-medium);
+}
+
+.category-chip.more {
+    background: transparent;
+    border-style: dashed;
+    color: var(--color-text-tertiary);
+}
+
+.summary-footer {
+    text-align: center;
+    margin-top: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-subtle);
+}
+
+.summary-stat {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-accent);
+}
+
+.summary-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
 }

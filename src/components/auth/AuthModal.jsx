@@ -84,10 +84,17 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
     const handleSignup = async (data) => {
         setIsLoading(true);
         try {
-            await signUp(data.email, data.password);
-            toast.success('Account Initialized');
-            onClose();
-            navigate('/onboarding');
+            const { session } = await signUp(data.email, data.password);
+
+            if (session) {
+                toast.success('Account Initialized');
+                onClose();
+                navigate('/onboarding');
+            } else {
+                // Email confirmation required
+                toast.success('Please check your email to verify your account');
+                onClose();
+            }
         } catch (error) {
             toast.error(error.message || 'Initialization Failed');
         } finally {

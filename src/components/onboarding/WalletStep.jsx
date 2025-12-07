@@ -1,4 +1,4 @@
-import { Building2, CreditCard, Wallet, Smartphone, TrendingUp, Circle } from 'lucide-react';
+import { Building2, CreditCard, Wallet, Smartphone, TrendingUp, Circle, Check } from 'lucide-react';
 import Input from '../ui/Input';
 import { WALLET_TYPES } from '../../constants/currencies';
 import './OnboardingSteps.css';
@@ -19,8 +19,8 @@ export default function WalletStep({ walletData, currency, onWalletChange }) {
 
     return (
         <div className="step-content-wrapper">
-            <h2 className="font-display step-heading">Create Your First Wallet</h2>
-            <p className="step-subheading text-secondary">
+            <h2 className="step-heading">Create Your First Wallet</h2>
+            <p className="step-subheading">
                 A wallet is an account where you keep your money (bank account, credit card, cash, etc.)
             </p>
 
@@ -35,20 +35,22 @@ export default function WalletStep({ walletData, currency, onWalletChange }) {
                 />
 
                 <div className="form-group">
-                    <label className="form-label">Wallet Type</label>
-                    <div className="wallet-types">
+                    <label className="text-sm font-medium text-primary mb-2 block">Wallet Type</label>
+                    <div className="wallet-types-grid">
                         {WALLET_TYPES.map((type) => {
                             const Icon = ICON_MAP[type.icon];
+                            const isSelected = walletData.type === type.value;
                             return (
                                 <button
                                     key={type.value}
                                     type="button"
-                                    className={`wallet-type-option ${walletData.type === type.value ? 'selected' : ''
-                                        }`}
+                                    className={`wallet-type-card ${isSelected ? 'selected' : ''}`}
                                     onClick={() => handleChange('type', type.value)}
                                 >
-                                    <Icon size={24} />
-                                    <span>{type.label}</span>
+                                    <Icon size={24} className={isSelected ? 'text-accent' : 'text-tertiary'} />
+                                    <span className={`wallet-type-label ${isSelected ? 'text-accent' : 'text-secondary'}`}>
+                                        {type.label}
+                                    </span>
                                 </button>
                             );
                         })}
@@ -66,19 +68,20 @@ export default function WalletStep({ walletData, currency, onWalletChange }) {
                     step="0.01"
                 />
 
-                <div className="checkbox-group">
-                    <input
-                        type="checkbox"
-                        id="includedInTotal"
-                        checked={walletData.includedInTotal}
-                        onChange={(e) => handleChange('includedInTotal', e.target.checked)}
-                    />
-                    <label htmlFor="includedInTotal">
-                        Include in total balance
+                <div
+                    className="checkbox-wrapper"
+                    onClick={() => handleChange('includedInTotal', !walletData.includedInTotal)}
+                >
+                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${walletData.includedInTotal ? 'bg-accent border-accent text-white' : 'border-default bg-surface'
+                        }`}>
+                        {walletData.includedInTotal && <Check size={14} />}
+                    </div>
+                    <div className="checkbox-content">
+                        <span className="checkbox-label">Include in total balance</span>
                         <span className="checkbox-help">
-                            (Uncheck if you don't want this account counted in your total)
+                            Uncheck if you don't want this account counted in your total
                         </span>
-                    </label>
+                    </div>
                 </div>
             </div>
         </div>
