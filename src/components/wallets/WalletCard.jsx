@@ -24,6 +24,7 @@ const renderIconFromId = (iconId, size = 20) => {
 export default function WalletCard({ wallet, showBalance, onEdit }) {
     const [showMenu, setShowMenu] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const { archiveWallet, restoreWallet, deleteWallet } = useWalletStore();
 
     const handleArchive = async () => {
@@ -47,11 +48,15 @@ export default function WalletCard({ wallet, showBalance, onEdit }) {
     };
 
     const handleDelete = async () => {
+        setIsDeleting(true);
         try {
             await deleteWallet(wallet.id);
             toast.success('Wallet deleted');
+            setShowDeleteConfirm(false); // Close explicitly on success
         } catch (error) {
             toast.error(error.message || 'Failed to delete wallet');
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -148,12 +153,13 @@ export default function WalletCard({ wallet, showBalance, onEdit }) {
 
             <ConfirmDialog
                 isOpen={showDeleteConfirm}
-                onClose={() => setShowDeleteConfirm(false)}
+                onClose={() => !isDeleting && setShowDeleteConfirm(false)}
                 onConfirm={handleDelete}
                 title="Delete Wallet"
                 message={`Are you sure you want to delete "${wallet.name}"? This action cannot be undone.`}
                 confirmText="Delete"
                 variant="danger"
+                isLoading={isDeleting}
             />
         </Card>
     );

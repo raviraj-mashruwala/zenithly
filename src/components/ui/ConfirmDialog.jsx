@@ -1,9 +1,9 @@
-
 import Button from './Button';
 import Modal from './Modal';
-import { AlertTriangle, Info, Trash2 } from 'lucide-react';
+import { AlertTriangle, AlertCircle, ArrowRight } from 'lucide-react';
+import './ConfirmDialog.css';
 
-export default function ConfirmDialog({
+const ConfirmDialog = ({
     isOpen,
     onClose,
     onConfirm,
@@ -13,66 +13,58 @@ export default function ConfirmDialog({
     cancelText = 'Cancel',
     variant = 'danger', // danger, warning, info
     isLoading = false
-}) {
+}) => {
     if (!isOpen) return null;
 
     const getIcon = () => {
         switch (variant) {
             case 'danger':
-                return <Trash2 className="text-danger" size={24} />;
+                return <AlertTriangle className="confirm-dialog-icon danger" />;
             case 'warning':
-                return <AlertTriangle className="text-warning" size={24} />;
+                return <AlertCircle className="confirm-dialog-icon warning" />;
             case 'info':
             default:
-                return <Info className="text-info" size={24} />;
-        }
-    };
-
-    const getConfirmButtonVariant = () => {
-        switch (variant) {
-            case 'danger':
-                return 'danger';
-            case 'warning':
-                return 'warning';
-            case 'info':
-            default:
-                return 'primary';
+                return <ArrowRight className="confirm-dialog-icon info" />;
         }
     };
 
     return (
-        <Modal onClose={onClose} size="sm">
-            <div className="flex flex-col items-center text-center p-4">
-                <div className="mb-4 p-3 bg-primary-50 rounded-full dark:bg-dark-800">
-                    {getIcon()}
-                </div>
+        <Modal isOpen={isOpen} onClose={isLoading ? undefined : onClose} size="sm">
+            <div className="confirm-dialog-content">
+                {getIcon()}
 
-                <h3 className="text-xl font-bold mb-2 text-primary">{title}</h3>
+                <h3 className="confirm-dialog-title">
+                    {title}
+                </h3>
 
-                <p className="text-secondary mb-6">
+                <p className="confirm-dialog-message">
                     {message}
                 </p>
 
-                <div className="flex gap-3 w-full justify-center">
-                    <Button
-                        variant="ghost"
+                <div className="confirm-dialog-actions">
+                    <button
                         onClick={onClose}
                         disabled={isLoading}
+                        className="confirm-btn cancel"
                     >
                         {cancelText}
-                    </Button>
-                    <Button
-                        variant={getConfirmButtonVariant()}
-                        onClick={() => {
-                            onConfirm();
-                            onClose();
-                        }}
-                        isLoading={isLoading}
+                    </button>
+
+                    <button
+                        onClick={onConfirm}
+                        disabled={isLoading}
+                        className={`confirm-btn ${variant}`}
                     >
-                        {confirmText}
-                    </Button>
+                        {isLoading ? (
+                            <div className="spinner" />
+                        ) : (
+                            confirmText
+                        )}
+                    </button>
                 </div>
             </div>
         </Modal>
     );
-}
+};
+
+export default ConfirmDialog;

@@ -1,8 +1,16 @@
 import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './Modal.css';
 
 export default function Modal({ children, onClose, size = 'md' }) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
     useEffect(() => {
         // Prevent body scroll when modal is open
         document.body.style.overflow = 'hidden';
@@ -20,7 +28,9 @@ export default function Modal({ children, onClose, size = 'md' }) {
         };
     }, [onClose]);
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <div className="modal-overlay" onClick={onClose}>
             <div
                 className={`modal-content modal-${size}`}
@@ -28,6 +38,7 @@ export default function Modal({ children, onClose, size = 'md' }) {
             >
                 {children}
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

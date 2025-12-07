@@ -9,16 +9,30 @@ export const useWalletStore = create((set, get) => ({
 
     // Fetch all wallets
     fetchWallets: async () => {
+        // Deduplication: Don't fetch if already loading
+        if (get().isLoading) return;
+
         set({ isLoading: true, error: null });
         try {
             const { user } = useAuthStore.getState();
             if (!user) throw new Error('Not authenticated');
 
-            const wallets = await walletService.getWallets(user.id);
+            // Timeout promise (15s)
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Request timed out')), 15000)
+            );
+
+            // Race between fetch and timeout
+            const wallets = await Promise.race([
+                walletService.getWallets(user.id),
+                timeoutPromise
+            ]);
+
             set({ wallets, isLoading: false });
         } catch (error) {
+            console.error('Fetch wallets error:', error);
             set({ error: error.message, isLoading: false });
-            throw error;
+            // Don't throw to prevent Uncaught runtime errors in UI
         }
     },
 

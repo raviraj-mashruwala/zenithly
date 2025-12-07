@@ -11,50 +11,63 @@ export const useAuthStore = create((set, get) => ({
     // Initialize auth state
     initialize: async () => {
         try {
-            // Get current session
-            const { data: { session } } = await supabase.auth.getSession();
+            // Create a timeout promise (10 seconds)
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Auth initialization timed out')), 10000)
+            );
 
-            if (session) {
-                // Check if user has completed onboarding (profile exists)
-                const { data: profile } = await supabase
-                    .from('users')
-                    .select('id')
-                    .eq('id', session.user.id)
-                    .single();
+            // Create the initialization promise
+            const initPromise = (async () => {
+                // Get current session
+                const { data: { session } } = await supabase.auth.getSession();
 
-                set({
-                    session,
-                    user: session.user,
-                    isAuthenticated: true,
-                    isProfileComplete: !!profile,
-                    isLoading: false,
-                });
-            } else {
-                set({ isLoading: false });
-            }
-
-            // Listen for auth changes
-            supabase.auth.onAuthStateChange(async (_event, session) => {
-                let isProfileComplete = false;
-                
-                if (session?.user) {
-                     const { data: profile } = await supabase
+                if (session) {
+                    // Check if user has completed onboarding (profile exists)
+                    const { data: profile } = await supabase
                         .from('users')
                         .select('id')
                         .eq('id', session.user.id)
                         .single();
-                     isProfileComplete = !!profile;
+
+                    set({
+                        session,
+                        user: session.user,
+                        isAuthenticated: true,
+                        isProfileComplete: !!profile,
+                        isLoading: false,
+                    });
+                } else {
+                    set({ isLoading: false });
                 }
 
-                set({
-                    session,
-                    user: session?.user ?? null,
-                    isAuthenticated: !!session,
-                    isProfileComplete,
+                // Listen for auth changes
+                supabase.auth.onAuthStateChange(async (_event, session) => {
+                    let isProfileComplete = false;
+                    
+                    if (session?.user) {
+                         const { data: profile } = await supabase
+                            .from('users')
+                            .select('id')
+                            .eq('id', session.user.id)
+                            .single();
+                         isProfileComplete = !!profile;
+                    }
+
+                    set({
+                        session,
+                        user: session?.user ?? null,
+                        isAuthenticated: !!session,
+                        isProfileComplete,
+                    });
                 });
-            });
+            })();
+
+            // Race them
+            await Promise.race([initPromise, timeoutPromise]);
+
         } catch (error) {
             console.error('Auth initialization error:', error);
+            // Ensure we stop loading even if it fails/times out
             set({ isLoading: false });
         }
     },
