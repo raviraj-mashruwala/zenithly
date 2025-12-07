@@ -81,6 +81,7 @@ export const useAuthStore = create((set, get) => ({
                 data: {
                     display_name: displayName,
                 },
+                emailRedirectTo: window.location.origin,
             },
         });
 
