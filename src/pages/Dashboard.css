@@ -48,7 +48,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   BALANCE CARD
+   BALANCE CARD — Elegant Breathing Glow
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .balance-card {
@@ -65,7 +65,58 @@
     padding: var(--space-8);
     margin-bottom: var(--space-8);
     overflow: hidden;
-    box-shadow: var(--shadow-glass);
+    box-shadow:
+        var(--shadow-glass),
+        0 0 40px var(--color-accent-glow);
+    animation: balance-breathe 4s ease-in-out infinite;
+}
+
+@keyframes balance-breathe {
+
+    0%,
+    100% {
+        box-shadow:
+            var(--shadow-glass),
+            0 0 30px var(--color-accent-glow);
+        border-color: var(--color-border-accent);
+    }
+
+    50% {
+        box-shadow:
+            var(--shadow-glass),
+            0 0 60px var(--color-accent-glow),
+            0 0 100px rgba(var(--color-accent-rgb, 200, 170, 130), 0.15);
+        border-color: var(--color-accent);
+    }
+}
+
+/* Spotlight glow on balance card */
+.balance-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at 30% 50%,
+            var(--color-accent-muted),
+            transparent 50%);
+    opacity: 0.3;
+    pointer-events: none;
+    animation: spotlight-drift 8s ease-in-out infinite;
+}
+
+@keyframes spotlight-drift {
+
+    0%,
+    100% {
+        background: radial-gradient(600px circle at 20% 40%,
+                var(--color-accent-muted),
+                transparent 50%);
+    }
+
+    50% {
+        background: radial-gradient(600px circle at 40% 60%,
+                var(--color-accent-muted),
+                transparent 50%);
+    }
 }
 
 .balance-icon {
@@ -162,6 +213,8 @@
 }
 
 .stat-card {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
     background: var(--color-bg-glass);
     backdrop-filter: var(--glass-blur-sm);
     -webkit-backdrop-filter: var(--glass-blur-sm);
@@ -170,11 +223,33 @@
     padding: var(--space-6);
     transition: all var(--transition-base);
     cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Spotlight effect on stat-card */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+            var(--color-accent-muted),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.stat-card:hover::before {
+    opacity: 1;
 }
 
 .stat-card:hover {
-    border-color: var(--color-border-strong);
-    box-shadow: var(--shadow-glass);
+    border-color: var(--color-border-accent);
+    box-shadow:
+        var(--shadow-glass-hover),
+        0 0 30px var(--color-accent-glow);
     transform: translateY(-2px);
 }
 

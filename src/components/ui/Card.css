@@ -215,3 +215,100 @@
 .card-warning {
     border-color: rgba(255, 217, 61, 0.3);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SPOTLIGHT CARD — Aura-Inspired Mouse-Following Glow
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.card-spotlight {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-slow);
+}
+
+/* Spotlight Glow Background */
+.card-spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(500px circle at var(--mouse-x) var(--mouse-y),
+            var(--color-accent-muted),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.card-spotlight:hover::after {
+    opacity: 1;
+}
+
+/* Spotlight Border Glow */
+.card-spotlight-border {
+    position: relative;
+}
+
+.card-spotlight-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid var(--color-accent);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    mask-image: radial-gradient(250px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent);
+    -webkit-mask-image: radial-gradient(250px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent);
+}
+
+.card-spotlight:hover .card-spotlight-border::before,
+.card-spotlight-border:hover::before {
+    opacity: 0.6;
+}
+
+/* Enhanced Hover with Glow */
+.card-glow:hover {
+    border-color: var(--color-border-accent);
+    box-shadow:
+        var(--shadow-glass-hover),
+        0 0 40px var(--color-accent-glow);
+}
+
+/* Card with Animated Border */
+.card-shiny {
+    --gradient-angle: 0deg;
+    background:
+        linear-gradient(var(--color-bg-glass), var(--color-bg-glass)) padding-box,
+        conic-gradient(from var(--gradient-angle),
+            transparent 0%,
+            var(--color-accent) 10%,
+            var(--color-accent-light) 20%,
+            var(--color-accent) 35%,
+            transparent 50%,
+            transparent 100%) border-box;
+    border: 2px solid transparent;
+    animation: border-spin 4s linear infinite;
+}
+
+@keyframes border-spin {
+    to {
+        --gradient-angle: 360deg;
+    }
+}
+
+/* Featured Card - Extra prominence */
+.card-featured {
+    border-color: var(--color-border-accent);
+    box-shadow:
+        var(--shadow-lg),
+        0 0 60px var(--color-accent-glow);
+}
+
+.card-featured::before {
+    background: linear-gradient(135deg,
+            var(--color-accent-glow) 0%,
+            transparent 40%);
+}

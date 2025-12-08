@@ -178,6 +178,7 @@ export default function Onboarding() {
         <div className="onboarding-page">
             {/* Ambient Background */}
             <div className="ambient-bg">
+                <div className="onboarding-grid" />
                 <div className="ambient-orb orb-1" />
                 <div className="ambient-orb orb-2" />
                 <div className="ambient-orb orb-3" />

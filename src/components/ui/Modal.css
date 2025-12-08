@@ -22,7 +22,9 @@
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-glass);
+    box-shadow:
+        var(--shadow-glass),
+        0 0 60px var(--color-accent-glow);
     max-height: 90vh;
     overflow-y: auto;
     width: 100%;
@@ -41,9 +43,26 @@
     height: 1px;
     background: linear-gradient(90deg,
             transparent,
+            var(--color-accent),
             var(--color-border-strong),
+            var(--color-accent),
             transparent);
     pointer-events: none;
+    z-index: 1;
+}
+
+/* Spotlight glow effect on modal */
+.modal-content::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(600px circle at 50% 0%,
+            var(--color-accent-muted),
+            transparent 40%);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

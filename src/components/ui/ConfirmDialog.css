@@ -14,10 +14,39 @@
     width: 48px;
     height: 48px;
     margin-bottom: var(--space-4);
+    position: relative;
 }
 
 .confirm-dialog-icon.danger {
     color: var(--color-error);
+}
+
+/* Sonar pulse animation for danger icon */
+.confirm-dialog-icon.danger::before,
+.confirm-dialog-icon.danger::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid var(--color-error);
+    opacity: 0;
+    animation: icon-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.confirm-dialog-icon.danger::after {
+    animation-delay: 1s;
+}
+
+@keyframes icon-pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
 }
 
 .confirm-dialog-icon.warning {

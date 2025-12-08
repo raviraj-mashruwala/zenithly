@@ -29,6 +29,19 @@
     animation: float 20s ease-in-out infinite;
 }
 
+/* Grid Pattern Overlay */
+.onboarding-grid {
+    position: absolute;
+    inset: 0;
+    background-size: 60px 120px;
+    background-image:
+        linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    opacity: 0.35;
+}
+
 .orb-1 {
     width: 600px;
     height: 600px;
@@ -146,6 +159,34 @@
     box-shadow: 0 0 0 4px var(--color-accent-muted);
 }
 
+/* Sonar pulse on active step */
+.step.active .step-indicator-wrapper::before,
+.step.active .step-indicator-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid var(--color-accent);
+    opacity: 0;
+    animation: step-sonar 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.step.active .step-indicator-wrapper::after {
+    animation-delay: 1.25s;
+}
+
+@keyframes step-sonar {
+    0% {
+        transform: scale(0.9);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
 .step.completed .step-indicator-wrapper {
     background: var(--color-accent);
     border-color: var(--color-accent);
@@ -232,19 +273,19 @@
     .onboarding-steps {
         margin-bottom: var(--space-8);
     }
-    
+
     .step-label {
         display: none;
     }
-    
+
     .step-connector {
         margin: 0 var(--space-2);
     }
-    
+
     .onboarding-card {
         padding: var(--space-6);
     }
-    
+
     .onboarding-title {
         font-size: var(--text-3xl);
     }

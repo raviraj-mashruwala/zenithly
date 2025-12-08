@@ -306,6 +306,19 @@
     filter: blur(100px);
 }
 
+/* Grid Pattern Overlay */
+.bg-grid {
+    position: absolute;
+    inset: 0;
+    background-size: 60px 120px;
+    background-image:
+        linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse at center, black 10%, transparent 60%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 60%);
+    opacity: 0.3;
+}
+
 .content-wrapper {
     max-width: 1400px;
     margin: 0 auto;

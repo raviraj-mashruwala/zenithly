@@ -629,3 +629,202 @@ select option {
     color: var(--color-text-primary);
     margin: 0;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AURA DESIGN ENHANCEMENTS — Grid, Spotlight, Sonar, Beams
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Grid Background Pattern */
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-size: 80px 160px;
+    background-image:
+        linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    opacity: 0.4;
+}
+
+/* CSS Property for Shiny Border Animation */
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+/* Shiny Border Animation */
+@keyframes border-spin {
+    to {
+        --gradient-angle: 360deg;
+    }
+}
+
+/* Sonar Wave Animation */
+@keyframes sonar-wave {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Beam Flow Animation */
+@keyframes beam-flow {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Enhanced Pulse Animation */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 8px var(--color-accent);
+    }
+
+    50% {
+        opacity: 0.7;
+        box-shadow: 0 0 20px var(--color-accent);
+    }
+}
+
+/* Sonar Pulse Element */
+.sonar-pulse {
+    position: relative;
+}
+
+.sonar-pulse::before,
+.sonar-pulse::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 1px solid var(--color-accent);
+    opacity: 0;
+    animation: sonar-wave 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.sonar-pulse::after {
+    animation-delay: 1.5s;
+}
+
+/* Live Status Indicator */
+.status-live {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.status-live::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--color-success);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--color-success);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Spotlight Card Effect (CSS Custom Properties for JS) */
+.spotlight-effect {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.spotlight-effect::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+            var(--color-accent-muted),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.spotlight-effect:hover::before {
+    opacity: 1;
+}
+
+/* Spotlight Border */
+.spotlight-border::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid var(--color-accent);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    mask-image: radial-gradient(200px circle at var(--mouse-x) var(--mouse-y), black, transparent);
+    -webkit-mask-image: radial-gradient(200px circle at var(--mouse-x) var(--mouse-y), black, transparent);
+}
+
+.spotlight-effect:hover::after {
+    opacity: 0.5;
+}
+
+/* Shiny Border Utility */
+.shiny-border {
+    --gradient-angle: 0deg;
+    position: relative;
+    background:
+        linear-gradient(var(--color-bg-surface), var(--color-bg-surface)) padding-box,
+        conic-gradient(from var(--gradient-angle),
+            transparent 0%,
+            var(--color-accent) 10%,
+            var(--color-accent-light) 20%,
+            var(--color-accent) 35%,
+            transparent 50%,
+            transparent 100%) border-box;
+    border: 2px solid transparent;
+    animation: border-spin 4s linear infinite;
+}
+
+/* Glow Accent on Hover */
+.hover-glow {
+    transition: all var(--transition-base);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 30px var(--color-accent-glow);
+}
+
+/* Enhanced Card Hover */
+.card-enhanced:hover {
+    border-color: var(--color-border-accent);
+    box-shadow:
+        var(--shadow-glass-hover),
+        0 0 40px var(--color-accent-glow);
+}
+
+/* Decorative Beam Line */
+.beam-line {
+    stroke-dasharray: 80 1000;
+    stroke-linecap: round;
+    animation: beam-flow 3s linear infinite;
+}
+
+/* Accent Text Glow */
+.text-glow {
+    text-shadow: 0 0 30px var(--color-accent-glow);
+}
