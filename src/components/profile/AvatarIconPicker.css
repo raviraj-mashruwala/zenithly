@@ -1,0 +1,194 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   AVATAR ICON PICKER — Liquid Glass Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.avatar-icon-picker {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+}
+
+.avatar-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.avatar-picker-header h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.avatar-picker-header .close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.avatar-picker-header .close-btn:hover {
+    background: var(--color-accent-muted);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: rotate(90deg);
+}
+
+.avatar-picker-search {
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CATEGORY TABS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.avatar-set-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: linear-gradient(180deg, var(--color-bg-elevated) 0%, var(--color-bg-surface) 100%);
+}
+
+.avatar-set-tabs::-webkit-scrollbar {
+    height: 4px;
+}
+
+.avatar-set-tabs::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
+}
+
+.set-tab {
+    flex-shrink: 0;
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-secondary);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.set-tab:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
+    background: var(--color-bg-elevated);
+    transform: translateY(-1px);
+}
+
+.set-tab.active {
+    color: var(--color-accent);
+    background: var(--color-accent-muted);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 12px var(--color-accent-glow);
+    font-weight: var(--font-semibold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ICON GRID
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.avatar-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
+    overflow-y: auto;
+    flex: 1;
+    min-height: 200px;
+    max-height: 280px;
+    position: relative;
+    z-index: 5;
+}
+
+.avatar-icon-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.avatar-icon-option:hover {
+    background: var(--color-bg-elevated);
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+    transform: scale(1.1);
+}
+
+.avatar-icon-option.selected {
+    background: var(--color-accent-muted);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent-glow);
+}
+
+.avatar-icon-option svg {
+    transition: transform var(--transition-fast);
+}
+
+.avatar-icon-option:hover svg {
+    transform: scale(1.05);
+}
+
+.avatar-picker-grid .no-icons {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.avatar-picker-footer {
+    padding: var(--space-3) var(--space-5);
+    border-top: 1px solid var(--color-border-subtle);
+    text-align: center;
+}
+
+.avatar-picker-footer p {
+    font-size: var(--text-xs);
+    margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+    .avatar-picker-grid {
+        grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    }
+
+    .avatar-icon-option {
+        width: 44px;
+        height: 44px;
+    }
+}

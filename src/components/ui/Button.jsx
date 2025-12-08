@@ -10,6 +10,8 @@ const Button = ({
     isLoading = false,
     disabled = false,
     fullWidth = false,
+    leftIcon,
+    rightIcon,
     className = '',
     ...props
 }) => {
@@ -33,8 +35,13 @@ const Button = ({
             )}
 
             <span className="button-content">
-                {isLoading && <Loader2 className="button-loading" size={16} />}
+                {isLoading ? (
+                    <Loader2 className="button-loading" size={16} />
+                ) : (
+                    leftIcon && <span className="button-icon">{leftIcon}</span>
+                )}
                 {children}
+                {rightIcon && !isLoading && <span className="button-icon">{rightIcon}</span>}
             </span>
         </motion.button>
     );

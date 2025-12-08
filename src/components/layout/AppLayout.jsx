@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Icon } from '@iconify/react';
 import {
     LayoutDashboard,
     Wallet,
@@ -13,6 +14,7 @@ import {
     X
 } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
+import ProfileModal from '../profile/ProfileModal';
 import './AppLayout.css';
 
 const NavItem = ({ to, icon: Icon, label, isActive, onClick }) => (
@@ -30,6 +32,7 @@ const AppLayout = ({ children }) => {
     const { signOut, user } = useAuthStore();
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
     const navItems = [
         { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -39,6 +42,17 @@ const AppLayout = ({ children }) => {
         { path: '/reports', label: 'Reports', icon: PieChart },
         { path: '/settings', label: 'Settings', icon: Settings },
     ];
+
+    // Get display name, fallback to email username if not set
+    const displayName = user?.user_metadata?.display_name ||
+        user?.user_metadata?.name ||
+        user?.email?.split('@')[0] || 'User';
+
+    // Get avatar icon from user metadata
+    const avatarIcon = user?.user_metadata?.avatar_icon;
+
+    // Get initial for fallback avatar
+    const getInitial = () => displayName?.[0]?.toUpperCase() || 'U';
 
     return (
         <div className="app-layout">
@@ -64,15 +78,23 @@ const AppLayout = ({ children }) => {
                 </nav>
 
                 <div className="sidebar-footer">
-                    <div className="user-profile">
+                    <button
+                        className="user-profile-btn"
+                        onClick={() => setIsProfileModalOpen(true)}
+                        aria-label="Edit profile"
+                    >
                         <div className="user-avatar">
-                            {user?.email?.[0].toUpperCase()}
+                            {avatarIcon ? (
+                                <Icon icon={avatarIcon} width={20} height={20} />
+                            ) : (
+                                getInitial()
+                            )}
                         </div>
                         <div className="user-info">
-                            <p className="user-email">{user?.email}</p>
+                            <p className="user-name">{displayName}</p>
                             <p className="user-plan">Pro Plan</p>
                         </div>
-                    </div>
+                    </button>
                     <button
                         onClick={() => signOut()}
                         className="signout-button"
@@ -142,6 +164,12 @@ const AppLayout = ({ children }) => {
                     {children}
                 </div>
             </main>
+
+            {/* Profile Modal */}
+            <ProfileModal
+                isOpen={isProfileModalOpen}
+                onClose={() => setIsProfileModalOpen(false)}
+            />
         </div>
     );
 };

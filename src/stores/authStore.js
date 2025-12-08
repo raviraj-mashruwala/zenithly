@@ -11,66 +11,83 @@ export const useAuthStore = create((set, get) => ({
     // Initialize auth state
     initialize: async () => {
         try {
-            // Create a timeout promise (10 seconds)
             const timeoutPromise = new Promise((_, reject) => 
                 setTimeout(() => reject(new Error('Auth initialization timed out')), 10000)
             );
 
-            // Create the initialization promise
             const initPromise = (async () => {
-                // Get current session
                 const { data: { session } } = await supabase.auth.getSession();
 
                 if (session) {
-                    // Check if user has completed onboarding (profile exists)
+                    // Fetch profile from public.users
                     const { data: profile } = await supabase
                         .from('users')
-                        .select('id')
+                        .select('display_name, avatar_icon, id')
                         .eq('id', session.user.id)
                         .single();
 
+                    // Merge public profile into user object for compatibility
+                    const enhancedUser = {
+                        ...session.user,
+                        user_metadata: {
+                            ...session.user.user_metadata,
+                            display_name: profile?.display_name || session.user.user_metadata?.display_name,
+                            avatar_icon: profile?.avatar_icon || session.user.user_metadata?.avatar_icon,
+                        }
+                    };
+
                     set({
                         session,
-                        user: session.user,
+                        user: enhancedUser,
                         isAuthenticated: true,
-                        isProfileComplete: !!profile,
+                        isProfileComplete: !!profile?.display_name, // Basic check
                         isLoading: false,
                     });
                 } else {
                     set({ isLoading: false });
                 }
 
-                // Listen for auth changes
                 supabase.auth.onAuthStateChange(async (_event, session) => {
+                    let enhancedUser = session?.user || null;
                     let isProfileComplete = false;
                     
                     if (session?.user) {
                          const { data: profile } = await supabase
                             .from('users')
-                            .select('id')
+                            .select('display_name, avatar_icon')
                             .eq('id', session.user.id)
                             .single();
-                         isProfileComplete = !!profile;
+                         
+                         if (profile) {
+                             enhancedUser = {
+                                 ...session.user,
+                                 user_metadata: {
+                                     ...session.user.user_metadata,
+                                     display_name: profile.display_name,
+                                     avatar_icon: profile.avatar_icon,
+                                 }
+                             };
+                             isProfileComplete = !!profile.display_name;
+                         }
                     }
 
                     set({
                         session,
-                        user: session?.user ?? null,
+                        user: enhancedUser,
                         isAuthenticated: !!session,
                         isProfileComplete,
                     });
                 });
             })();
 
-            // Race them
             await Promise.race([initPromise, timeoutPromise]);
 
         } catch (error) {
             console.error('Auth initialization error:', error);
-            // Ensure we stop loading even if it fails/times out
             set({ isLoading: false });
         }
     },
+
 
     // Sign up with email and password
     signUp: async (email, password, displayName) => {
@@ -154,19 +171,54 @@ export const useAuthStore = create((set, get) => ({
         if (error) throw error;
     },
 
-    // Update user profile
+    // Update user profile (Public Table + Optimistic)
     updateProfile: async (updates) => {
-        const { error } = await supabase.auth.updateUser({
-            data: updates,
-        });
+        const currentUser = get().user;
+        if (!currentUser) return;
 
-        if (error) throw error;
+        console.log('authStore: starting optimistic update (public table)', updates);
 
-        // Refresh session to get updated user data
-        const { data: { session } } = await supabase.auth.getSession();
-        set({
-            session,
-            user: session?.user ?? null,
-        });
+        // 1. Optimistic update
+        const updatedMetadata = { 
+            ...currentUser.user_metadata, 
+            ...updates 
+        };
+        const optimisticallyUpdatedUser = {
+            ...currentUser,
+            user_metadata: updatedMetadata
+        };
+
+        set({ user: optimisticallyUpdatedUser });
+
+        try {
+            // 2. Perform network update to public.users table
+            console.log('authStore: upserting to public.users...');
+            
+            const { error: dbError } = await supabase
+                .from('users')
+                .upsert({
+                    id: currentUser.id,
+                    email: currentUser.email, // Required for new rows
+                    display_name: updates.display_name,
+                    avatar_icon: updates.avatar_icon,
+                    updated_at: new Date().toISOString(), 
+                }, { onConflict: 'id' });
+
+            if (dbError) {
+                console.error('authStore: DB update failed', dbError);
+                throw dbError;
+            }
+
+            console.log('authStore: DB update successful');
+            
+            // 3. Optional: Try to update Auth Metadata too (fire and forget)
+            // This keeps auth.users in sync if it ever starts working, but we don't await it strictly
+            supabase.auth.updateUser({ data: updates }).catch(e => console.warn('Auth meta update failed', e));
+
+        } catch (err) {
+            console.error('authStore: update error', err);
+            set({ user: currentUser }); // Revert
+            throw err;
+        }
     },
 }));
