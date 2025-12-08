@@ -11,8 +11,9 @@ import { lazy, Suspense } from 'react';
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
 const Onboarding = lazy(() => import('./pages/auth/Onboarding'));
 
-// Landing page
+// Landing pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
+const NewLandingPage = lazy(() => import('./pages/NewLandingPage'));
 
 // Protected pages
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -104,7 +105,7 @@ function App() {
                     <Route path="/" element={
                         user ? (
                             isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
-                        ) : <LandingPage />
+                        ) : <NewLandingPage />
                     } />
 
                     {/* Fallback auth routes (accessible directly) */}
