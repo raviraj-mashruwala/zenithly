@@ -29,6 +29,7 @@ const Settings = lazy(() => import('./pages/Settings'));
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppLayout from './components/layout/AppLayout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
+import PageLoader from './components/ui/PageLoader';
 
 function App() {
     const { initialize, isLoading, user, isProfileComplete } = useAuthStore();
@@ -53,76 +54,120 @@ function App() {
         !['/forgot-password'].includes(location.pathname);
 
     return (
-        <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
-            <AnimatePresence mode="wait">
-                <Routes location={location} key={location.pathname}>
-                    {/* Onboarding - no layout */}
-                    <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+                {/* Onboarding - no layout */}
+                <Route path="/onboarding" element={
+                    <ProtectedRoute>
+                        <Suspense fallback={<PageLoader />}>
+                            <Onboarding />
+                        </Suspense>
+                    </ProtectedRoute>
+                } />
 
-                    {/* Protected routes with layout */}
-                    <Route path="/dashboard" element={
-                        <ProtectedRoute>
-                            <AppLayout><Dashboard /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/wallets" element={
-                        <ProtectedRoute>
-                            <AppLayout><WalletsList /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/categories" element={
-                        <ProtectedRoute>
-                            <AppLayout><CategoriesList /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/transactions" element={
-                        <ProtectedRoute>
-                            <AppLayout><TransactionsList /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/reports" element={
-                        <ProtectedRoute>
-                            <AppLayout><ReportsOverview /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/reports/income" element={
-                        <ProtectedRoute>
-                            <AppLayout><NetIncomeReport /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/reports/expenses" element={
-                        <ProtectedRoute>
-                            <AppLayout><ExpenseDetailsReport /></AppLayout>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/settings" element={
-                        <ProtectedRoute>
-                            <AppLayout><Settings /></AppLayout>
-                        </ProtectedRoute>
-                    } />
+                {/* Protected routes with layout */}
+                <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <Dashboard />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/wallets" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <WalletsList />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/categories" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <CategoriesList />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/transactions" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <TransactionsList />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/reports" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <ReportsOverview />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/reports/income" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <NetIncomeReport />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/reports/expenses" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <ExpenseDetailsReport />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                    <ProtectedRoute>
+                        <AppLayout>
+                            <Suspense fallback={<PageLoader />}>
+                                <Settings />
+                            </Suspense>
+                        </AppLayout>
+                    </ProtectedRoute>
+                } />
 
-                    {/* Root route - Landing or Dashboard */}
-                    <Route path="/" element={
-                        user ? (
-                            isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
-                        ) : <NewLandingPage />
-                    } />
+                {/* Root route - Landing or Dashboard */}
+                <Route path="/" element={
+                    user ? (
+                        isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
+                    ) : (
+                        <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
+                            <NewLandingPage />
+                        </Suspense>
+                    )
+                } />
 
-                    {/* Fallback auth routes (accessible directly) */}
+                {/* Fallback auth routes (accessible directly) */}
 
-                    <Route path="/forgot-password" element={
-                        user ? <Navigate to="/dashboard" replace /> : <ForgotPassword />
-                    } />
+                <Route path="/forgot-password" element={
+                    user ? <Navigate to="/dashboard" replace /> : (
+                        <Suspense fallback={<div className="loading-container"><LoadingSpinner size="lg" /></div>}>
+                            <ForgotPassword />
+                        </Suspense>
+                    )
+                } />
 
-                    {/* Catch-all redirect */}
-                    <Route path="*" element={
-                        user ? (
-                            isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
-                        ) : <Navigate to="/" replace />
-                    } />
-                </Routes>
-            </AnimatePresence>
-        </Suspense>
+                {/* Catch-all redirect */}
+                <Route path="*" element={
+                    user ? (
+                        isProfileComplete ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />
+                    ) : <Navigate to="/" replace />
+                } />
+            </Routes>
+        </AnimatePresence>
     );
 }
 

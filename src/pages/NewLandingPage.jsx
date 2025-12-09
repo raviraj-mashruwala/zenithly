@@ -75,8 +75,8 @@ export default function NewLandingPage() {
             {/* Floating Navigation */}
             <motion.nav
                 className="floating-nav"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: -20, x: "-50%" }}
+                animate={{ opacity: 1, y: 0, x: "-50%" }}
                 transition={{ duration: 0.6, delay: 0.2 }}
             >
                 <div className="nav-brand">
@@ -88,7 +88,7 @@ export default function NewLandingPage() {
 
                 <div className="nav-links">
                     <a href="#features" className="nav-link">Features</a>
-                    <a href="#testimonial" className="nav-link">Testimonials</a>
+                    {/* <a href="#testimonial" className="nav-link">Testimonials</a> */}
                 </div>
 
                 <button className="nav-cta" onClick={openSignup}>
@@ -447,7 +447,7 @@ export default function NewLandingPage() {
             </section>
 
             {/* Testimonial Section */}
-            <section className="testimonial-section" id="testimonial">
+            {/* <section className="testimonial-section" id="testimonial">
                 <div className="testimonial-grid">
                     <motion.div
                         className="testimonial-image"
@@ -490,7 +490,7 @@ export default function NewLandingPage() {
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </section> */}
 
             {/* Final CTA Section */}
             <section className="final-cta-section">
