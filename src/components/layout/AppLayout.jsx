@@ -156,12 +156,53 @@ const AppLayout = ({ children }) => {
                 {/* Background decorative elements */}
                 <div className="bg-decorations">
                     <div className="bg-grid" />
+                    <div className="bg-aurora" />
                     <div className="bg-glow-1" />
                     <div className="bg-glow-2" />
                 </div>
 
                 <div className="content-wrapper">
-                    {children}
+                    <AnimatePresence mode="wait">
+
+                        <motion.div
+                            key={location.pathname}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                            variants={{
+                                initial: {
+                                    opacity: 0,
+                                    scale: 0.98,
+                                    filter: 'blur(10px)',
+                                    y: 10
+                                },
+                                animate: {
+                                    opacity: 1,
+                                    scale: 1,
+                                    filter: 'blur(0px)',
+                                    y: 0,
+                                    transition: {
+                                        duration: 0.4,
+                                        ease: [0.25, 0.1, 0.25, 1], // Cubic bezier for smooth glass feel
+                                        filter: { duration: 0.3 }
+                                    }
+                                },
+                                exit: {
+                                    opacity: 0,
+                                    scale: 0.98,
+                                    filter: 'blur(10px)',
+                                    y: -10,
+                                    transition: {
+                                        duration: 0.3,
+                                        ease: [0.25, 0.1, 0.25, 1]
+                                    }
+                                }
+                            }}
+                            style={{ height: '100%', originY: 0 }}
+                        >
+                            {children}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </main>
 
